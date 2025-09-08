@@ -1,0 +1,15 @@
+<div class="banner-slider-wrapper" (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)">
+  <div class="banner-slider-track" [style.transform]="'translateX(-' + currentIndex * 100 + '%)'">
+    <div class="banner-slide" *ngFor="let slide of slides">
+      <a *ngIf="slide.link" [href]="slide.link" target="_blank">
+        <img [src]="slide.img" [alt]="slide.alt || 'Banner'" class="banner-img" loading="lazy" />
+      </a>
+      <img *ngIf="!slide.link" [src]="slide.img" [alt]="slide.alt || 'Banner'" class="banner-img" loading="lazy" />
+    </div>
+  </div>
+  <button class="banner-arrow left" (click)="prevSlide()" aria-label="Previous banner">&#10094;</button>
+  <button class="banner-arrow right" (click)="nextSlide()" aria-label="Next banner">&#10095;</button>
+  <div class="banner-pagination">
+    <span *ngFor="let slide of slides; let i = index" class="banner-dot" [class.active]="i === currentIndex" (click)="goToSlide(i)"></span>
+  </div>
+</div>

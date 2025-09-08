@@ -1,0 +1,320 @@
+<!-- Call to Action -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <h2>Ready to Master<br>Playwright Testing?</h2>
+      <p>Join our comprehensive training program and become a professional automation engineer. Master modern testing practices and advance your career.</p>
+      <button class="cta-button">ENROLL NOW <span class="arrow">→</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <h1>🎓 Playwright Automation Testing Training</h1>
+    <h2>Master End-to-End Automation with Playwright</h2>
+    <div class="hero-content">
+      <p>Playwright is a modern, fast, and reliable framework for cross-browser testing. Our training program is designed to take you from beginner to advanced with hands-on exercises, live projects, and industry-level frameworks.</p>
+      <p>By the end of the course, you'll be ready to build automation frameworks, integrate with CI/CD, and crack automation interviews.</p>
+    </div>
+  </div>
+</section>
+<<!-- Course Highlights -->
+<section class="highlights-section">
+  <div class="container">
+    <div class="highlights-grid">
+      <div class="highlight-card">
+        <span class="highlight-icon">⏱️</span>
+        <span class="duration">6 Weeks</span>
+        <h3>Hands-On Training</h3>
+      </div>
+      <div class="highlight-card">
+        <span class="highlight-icon">🚀</span>
+        <span class="projects">2 Projects</span>
+        <h3>Live Projects</h3>
+      </div>
+      <div class="highlight-card">
+        <span class="highlight-icon">🤖</span>
+        <span class="ai">AI + Testing</span>
+        <h3>Modern Approach</h3>
+      </div>
+      <div class="highlight-card">
+        <span class="highlight-icon">🔄</span>
+        <span class="framework">UI + API</span>
+        <h3>Complete Testing</h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Training Roadmap -->
+<section class="roadmap-section">
+  <div class="container">
+    <h2>📌 Training Roadmap</h2>
+    
+    <div class="module-card" (click)="toggleModule('module1')" [class.active]="activeModule === 'module1'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 1: Foundations</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Build a solid base in Playwright and automation fundamentals</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module1'">
+        <ul>
+          <li>Introduction to Playwright → Learn what Playwright is, why it’s popular, and where it fits in modern automation.</li>
+          <li>Why Playwright? → Understand the benefits: speed, reliability, cross-browser support, and built-in automation features.</li>
+          <li>Selenium vs Playwright → Compare performance, architecture, and advanced capabilities.</li>
+          <li>Tools & Technology Overview → Introduction to Node.js, NPM, VS Code, Git, and other essentials for Playwright automation.</li>
+          <li>DOM Fundamentals → Learn the structure of web pages and how it impacts test automation.</li>
+          <li>Git Basics & Version Control → Master Git commands for managing automation frameworks effectively.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="module-card" (click)="toggleModule('module2')" [class.active]="activeModule === 'module2'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 2: JavaScript Fundamentals</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Learn the JavaScript skills required for Playwright automation</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module2'">
+        <ul>
+          <li>Variables & Data Types → Understand different ways of storing and using data in automation.</li>
+          <li>Operators & Expressions → Learn how to build conditions and logical operations.</li>
+          <li>Loops & Conditional Statements → Write dynamic, reusable automation workflows.</li>
+          <li>Arrays & Objects → Manage and manipulate test data efficiently.</li>
+          <li>Functions & Arrow Functions → Reuse and modularize your code for better maintainability.</li>
+          <li>Async / Await → Handle asynchronous operations in Playwright effectively.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="module-card" (click)="toggleModule('module3')" [class.active]="activeModule === 'module3'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 3: Playwright Essentials</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Get hands-on with Playwright and write your first automation scripts</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module3'">
+        <ul>
+          <li>Installation & Setup → Install Playwright and configure the environment.</li>
+          <li>Test Execution (CLI & UI) → Run tests via the command line and Playwright UI mode.</li>
+          <li>Test Structure & Hooks → Organize your tests with beforeAll, afterAll, beforeEach, afterEach hooks.</li>
+          <li>Interaction with Web Elements → Automate clicks, typing, checkboxes, dropdowns, drag & drop, and more.</li>
+          <li>Handling Timeouts → Learn how to handle page load delays and prevent flaky tests.</li>
+          <li>Locator Assertions vs Generic Assertions → Understand the difference and when to use each.</li>
+          <li>Dealing with UI Components → Automate complex elements like modals, sliders, and date pickers.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="module-card" (click)="toggleModule('module4')" [class.active]="activeModule === 'module4'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 4: Test Design & Best Practices</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Design scalable, maintainable, and reusable automation frameworks</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module4'">
+        <ul>
+          <li>Page Object Model (POM) → Implement a clean and modular framework structure.</li>
+          <li>Framework Design Concepts → Learn professional approaches to building robust automation frameworks.</li>
+          <li>DRY (Don’t Repeat Yourself) → Write reusable code and avoid duplication.</li>
+          <li>KISS (Keep It Simple, Stupid) → Keep your tests simple, readable, and efficient.</li>
+          <li>Test Retries → Minimize flaky test failures with smart retries.</li>
+          <li>Parallel Execution → Run tests simultaneously across browsers for faster results.</li>
+          <li>Screenshots & Videos → Capture screenshots and record videos for debugging and reporting.</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="module-card" (click)="toggleModule('module5')" [class.active]="activeModule === 'module5'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 5: API Testing</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Learn API testing using Playwright and integrate UI + API automation.</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module5'">
+        <ul>
+          <li>Postman Basics → Understand API workflows, requests, and responses.</li>
+          <li>API Fundamentals → Learn REST API concepts, HTTP methods, and status codes.</li>
+          <li>API Automation using Playwright → Write Playwright-based API tests and validate responses.</li>
+          <li>Framework Design for API Tests → Build an integrated framework for API + UI testing.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="module-card" (click)="toggleModule('module6')" [class.active]="activeModule === 'module6'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 6: Configurations & Environment Handling</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Make your Playwright framework flexible and environment-ready.</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module6'">
+        <ul>
+          <li>Environment Variables → Securely manage sensitive data and configurations.</li>
+          <li>Configuration Files → Maintain different setups for QA, Staging, and Production environments.</li>
+          <li>Fixtures → Reuse login sessions and speed up test execution.</li>
+          <li>Project Setup & Teardown → Automate environment preparation and cleanup.</li>
+          <li>Global Setup & Teardown → Manage initialization and test-level cleanup at scale.</li>
+          <li>Test Tags → Organize tests using tags for better execution control.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="module-card" (click)="toggleModule('module7')" [class.active]="activeModule === 'module7'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 7: Advanced Playwright</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Master advanced Playwright features for real-world automation challenges.</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module7'">
+        <ul>
+          <li>NPM Scripts & CLI Commands → Simplify test execution with custom commands.</li>
+          <li>Mobile Device Emulation → Test websites across various mobile screen sizes.</li>
+          <li>Reporting & Insights → Generate rich HTML, Allure, and JSON reports.</li>
+          <li>Email Integration in Reports → Automate sending detailed test reports.</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="module-card" (click)="toggleModule('module8')" [class.active]="activeModule === 'module8'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 8: CI/CD & DevOps</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Automate Playwright execution in modern DevOps pipelines.</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module8'">
+        <ul>
+          <li>Introduction to CI/CD → Learn continuous integration and deployment basics.</li>
+          <li>Jenkins Pipeline Integration → Set up Playwright in Jenkins pipelines.</li>
+          <li>Git in Automation Projects → Collaborate effectively on frameworks using Git.</li>
+          <li>Test Reporting in CI/CD → Generate dashboards and test reports in pipelines.</li>
+        </ul>
+      </div>
+    </div>
+        
+    <div class="module-card" (click)="toggleModule('module9')" [class.active]="activeModule === 'module9'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 9: Artificial Intelligence in Playwright</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Leverage AI for smarter and faster test automation.</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module9'">
+        <ul>
+          <li>GitHub Copilot for Test Writing → Generate Playwright scripts using AI-powered suggestions.</li>
+          <li>Prompt Designing for Automation → Craft effective AI prompts for better test generation.</li>
+          <li>MCP Integration with Playwright → Use machine learning-driven optimizations.</li>
+          <li>AI-Assisted Debugging → Automatically detect flaky tests and improve reliability.</li>
+        </ul>
+      </div>
+    </div>
+ 
+    <div class="module-card" (click)="toggleModule('module10')" [class.active]="activeModule === 'module10'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 10: Career Preparation</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Become job-ready and prepare for real-world automation challenges.</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module10'">
+        <ul>
+          <li>Live Project (End-to-End Automation) → Automate a complete application using Playwright.</li>
+          <li>Resume Preparation → Showcase your Playwright skills and projects effectively.</li>
+          <li>Mock Interview 1 (Technical) → Prepare for Playwright-related technical interviews.</li>
+          <li>Mock Interview 2 (Technical) → Gain real interview experience and improve confidence.</li>
+        </ul>
+      </div>
+    </div>
+
+
+
+<style>
+.course-content-visual {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+.course-content-title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+}
+.course-content-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+.course-content-item {
+  display: flex;
+  align-items: flex-start;
+  background: #FFFFF0;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(37,99,235,0.08);
+  padding: 2rem;
+  gap: 2rem;
+}
+.course-content-number {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #181818;
+  min-width: 60px;
+  text-align: right;
+}
+.course-content-main {
+  flex: 1;
+}
+.course-content-heading {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+  color: #181818;
+}
+.course-content-desc {
+  font-size: 1.2rem;
+  color: #222;
+  margin-bottom: 1rem;
+}
+.course-content-meta {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  font-size: 1rem;
+  color: #444;
+}
+.course-content-icon {
+  font-size: 1.2rem;
+}
+.course-content-duration {
+  color: #888;
+  margin-left: 0.5rem;
+}
+.course-content-badge {
+  background: #181818;
+  color: #FFFFF0;
+  border-radius: 6px;
+  padding: 0.2em 0.7em;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-left: 0.7rem;
+}
+</style>

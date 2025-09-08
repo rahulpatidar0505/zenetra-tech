@@ -1,0 +1,247 @@
+<div class="course-wrapper">
+  <!-- Call to Action -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Ready to Master<br>Java Development?</h2>
+        <p>Join our comprehensive training program and become a professional Java developer. Master modern development practices and advance your career.</p>
+        <button class="cta-button">ENROLL NOW <span class="arrow">→</span></button>
+      </div>
+    </div>
+  </section>
+
+<!-- Course Highlights -->
+<section class="highlights-section">
+  <div class="container">
+    <div class="highlights-grid">
+      <div class="highlight-card">
+        <span class="highlight-icon">⏱️</span>
+        <span class="duration">12 Weeks</span>
+        <h3>Hands-On Training</h3>
+      </div>
+      <div class="highlight-card">
+        <span class="highlight-icon">🚀</span>
+        <span class="projects">3 Projects</span>
+        <h3>Live Projects</h3>
+      </div>
+      <div class="highlight-card">
+        <span class="highlight-icon">�‍�💻</span>
+        <span class="stack">Full Stack</span>
+        <h3>Complete Development</h3>
+      </div>
+      <div class="highlight-card">
+        <span class="highlight-icon">🌱</span>
+        <span class="framework">Spring Boot</span>
+        <h3>Modern Framework</h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Training Roadmap -->
+  <section class="roadmap-section">
+    <div class="container">
+      <h2>📌 Training Roadmap</h2>
+    
+    <div class="module-card" (click)="toggleModule('module1')" [class.active]="activeModule === 'module1'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 1: Java Fundamentals</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Master core Java concepts and object-oriented programming</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module1'">
+        <ul>
+          <li>Introduction to Java → Learn about JDK, JRE, JVM, and setting up development environment.</li>
+          <li>Basic Syntax → Variables, data types, operators, and control statements.</li>
+          <li>Object-Oriented Programming → Classes, objects, inheritance, polymorphism, encapsulation.</li>
+          <li>Exception Handling → Try-catch blocks, custom exceptions, best practices.</li>
+          <li>Collections Framework → Lists, Sets, Maps, and their implementations.</li>
+          <li>File I/O & Streams → Reading/writing files, handling different file formats.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="module-card" (click)="toggleModule('module2')" [class.active]="activeModule === 'module2'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 2: Advanced Java</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Learn advanced Java features and modern programming techniques</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module2'">
+        <ul>
+          <li>Multithreading → Thread lifecycle, synchronization, concurrent collections.</li>
+          <li>Functional Programming → Lambda expressions, Stream API, Optional class.</li>
+          <li>Generics → Type parameters, bounded types, wildcards.</li>
+          <li>Java 8+ Features → Default methods, static methods in interfaces, Date/Time API.</li>
+          <li>Design Patterns → Singleton, Factory, Builder, Observer patterns.</li>
+          <li>Clean Code Principles → SOLID principles, code organization, naming conventions.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="module-card" (click)="toggleModule('module3')" [class.active]="activeModule === 'module3'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 3: Database & JDBC</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Master database operations and Java database connectivity</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module3'">
+        <ul>
+          <li>SQL Fundamentals → DDL, DML, complex queries, joins, indexes.</li>
+          <li>MySQL Database → Installation, configuration, management.</li>
+          <li>JDBC Programming → Connection, statements, result sets.</li>
+          <li>Transaction Management → ACID properties, transaction isolation levels.</li>
+          <li>Connection Pooling → HikariCP, database connection best practices.</li>
+          <li>Data Access Layer → DAO pattern, repository pattern implementation.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="module-card" (click)="toggleModule('module4')" [class.active]="activeModule === 'module4'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 4: Spring Framework</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Learn Spring Core and dependency injection principles</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module4'">
+        <ul>
+          <li>Spring Core → IoC container, beans, dependency injection.</li>
+          <li>Spring Configuration → XML, Java config, annotation-based config.</li>
+          <li>Bean Lifecycle → Initialization, destruction, callbacks.</li>
+          <li>AOP Programming → Aspects, pointcuts, advice types.</li>
+          <li>Spring MVC → Request handling, controllers, view resolvers.</li>
+          <li>Spring Security → Authentication, authorization, security configurations.</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="module-card" (click)="toggleModule('module5')" [class.active]="activeModule === 'module5'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 5: Spring Boot</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Build modern microservices with Spring Boot</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module5'">
+        <ul>
+          <li>Spring Boot Basics → Auto-configuration, starters, properties.</li>
+          <li>RESTful Web Services → REST principles, API design, HATEOAS.</li>
+          <li>Spring Data JPA → Repositories, entities, relationships.</li>
+          <li>Validation → Request validation, custom validators.</li>
+          <li>Exception Handling → Global exception handling, custom responses.</li>
+          <li>Testing → Unit testing, integration testing with JUnit and Mockito.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="module-card" (click)="toggleModule('module6')" [class.active]="activeModule === 'module6'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 6: Microservices Architecture</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Design and implement microservices-based applications</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module6'">
+        <ul>
+          <li>Microservices Concepts → Architecture patterns, best practices.</li>
+          <li>Service Discovery → Eureka server, client-side service discovery.</li>
+          <li>API Gateway → Spring Cloud Gateway, routing, filtering.</li>
+          <li>Circuit Breaker → Resilience4j, fallback mechanisms.</li>
+          <li>Config Server → Centralized configuration, environment management.</li>
+          <li>Distributed Tracing → Spring Cloud Sleuth, Zipkin integration.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="module-card" (click)="toggleModule('module7')" [class.active]="activeModule === 'module7'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 7: Frontend Integration</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Learn frontend technologies and their integration with Java backend</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module7'">
+        <ul>
+          <li>HTML5 & CSS3 → Modern web layouts, responsive design.</li>
+          <li>JavaScript Essentials → DOM manipulation, events, AJAX.</li>
+          <li>Angular Basics → Components, services, routing.</li>
+          <li>RESTful Integration → HTTP clients, API integration.</li>
+          <li>Security Implementation → JWT tokens, OAuth2.</li>
+          <li>Full Stack Development → End-to-end application development.</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="module-card" (click)="toggleModule('module8')" [class.active]="activeModule === 'module8'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 8: DevOps & Deployment</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Master modern deployment and DevOps practices</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module8'">
+        <ul>
+          <li>Git Version Control → Branching, merging, conflict resolution.</li>
+          <li>Maven Build Tool → Dependencies, plugins, lifecycle.</li>
+          <li>Docker → Containerization, Docker Compose, best practices.</li>
+          <li>CI/CD → Jenkins pipelines, automated deployment.</li>
+          <li>Cloud Deployment → AWS basics, deployment strategies.</li>
+          <li>Monitoring → Actuator, Prometheus, Grafana.</li>
+        </ul>
+      </div>
+    </div>
+        
+    <div class="module-card" (click)="toggleModule('module9')" [class.active]="activeModule === 'module9'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 9: Best Practices & Performance</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Learn enterprise-level best practices and optimization techniques</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module9'">
+        <ul>
+          <li>Code Quality → SonarQube, code review practices.</li>
+          <li>Performance Tuning → JVM tuning, application optimization.</li>
+          <li>Caching → Redis, Ehcache implementation.</li>
+          <li>Logging → Log4j2, ELK stack integration.</li>
+          <li>Security Best Practices → OWASP guidelines, security testing.</li>
+          <li>Documentation → Swagger, JavaDoc, technical documentation.</li>
+        </ul>
+      </div>
+    </div>
+ 
+    <div class="module-card" (click)="toggleModule('module10')" [class.active]="activeModule === 'module10'">
+      <div class="module-header">
+        <h3>
+          <span>📍 Module 10: Career Preparation</span>
+          <span class="toggle-icon">▼</span>
+        </h3>
+        <span class="goal">Prepare for job interviews and real-world development</span>
+      </div>
+      <div class="module-content" [class.expanded]="activeModule === 'module10'">
+        <ul>
+          <li>Project Work → Build a complete enterprise application.</li>
+          <li>Resume Building → Create an impressive technical resume.</li>
+          <li>Interview Preparation → Core Java and Spring Boot interview questions.</li>
+          <li>Mock Interviews → Technical and system design interviews.</li>
+          <li>Career Guidance → Industry insights, career path planning.</li>
+          <li>Portfolio Development → GitHub portfolio, project documentation.</li>
+        </ul>
+      </div>
+    </div>
+    </div>
+  </section>
+</div>

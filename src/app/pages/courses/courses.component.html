@@ -1,0 +1,17 @@
+<section class="courses">
+  <div class="container">
+    <h1 class="courses-title">Our Courses</h1>
+    <div class="courses-grid">
+      <div class="course-card" *ngFor="let course of courses">
+        <div class="course-image-container">
+          <img [src]="course.image" [alt]="course.title" class="course-image">
+        </div>
+        <div class="course-content">
+          <h3 class="course-title">{{course.title}}</h3>
+          <p class="course-description">{{course.description}}</p>
+          <a [routerLink]="course.route" class="enroll-btn">Enroll</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

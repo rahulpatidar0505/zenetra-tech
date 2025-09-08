@@ -1,0 +1,65 @@
+/* Dropdown Styles */
+.services-dropdown-wrapper {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+.dropdown-label {
+  font-weight: 600;
+  color: #013024;
+  margin-right: 1rem;
+}
+.services-dropdown {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #013024;
+  font-size: 1rem;
+  color: #013024;
+  background: #f7f9fb;
+  outline: none;
+  transition: border 0.2s;
+}
+.services-dropdown:focus {
+  border: 2px solid #6a11cb;
+}
+.services-section {
+  background: #FFFFF0;
+  padding: 4rem 0;
+}
+.services-content {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+.services-title {
+  color: #013024;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+}
+.services-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+}
+.service-card {
+  background: #f7f9fb;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(37,99,235,0.08);
+  padding: 2rem 1.2rem;
+  text-align: left;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.service-card:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 4px 24px rgba(37,117,252,0.12);
+}
+.service-card h2 {
+  color: #013024;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+}
+.service-card p {
+  color: #222;
+  font-size: 1rem;
+}

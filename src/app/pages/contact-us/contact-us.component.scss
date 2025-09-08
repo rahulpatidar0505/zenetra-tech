@@ -1,0 +1,80 @@
+.contact-title {
+	font-family: 'Montserrat', 'Inter', Arial, sans-serif;
+	font-size: 2.5rem;
+	font-weight: 800;
+	color: #013024;
+	text-align: center;
+	margin-bottom: 1.2rem;
+	letter-spacing: -0.02em;
+}
+.contact-desc {
+	font-family: 'Inter', 'Montserrat', Arial, sans-serif;
+	font-size: 1.15rem;
+	color: #222;
+	text-align: center;
+	margin-bottom: 2.2rem;
+}
+.contact-email {
+	color: #013024;
+	font-weight: 600;
+	text-decoration: underline;
+}
+.contact-phone {
+	color: #013024;
+	font-weight: 700;
+	background: #e3f0ff;
+	padding: 0.2em 0.5em;
+	border-radius: 6px;
+	font-size: 1.15rem;
+	letter-spacing: 0.5px;
+}
+.contact-input {
+	font-family: 'Inter', 'Montserrat', Arial, sans-serif;
+	font-size: 1.1rem;
+	padding: 0.9em 1.2em;
+	border-radius: 8px;
+	border: 1px solid #e0e7ef;
+	margin-bottom: 1.1rem;
+	width: 100%;
+	box-sizing: border-box;
+	background: #FFFFF0;
+	transition: border-color 0.2s;
+}
+.contact-input:focus {
+	border-color: #013024;
+	outline: none;
+}
+.contact-textarea {
+	font-family: 'Inter', 'Montserrat', Arial, sans-serif;
+	font-size: 1.1rem;
+	padding: 0.9em 1.2em;
+	border-radius: 8px;
+	border: 1px solid #e0e7ef;
+	margin-bottom: 1.1rem;
+	width: 100%;
+	min-height: 120px;
+	box-sizing: border-box;
+	background: #FFFFF0;
+	transition: border-color 0.2s;
+}
+.contact-textarea:focus {
+	border-color: #013024;
+	outline: none;
+}
+.contact-btn {
+	font-family: 'Montserrat', 'Inter', Arial, sans-serif;
+	font-size: 1.15rem;
+	font-weight: 700;
+	background: #013024;
+	color: #FFFFF0;
+	border: none;
+	border-radius: 8px;
+	padding: 0.8em 2.2em;
+	cursor: pointer;
+	box-shadow: 0 2px 8px rgba(37,117,252,0.10);
+	transition: background 0.2s;
+	margin-top: 1.2rem;
+}
+.contact-btn:hover {
+	background: #174ea6;
+}
