@@ -19,7 +19,7 @@ import { WorkshopsComponent } from './pages/services/workshops.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'about', component: AboutComponent },
+  { path: 'about', redirectTo: '/#about', pathMatch: 'full' }, // Redirect to home with about section hash
   { path: 'courses', component: CoursesComponent },
   { 
     path: 'courses', 

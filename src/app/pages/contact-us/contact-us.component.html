@@ -2,16 +2,47 @@
 <section class="contact-us">
   <div class="container contact-content">
     <h1>Contact Us</h1>
-    <p class="contact-desc">Have questions or need support? Reach out to us using the form below or contact us directly at <a href="mailto:info&#64;zenetratechnologies.com" class="contact-email">info&#64;zenetratechnologies.com</a>.</p>
-    <form class="contact-form">
-  <input type="text" placeholder="Your Name" class="contact-input" required />
-  <input type="email" placeholder="Your Email" class="contact-input" required />
-  <textarea placeholder="Your Message" class="contact-textarea" rows="5" required></textarea>
-  <button class="contact-btn" type="submit">Send Message</button>
+    <p class="contact-desc">Have questions or need support? Reach out to us using the form below or contact us directly at <a href="mailto:contactus&#64;zenetratechnologies.com" class="contact-email">contactus&#64;zenetratechnologies.com</a>.</p>
+    <form class="contact-form" [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+  <input type="text" placeholder="Your Name" class="contact-input" formControlName="name" required />
+  <div *ngIf="submitted && f['name'].errors" class="form-error">
+    <div *ngIf="f['name'].errors['required']">Name is required</div>
+  </div>
+  
+  <input type="email" placeholder="Your Email" class="contact-input" formControlName="email" required />
+  <div *ngIf="submitted && f['email'].errors" class="form-error">
+    <div *ngIf="f['email'].errors['required']">Email is required</div>
+    <div *ngIf="f['email'].errors['email']">Please enter a valid email</div>
+  </div>
+  
+  <textarea placeholder="Your Message" class="contact-textarea" rows="5" formControlName="message" required></textarea>
+  <div *ngIf="submitted && f['message'].errors" class="form-error">
+    <div *ngIf="f['message'].errors['required']">Message is required</div>
+  </div>
+  
+  <button class="contact-btn" type="submit" [disabled]="sending">
+    {{ sending ? 'Sending...' : 'Send Message' }}
+  </button>
     </form>
+    
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
     <div class="contact-details">
-  <p><strong>Email:</strong> info&#64;zenetratechnologies.com</p>
-  <p><strong>Phone:</strong> <span class="contact-phone">+91-9175833822, +91-9175833622</span></p>
+      <div class="contact-info-row">
+        <span class="contact-label"><strong>Email:</strong></span>
+        <span class="contact-value">contactus&#64;zenetratechnologies.com</span>
+      </div>
+      <div class="contact-info-row">
+        <span class="contact-label"><strong>Phone:</strong></span>
+        <div class="contact-phones">
+          <span class="contact-phone">+91-9175833822</span>
+          <span class="contact-phone">+91-9175833622</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -104,9 +135,49 @@
   box-shadow: 0 10px 20px rgba(42, 245, 152, 0.2);
 }
 
+.contact-btn:disabled {
+  background: #a0a0a0;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.form-error {
+  color: #ff6b6b;
+  font-size: 0.875rem;
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.success-message {
+  background: rgba(42, 245, 152, 0.2);
+  color: #ffffff;
+  padding: 1.25rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #2AF598;
+  text-align: left;
+  font-weight: 600;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.error-message {
+  background: rgba(255, 107, 107, 0.15);
+  color: #ffffff;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  border-left: 4px solid #ff6b6b;
+  text-align: left;
+  font-weight: 500;
+}
+
 .contact-details {
   margin-top: 2rem;
-  text-align: center;
+  text-align: left;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   padding: 1.5rem;
@@ -114,20 +185,44 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.contact-details p {
-  margin: 0.5rem 0;
+.contact-info-row {
+  display: flex;
+  margin-bottom: 1rem;
+  align-items: flex-start;
+}
+
+.contact-label {
+  width: 80px;
+  color: #ffffff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  padding-top: 5px;
+}
+
+.contact-value {
+  color: #ffffff;
+  font-weight: 600;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.contact-phones {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contact-details strong {
   color: #ffffff;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
 }
 
-.contact-details strong {
-  color: #2AF598;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
-}
-
 .contact-phone {
-  color: #2AF598;
+  color: #ffffff;
   font-weight: 700;
+  font-size: 1.2rem;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: inline-block;
 }
 </style>

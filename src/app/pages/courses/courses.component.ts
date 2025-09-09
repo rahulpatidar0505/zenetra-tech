@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -9,7 +9,13 @@ import { RouterModule } from '@angular/router';
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.scss']
 })
-export class CoursesComponent {
+export class CoursesComponent implements OnInit {
+  // Removed background image references as we no longer use them
+  
+  ngOnInit() {
+    // No background images to preload anymore
+  }
+  
   courses = [
     {
       id: 'playwright-automation',

@@ -4,12 +4,12 @@
     <div class="courses-grid">
       <div class="course-card" *ngFor="let course of courses">
         <div class="course-image-container">
-          <img [src]="course.image" [alt]="course.title" class="course-image">
+          <img [src]="course.image" [alt]="course.title" class="course-image" loading="lazy">
         </div>
         <div class="course-content">
           <h3 class="course-title">{{course.title}}</h3>
           <p class="course-description">{{course.description}}</p>
-          <a [routerLink]="course.route" class="enroll-btn">Enroll</a>
+          <a [routerLink]="course.route" class="enroll-btn">Enroll Now</a>
         </div>
       </div>
     </div>
