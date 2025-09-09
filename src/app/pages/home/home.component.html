@@ -73,12 +73,16 @@
         </div>
       </div>
       
-      <!-- Slide Indicators -->
-      <div class="slider-indicators">
-        <span *ngFor="let slide of heroSlides; let i = index" 
-              class="indicator" 
-              [class.active]="i === currentSlide"
-              (click)="currentSlide = i"></span>
+      <!-- Slide Progress Bars -->
+      <div class="slider-progress-container">
+        <div *ngFor="let slide of heroSlides; let i = index" 
+             class="slider-progress-bar" 
+             [class.active]="i === currentSlide"
+             (click)="currentSlide = i; resetProgressBarAnimation()">
+          <div class="progress-fill" 
+               [class.reset]="resetAnimation"
+               [style.animation-play-state]="sliderPaused ? 'paused' : 'running'"></div>
+        </div>
       </div>
     </div>
     </div> <!-- Close hero-slider-container -->

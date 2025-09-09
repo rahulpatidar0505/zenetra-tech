@@ -65,6 +65,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   currentSlide = 0;
   intervalId: any;
   sliderPaused = false;
+  resetAnimation = false;
 
   ngOnInit() {
     this.startSlider();
@@ -76,11 +77,21 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   startSlider() {
     this.stopSlider();
+    this.resetProgressBarAnimation();
     this.intervalId = setInterval(() => {
       if (!this.sliderPaused) {
         this.currentSlide = (this.currentSlide + 1) % this.heroSlides.length;
+        this.resetProgressBarAnimation();
       }
-    }, 5000); // 5 seconds between slides
+    }, 3000); // Reduced to 3 seconds between slides
+  }
+  
+  resetProgressBarAnimation() {
+    // This triggers a DOM reflow to restart CSS animations
+    this.resetAnimation = true;
+    setTimeout(() => {
+      this.resetAnimation = false;
+    }, 0);
   }
 
   stopSlider() {
@@ -107,14 +118,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   goToPrevSlide() {
     this.currentSlide = (this.currentSlide - 1 + this.heroSlides.length) % this.heroSlides.length;
     this.pauseSlider();
+    this.resetProgressBarAnimation();
     // Resume auto-sliding after a user interaction
-    setTimeout(() => this.resumeSlider(), 5000);
+    setTimeout(() => this.resumeSlider(), 3000);
   }
   
   goToNextSlide() {
     this.currentSlide = (this.currentSlide + 1) % this.heroSlides.length;
     this.pauseSlider();
+    this.resetProgressBarAnimation();
     // Resume auto-sliding after a user interaction
-    setTimeout(() => this.resumeSlider(), 5000);
+    setTimeout(() => this.resumeSlider(), 3000);
   }
 }
