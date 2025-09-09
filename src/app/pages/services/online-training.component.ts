@@ -226,7 +226,7 @@ import { Component } from '@angular/core';
     }
 
     .hero-content h1 {
-      font-size: 3rem;
+      font-size: 2.2rem;
       font-weight: 700;
       margin-bottom: 1.5rem;
       line-height: 1.2;
@@ -254,7 +254,7 @@ import { Component } from '@angular/core';
 
     .stat-number {
       display: block;
-      font-size: 2.5rem;
+      font-size: 1.8rem;
       font-weight: 700;
       color: #2AF598;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
@@ -274,7 +274,7 @@ import { Component } from '@angular/core';
 
     .features-section h2 {
       text-align: center;
-      font-size: 2.5rem;
+      font-size: 1.8rem;
       color: #013024;
       margin-bottom: 3rem;
     }
@@ -312,7 +312,7 @@ import { Component } from '@angular/core';
     }
 
     .feature-icon {
-      font-size: 2.5rem;
+      font-size: 1.8rem;
       margin-bottom: 1rem;
     }
 
@@ -329,7 +329,7 @@ import { Component } from '@angular/core';
 
     .process-section h2 {
       text-align: center;
-      font-size: 2.5rem;
+      font-size: 1.8rem;
       color: #013024;
       margin-bottom: 3rem;
     }
@@ -367,7 +367,7 @@ import { Component } from '@angular/core';
 
     .programs-section h2 {
       text-align: center;
-      font-size: 2.5rem;
+      font-size: 1.8rem;
       color: #013024;
       margin-bottom: 3rem;
     }

@@ -1,9 +1,68 @@
-<!-- Hero Section -->
+<!-- Hero Section with Slider -->
 <section class="hero">
   <div class="container hero-content center-content">
-    <div class="hero-slider-flipkart" (mouseenter)="pauseSlider()" (mouseleave)="resumeSlider()">
+    <div class="hero-slider-container">
+      <!-- Navigation Arrows -->
+      <button class="slider-nav-arrow prev-arrow" (click)="goToPrevSlide()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <button class="slider-nav-arrow next-arrow" (click)="goToNextSlide()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+      
+      <div class="hero-slider-flipkart" (mouseenter)="pauseSlider()" (mouseleave)="resumeSlider()">
+      
+      <!-- Regular Course Slides -->
       <div class="hero-slide-flipkart" *ngFor="let slide of heroSlides; let i = index" [class.active]="i === currentSlide">
-        <div class="hero-slide-content-flipkart">
+        <!-- What We Offer Slide -->
+        <div class="hero-slide-content-flipkart what-we-offer-slide" *ngIf="slide.customContent === 'what-we-offer'">
+          <div class="what-we-offer-left">
+            <h1 class="what-we-offer-title">What <span class="accent">We</span> Offer?</h1>
+            <p class="what-we-offer-desc">We are a leading IT services company specializing in Project Development, Online Training, Workshops and Project Support. Empowering businesses and individuals with innovative solutions and expert guidance.</p>
+          </div>
+          <div class="what-we-offer-right">
+            <div class="offer-card">
+              <div class="offer-card-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21 21H3m3-7l3-3 3 3 6-6" stroke="#00FFB9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div>
+                <div class="offer-card-title">More <span class="accent">EFFICIENT</span></div>
+                <div class="offer-card-desc">than watching random tutorials</div>
+              </div>
+            </div>
+            <div class="offer-card">
+              <div class="offer-card-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L4 7l8 5 8-5-8-5zm0 10L4 17l8 5 8-5-8-5z" stroke="#00FFB9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div>
+                <div class="offer-card-title">FASTER results</div>
+                <div class="offer-card-desc">than expensive boot camps</div>
+              </div>
+            </div>
+            <div class="offer-card">
+              <div class="offer-card-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2v6m0 0v6m0-6h10m-10 0H2" stroke="#00FFB9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div>
+                <div class="offer-card-title">Expert <span class="accent">SUPPORT</span></div>
+                <div class="offer-card-desc">personalized to your needs</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Regular Course Slides -->
+        <div class="hero-slide-content-flipkart course-slide" *ngIf="!slide.customContent">
           <div class="hero-left">
             <h1 class="hero-title">{{ slide.title }}</h1>
             <p class="hero-subtitle">{{ slide.subtitle }}</p>
@@ -13,41 +72,16 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- What is Zenetra Technology Section -->
-<section class="intro-section">
-  <div class="container intro-grid center-content">
-    <div class="intro-left">
-  <h1 class="intro-title">What <span style="color: #013024;">We</span> Offer?</h1>
-  <p class="intro-desc">We are a leading IT services company specializing in Project Development, Online Training, Workshops and Project Support. Empowering businesses and individuals with innovative solutions and expert guidance.</p>
-    </div>
-    <div class="intro-right">
-      <div class="blue-card">
-        <div class="blue-card-icon">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M21 21H3m3-7l3-3 3 3 6-6" stroke="#00FFB9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div>
-          <div class="blue-card-title">More <span class="accent">EFFICIENT</span></div>
-          <div class="blue-card-desc">than watching random tutorials</div>
-        </div>
-      </div>
-      <div class="blue-card">
-        <div class="blue-card-icon">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L4 7l8 5 8-5-8-5zm0 10L4 17l8 5 8-5-8-5z" stroke="#00FFB9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div>
-          <div class="blue-card-title">FASTER results</div>
-          <div class="blue-card-desc">than expensive boot camps</div>
-        </div>
+      
+      <!-- Slide Indicators -->
+      <div class="slider-indicators">
+        <span *ngFor="let slide of heroSlides; let i = index" 
+              class="indicator" 
+              [class.active]="i === currentSlide"
+              (click)="currentSlide = i"></span>
       </div>
     </div>
+    </div> <!-- Close hero-slider-container -->
   </div>
 </section>
 
@@ -227,7 +261,7 @@
 
 .section-title {
   text-align: center;
-  font-size: 2.5rem;
+  font-size: 1.8rem;
   font-weight: 700;
   color: #1a1a1a;
   margin-bottom: 3rem;
@@ -285,7 +319,7 @@
     }
 
     h3 {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: #1a1a1a;
       margin: 1rem 0;
@@ -326,15 +360,11 @@
   }
 }
 
-@media (max-width: 768px) {
-  .courses-grid {
-    grid-template-columns: 1fr;
+  @media (max-width: 768px) {
+    .section-title {
+      font-size: 1.5rem;
+    }
   }
-  
-  .section-title {
-    font-size: 2rem;
-  }
-}
 </style>
 
 <!-- Testimonials Section -->
@@ -425,78 +455,34 @@
   max-width: 1100px;
   margin: 0 auto;
 }
-.hero {
-  background: linear-gradient(45deg, #000 0%, #013024 100%);
-  color: #FFFFF0;
-  padding: 4rem 0 3rem 0;
-  margin-bottom: 2rem;
-}
-.hero-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-}
-.hero-left {
-  flex: 1;
-}
-.hero-right {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-}
-.hero-img {
-  border-radius: 12px;
-  width: 320px;
-  height: 320px;
-  object-fit: cover;
-  box-shadow: 0 2px 16px rgba(0,255,185,0.12);
-}
-.hero-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: #FFFFF0;
-}
-.hero-subtitle {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-}
-.hero-actions {
-  display: flex;
-  gap: 1rem;
-}
-.intro-section {
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/assets/images/what-we-offer.jpg');
+
+/* What We Offer Section Styles */
+.what-we-offer-section {
+  background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.7)), url('/assets/images/what-we-offer.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
-  padding: 2rem 1rem;
-  margin-top: 1.5rem;
-
-  @media (min-width: 768px) {
-    padding: 3rem 0 2rem 0;
-    margin-top: 2rem;
-  }
+  padding: 4rem 0;
+  position: relative;
+  z-index: 2;
 }
 
-.intro-grid {
+.what-we-offer-container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
   align-items: stretch;
   padding: 0 1rem;
 
   @media (min-width: 768px) {
     flex-direction: row;
-    gap: 2rem;
-    align-items: flex-start;
+    gap: 3rem;
+    align-items: center;
     padding: 0;
   }
 }
 
-.intro-left {
+.what-we-offer-left {
   flex: 1;
 
   @media (min-width: 768px) {
@@ -504,87 +490,205 @@
   }
 }
 
-.intro-title {
+.what-we-offer-title {
   font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 1rem;
-  color: #000;
+  margin-bottom: 1.2rem;
+  color: #FFFFF0;
   line-height: 1.2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 
   @media (min-width: 768px) {
-    font-size: 2.7rem;
+    font-size: 2.2rem;
   }
 }
-.intro-title .accent {
-  color: #013024;
+
+.what-we-offer-title .accent {
+  color: #2AF598;
+  text-shadow: 0 0 10px rgba(42, 245, 152, 0.5);
 }
-.intro-desc {
-  font-size: 1.2rem;
-  color: #222;
+
+.what-we-offer-desc {
+  font-size: 1.1rem;
+  color: #FFFFF0;
   margin-bottom: 0.5rem;
+  line-height: 1.6;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
-.intro-right {
+
+.what-we-offer-right {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.5rem;
 }
-.blue-card {
+
+.offer-card {
   background: #013024;
   color: #FFFFF0;
   border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0,255,185,0.08);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1rem;
-  margin-bottom: 0.5rem;
+  gap: 1rem;
+  padding: 1.2rem 1.5rem;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 255, 185, 0.2);
 
-  @media (min-width: 768px) {
-    gap: 1rem;
-    padding: 1.2rem 1.5rem;
-    border-radius: 16px;
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(0, 255, 185, 0.3);
   }
 }
 
-.blue-card-icon {
-  font-size: 1.5rem;
+.offer-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 255, 185, 0.1);
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
   flex-shrink: 0;
-
-  @media (min-width: 768px) {
-    font-size: 2rem;
-  }
+  border: 1px solid rgba(0, 255, 185, 0.3);
+  box-shadow: 0 0 15px rgba(0, 255, 185, 0.25);
 }
 
-.blue-card-title {
+.offer-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.25rem;
+}
+
+.offer-card-desc {
   font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.2;
-
-  @media (min-width: 768px) {
-    font-size: 1.1rem;
-  }
-
-  .accent {
-    color: #2AF598;
-    text-shadow: 0 0 8px rgba(42, 245, 152, 0.4);
-    font-weight: 600;
-  }
+  color: rgba(255, 255, 255, 0.85);
 }
 
-.blue-card-desc {
-  font-size: 0.85rem;
-  color: #e0e7ff;
-  line-height: 1.3;
-
-  @media (min-width: 768px) {
-    font-size: 0.95rem;
-  }
+.accent {
+  color: #00FFB9;
 }
+
+/* Hero Section Styles */
+.hero {
+  background: linear-gradient(45deg, #000 0%, #013024 100%);
+  color: hsl(60, 100%, 97%);
+  padding: 3rem 0;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.hero-left {
+  flex: 2;
+}
+
+.hero-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-img {
+  border-radius: 12px;
+  width: 320px;
+  height: 320px;
+  object-fit: cover;
+  box-shadow: 0 2px 16px rgba(0,255,185,0.12);
+}
+
+
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.hero-slider-flipkart {
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  min-height: 300px; /* Increased to accommodate padding */
+}
+
+.hero-slide-flipkart {
+  flex: 1 0 100%;
+  display: none;
+  transition: opacity 0.5s;
+  align-items: stretch;
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+  z-index: 0;
+}
+
+.hero-slide-flipkart.active {
+  display: flex;
+  opacity: 1;
+}
+
+
+
+.hero-img-flipkart {
+  width: 320px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(37,117,252,0.12);
+  max-width: 100%;
+}
+
 .features-section {
   background: #f7f9fb;
   padding: 2rem 0 3rem 0;
 }
+
+.features-heading {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+
+  @media (min-width: 768px) {
+    margin-bottom: 2.5rem;
+  }
+}
+
+.features-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+  color: #000;
+  line-height: 1.2;
+
+  @media (min-width: 768px) {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.features-subtitle {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 0.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+
+  @media (min-width: 768px) {
+    font-size: 1.15rem;
+  }
+}
+
 .features-grid {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
@@ -616,6 +720,7 @@
     box-shadow: 0 8px 20px rgba(37,99,235,0.15);
   }
 }
+
 .feature-icon {
   background: rgba(1, 48, 36, 0.05);
   border-radius: 12px;
@@ -636,6 +741,7 @@
     height: 32px;
   }
 }
+
 .feature-title {
   font-size: 1.1rem;
   font-weight: 700;
@@ -662,94 +768,32 @@
     font-size: 1rem;
   }
 }
-.courses-preview {
-  background: #f7f9fb;
-  padding: 3rem 0;
-}
-.courses-list {
-  max-width: 1100px;
-  margin: 0 auto;
-  background: none;
-}
-.courses-title {
-  text-align: center;
-  font-size: 2.3rem;
-  font-weight: 700;
-  color: #013024;
-  margin-bottom: 2.5rem;
-}
-.course-row {
-  display: flex;
-  align-items: center;
-  background: #f5f8fa;
-  border-radius: 18px;
-  box-shadow: 0 2px 12px rgba(37,99,235,0.08);
-  margin-bottom: 2rem;
-  padding: 2rem 2.5rem;
-  gap: 2rem;
-}
-.course-img img {
-  width: 320px;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 12px;
-}
-.course-info {
-  flex: 1;
-}
-.course-info h3 {
-  font-size: 1.6rem;
-  font-weight: 700;
-  margin-bottom: 0.7rem;
-  color: #222;
-}
-.course-info p {
-  font-size: 1.1rem;
-  color: #444;
-}
-.course-action {
-  display: flex;
-  align-items: center;
-}
-.enroll-btn {
-  font-size: 1.1rem;
-  padding: 0.7rem 2.2rem;
-  border-radius: 8px;
-  border: 2px solid #2AF598;
-  color: #2AF598;
-  background: #04180F;
-  font-weight: 600;
-  transition: background 0.2s, color 0.2s;
-  cursor: pointer;
-}
-.enroll-btn:hover {
-  background: #2AF598;
-  color: #FFFFF0;
-}
+
 .testimonials-section {
   background: #181818;
   color: #FFFFF0;
   padding: 4rem 0 3rem 0;
 }
+
 .testimonials-list {
   max-width: 1100px;
   margin: 0 auto;
 }
+
 .testimonials-title {
   text-align: center;
-  font-size: 2.3rem;
+  font-size: 1.8rem;
   font-weight: 700;
   margin-bottom: 2.5rem;
   color: #FFFFF0;
 }
-.testimonials-title .accent {
-  color: #2AF598;
-}
+
 .testimonials-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2.5rem 2rem;
 }
+
 .testimonial-card {
   background: transparent;
   border-radius: 18px;
@@ -760,6 +804,7 @@
   flex-direction: column;
   align-items: flex-start;
 }
+
 .testimonial-card img {
   width: 80px;
   height: 80px;
@@ -767,11 +812,13 @@
   object-fit: cover;
   margin-bottom: 1rem;
 }
+
 .testimonial-name {
   font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 0.2rem;
 }
+
 .testimonial-linkedin a {
   color: #2AF598;
   font-weight: 700;
@@ -780,28 +827,26 @@
   display: inline-block;
   text-shadow: 0 0 8px rgba(42, 245, 152, 0.4);
 }
+
 .testimonial-card p {
   font-size: 1.05rem;
   color: #e0e0e0;
   margin-top: 0.7rem;
 }
-.highlight {
-  background: #00FFB9;
-  color: #FFFFF0;
-  padding: 0.1em 0.3em;
-  border-radius: 4px;
-}
+
 .faq-section {
   background: #FFFFF0;
   padding: 3rem 0 0 0;
   border-radius: 4px;
   margin-bottom: 0.7rem;
 }
+
 .faq-list {
   max-width: 1100px;
   margin: 0 auto;
   margin-bottom: 0.7rem;
 }
+
 .faq-title {
   text-align: center;
   font-size: 2.3rem;
@@ -809,73 +854,89 @@
   margin-bottom: 2.5rem;
   color: #181818;
 }
+
 .faq-title .accent {
   color: #013024;
 }
-.faq-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2.5rem 2rem;
-  margin-bottom: 1%;
-    margin-top: 1%;
+
+.faq-grid-bondar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
-.faq-item {
-  background: transparent;
-  border-radius: 18px;
-  text-align: left;
-  padding: 0;
-  color: #181818;
+
+.faq-row-bondar {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.faq-item-bondar {
+  flex: 1;
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .faq-row-bondar {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.faq-question-bondar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 1.1rem;
   font-weight: 700;
-  font-size: 1.3rem;
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.7rem;
-}
-.faq-question {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 0.7rem;
-}
-.faq-arrow {
-  font-size: 1.3rem;
   color: #222;
-  margin-left: 0.5em;
-}
-.hero-slider-flipkart {
-  display: flex;
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  min-height: 220px;
-}
-.hero-slide-flipkart {
-  flex: 1 0 100%;
-  display: none;
-  transition: opacity 0.5s;
-  align-items: stretch;
-  min-width: 0;
-  min-height: 0;
-  position: relative;
-  z-index: 0;
-}
-.hero-slide-flipkart.active {
-  display: flex;
-  opacity: 1;
-}
-.hero-slide-content-flipkart {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-}
-.hero-img-flipkart {
-  width: 320px;
-  height: 220px;
-  object-fit: cover;
+  cursor: pointer;
+  padding: 1.2rem 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 2px 16px rgba(37,117,252,0.12);
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(37,117,252,0.04);
+}
+
+.faq-question-bondar:hover {
+  background: #f7f9fb;
+}
+
+.faq-qtext {
+  flex: 1;
+  text-align: left;
+}
+
+.faq-arrow-bondar {
+  font-size: 1.5rem;
+  color: #013024;
+  margin-left: 1.2rem;
+  transition: transform 0.3s;
+}
+
+.faq-arrow-bondar.open {
+  transform: rotate(180deg);
+}
+
+.faq-answer-bondar {
+  animation: fadeInFaq 0.3s;
+}
+
+.faq-answer-card {
+  background: #f7f9fb;
+  color: #222;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(37,117,252,0.08);
+  padding: 1.2rem 1.5rem;
+  margin-top: 0.5rem;
+}
+
+@keyframes fadeInFaq {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>

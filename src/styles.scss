@@ -1,16 +1,41 @@
 /* Import Inter Google Font */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 :root {
   --container-padding: 1rem;
   --content-width: 100%;
-  --heading-scale: 0.85;
+  /* Remove heading scale to avoid zoom issues */
+  --base-font-size: 1rem;
   
   @media (min-width: 768px) {
     --container-padding: 2rem;
-    --content-width: 90%;
-    --heading-scale: 1;
+    --content-width: 100%;
+    /* Remove heading scale to avoid zoom issues */
+    --base-font-size: 1rem;
   }
+}
+
+html {
+  font-size: 16px; /* Base font size for better zoom scaling */
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  
+  @media (max-width: 768px) {
+    font-size: 15px; /* Slightly smaller base on mobile */
+  }
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -19,11 +44,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: #FFFFF0;
   color: #222;
-  margin: 0;
   min-height: 100vh;
   line-height: 1.7;
   -webkit-text-size-adjust: 100%;
-  overflow-x: hidden;
 }
 
 .container {
@@ -35,8 +58,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
-  transform: scale(var(--heading-scale));
-  transform-origin: left center;
+  /* Remove transform scale for better zoom compatibility */
   font-family: inherit;
   font-weight: 700;
   color: #222;

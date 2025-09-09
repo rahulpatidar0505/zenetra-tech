@@ -148,7 +148,7 @@ import { CommonModule } from '@angular/common';
     }
 
     .hero-content h1 {
-      font-size: 3.5rem;
+      font-size: 2rem;
       font-weight: 700;
       margin-bottom: 1.5rem;
       line-height: 1.2;
@@ -157,7 +157,7 @@ import { CommonModule } from '@angular/common';
     }
 
     .hero-subtitle {
-      font-size: 1.25rem;
+      font-size: 1rem;
       margin-bottom: 2.5rem;
       color: #ffffff;
       text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
@@ -188,7 +188,7 @@ import { CommonModule } from '@angular/common';
 
     .features-section h2 {
       text-align: center;
-      font-size: 2.5rem;
+      font-size: 1.8rem;
       color: #013024;
       margin-bottom: 3rem;
     }
@@ -230,7 +230,7 @@ import { CommonModule } from '@angular/common';
     }
 
     .feature-card h3 {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       color: #013024;
       margin-bottom: 1rem;
     }
@@ -268,7 +268,7 @@ import { CommonModule } from '@angular/common';
 
     .process-section h2 {
       text-align: center;
-      font-size: 2.5rem;
+      font-size: 1.8rem;
       color: #013024;
       margin-bottom: 3rem;
     }
@@ -316,7 +316,7 @@ import { CommonModule } from '@angular/common';
 
     @media (max-width: 768px) {
       .hero-content h1 {
-        font-size: 2.5rem;
+        font-size: 1.8rem;
       }
 
       .features-grid,

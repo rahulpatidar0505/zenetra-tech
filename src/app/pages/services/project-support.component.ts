@@ -200,7 +200,7 @@ import { Component } from '@angular/core';
     }
 
     .hero-content h1 {
-      font-size: 3.5rem;
+      font-size: 2.2rem;
       font-weight: 700;
       margin-bottom: 1.5rem;
       line-height: 1.2;
@@ -240,7 +240,7 @@ import { Component } from '@angular/core';
 
     .features-section h2 {
       text-align: center;
-      font-size: 2.5rem;
+      font-size: 1.8rem;
       color: #013024;
       margin-bottom: 3rem;
     }
@@ -320,7 +320,7 @@ import { Component } from '@angular/core';
 
     .plans-section h2 {
       text-align: center;
-      font-size: 2.5rem;
+      font-size: 1.8rem;
       color: #013024;
       margin-bottom: 3rem;
     }

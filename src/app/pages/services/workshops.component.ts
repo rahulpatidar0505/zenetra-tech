@@ -232,7 +232,7 @@ import { Component } from '@angular/core';
     }
 
     .hero-content h1 {
-      font-size: 3.5rem;
+      font-size: 2.2rem;
       font-weight: 700;
       margin-bottom: 1.5rem;
       line-height: 1.2;
@@ -272,7 +272,7 @@ import { Component } from '@angular/core';
 
     .categories-section h2 {
       text-align: center;
-      font-size: 2.5rem;
+      font-size: 1.8rem;
       color: #013024;
       margin-bottom: 3rem;
     }
@@ -337,7 +337,7 @@ import { Component } from '@angular/core';
 
     .format-section h2 {
       text-align: center;
-      font-size: 2.5rem;
+      font-size: 1.8rem;
       color: #013024;
       margin-bottom: 3rem;
     }
@@ -353,7 +353,7 @@ import { Component } from '@angular/core';
     }
 
     .format-icon {
-      font-size: 3rem;
+      font-size: 2rem;
       margin-bottom: 1rem;
     }
 
@@ -481,7 +481,7 @@ import { Component } from '@angular/core';
 
     .benefits-section h2 {
       text-align: center;
-      font-size: 2.5rem;
+      font-size: 1.8rem;
       color: #013024;
       margin-bottom: 3rem;
     }
@@ -506,7 +506,7 @@ import { Component } from '@angular/core';
     }
 
     .benefit-icon {
-      font-size: 3rem;
+      font-size: 2rem;
       margin-bottom: 1rem;
     }
 

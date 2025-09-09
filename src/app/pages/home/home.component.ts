@@ -36,6 +36,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
   heroSlides = [
     {
+      title: 'What We Offer?',
+      subtitle: 'We are a leading IT services company specializing in Project Development, Online Training, Workshops and Project Support.',
+      img: '/assets/images/what-we-offer.jpg',
+      route: '#',
+      isCustomSlide: true,
+      customContent: 'what-we-offer'
+    },
+    {
       title: 'Playwright Testing Mastery',
       subtitle: 'A step-by-step program for Quality Engineers to master test automation with personalized mentorship and feedback.',
       img: '/assets/images/courses/playwright.jpg',
@@ -72,7 +80,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (!this.sliderPaused) {
         this.currentSlide = (this.currentSlide + 1) % this.heroSlides.length;
       }
-    }, 3000);
+    }, 5000); // 5 seconds between slides
   }
 
   stopSlider() {
@@ -94,5 +102,19 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (slide.route) {
       window.location.href = slide.route;
     }
+  }
+  
+  goToPrevSlide() {
+    this.currentSlide = (this.currentSlide - 1 + this.heroSlides.length) % this.heroSlides.length;
+    this.pauseSlider();
+    // Resume auto-sliding after a user interaction
+    setTimeout(() => this.resumeSlider(), 5000);
+  }
+  
+  goToNextSlide() {
+    this.currentSlide = (this.currentSlide + 1) % this.heroSlides.length;
+    this.pauseSlider();
+    // Resume auto-sliding after a user interaction
+    setTimeout(() => this.resumeSlider(), 5000);
   }
 }
