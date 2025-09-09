@@ -21,6 +21,62 @@
   }
 }
 
+/* Image optimization styles */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Image loading state animation */
+.image-loading {
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f0f0f0;
+    animation: pulse 1.5s infinite;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+/* Prevent content layout shift during image loading */
+img[loading="lazy"] {
+  min-height: 1px;
+}
+
+/* Set aspect ratios for common image containers to prevent layout shifts */
+.course-img {
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+
+.testimonial img {
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+
+.slide-image {
+  aspect-ratio: 16/9;
+  object-fit: contain;
+}
+
 html {
   font-size: 16px; /* Base font size for better zoom scaling */
   -webkit-text-size-adjust: 100%;

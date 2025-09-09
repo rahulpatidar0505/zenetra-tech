@@ -1,10 +1,16 @@
 <div class="banner-slider-wrapper" (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)">
   <div class="banner-slider-track" [style.transform]="'translateX(-' + currentIndex * 100 + '%)'">
-    <div class="banner-slide" *ngFor="let slide of slides">
-      <a *ngIf="slide.link" [href]="slide.link" target="_blank">
-        <img [src]="slide.img" [alt]="slide.alt || 'Banner'" class="banner-img" loading="lazy" />
-      </a>
-      <img *ngIf="!slide.link" [src]="slide.img" [alt]="slide.alt || 'Banner'" class="banner-img" loading="lazy" />
+    <div class="banner-slide" *ngFor="let slide of slides" [style.backgroundImage]="'url(' + slide.backgroundImg + ')'">
+      <div class="slide-content-wrapper">
+        <div class="slide-text-content">
+          <h2 class="slide-title">{{slide.title}}</h2>
+          <p class="slide-description">{{slide.description}}</p>
+          <a *ngIf="slide.buttonText && slide.link" [href]="slide.link" class="slide-button" target="_blank">{{slide.buttonText}}</a>
+        </div>
+        <div class="slide-image-container">
+          <img [src]="slide.img" [alt]="slide.alt || 'Banner'" class="slide-image" loading="lazy" appImagePreload [appImagePreload]="slide.img" [fallbackImage]="'/assets/images/placeholders/placeholder.svg'" />
+        </div>
+      </div>
     </div>
   </div>
   <button class="banner-arrow left" (click)="prevSlide()" aria-label="Previous banner">&#10094;</button>

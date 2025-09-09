@@ -1,15 +1,23 @@
 import { Component, Input, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { ImagePreloadDirective } from '../../directives/image-preload.directive';
+import { ImageOptimizationService } from '../../services/image-optimization.service';
 
 export interface BannerSlide {
   img: string;
   alt?: string;
   link?: string;
+  backgroundImg?: string;
+  title?: string;
+  description?: string;
+  buttonText?: string;
 }
 
 @Component({
   selector: 'app-flipkart-banner-slider',
   templateUrl: './flipkart-banner-slider.component.html',
-  styleUrls: ['./flipkart-banner-slider.component.scss']
+  styleUrls: ['./flipkart-banner-slider.component.scss'],
+  imports: [ImagePreloadDirective],
+  standalone: true
 })
 export class FlipkartBannerSliderComponent implements OnInit, OnDestroy {
   @Input() slides: BannerSlide[] = [];
