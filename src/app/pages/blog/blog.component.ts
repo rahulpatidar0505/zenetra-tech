@@ -14,7 +14,7 @@ export class BlogComponent {
     {
       date: 'September 3, 2025',
       readTime: '15 min read',
-      image: '/assets/images/blog/Playwright.jpg',
+      image: '/assets/images/Playwright1.jpg',
       title: 'Playwright vs Cypress vs Selenium: A Comprehensive Comparison',
       excerpt: 'Discover the key differences between today\'s most popular automation testing frameworks. Learn which tool best suits your project needs.',
       route: '/blog/playwright-vs-cypress-selenium',
@@ -23,7 +23,7 @@ export class BlogComponent {
     {
       date: 'September 3, 2025',
       readTime: '12 min read',
-      image: '/assets/images/blog/MCP%20Image.jpg',
+      image: '/assets/images/MCP%20Image.jpg',
       title: 'Model Context Protocol (MCP) Server: Enhancing AI Development',
       excerpt: 'Discover how Model Context Protocol servers can revolutionize AI development by providing standardized communication and enhanced context management.',
       route: '/blog/mcp-server',

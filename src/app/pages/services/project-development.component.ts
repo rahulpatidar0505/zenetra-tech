@@ -165,8 +165,8 @@ import { CommonModule } from '@angular/common';
 
     .cta-button {
       display: inline-block;
-      background: #2AF598;
-      color: #013024;
+      background: #013024;
+      color: #FFFFF0;
       padding: 1rem 2.5rem;
       border-radius: 50px;
       font-weight: 600;

@@ -171,11 +171,11 @@ export class ImageOptimizationService {
    */
   getCriticalImages(): string[] {
     return [
-      '/assets/images/logo/zenetra-logo.ico',
+      '/assets/images/zenetra-logo.ico',
       '/assets/images/what-we-offer.jpg',
-      '/assets/images/courses/playwright.jpg',
-      '/assets/images/courses/Java.jpg',
-      '/assets/images/courses/Security.jpg'
+      '/assets/images/playwright1.jpg',
+      '/assets/images/Java.jpg',
+      '/assets/images/Security.jpg'
     ];
   }
 }

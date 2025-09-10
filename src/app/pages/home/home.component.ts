@@ -49,21 +49,21 @@ export class HomeComponent implements OnInit, OnDestroy {
     {
       title: 'Playwright Testing Mastery',
       subtitle: 'A step-by-step program for Quality Engineers to master test automation with personalized mentorship and feedback.',
-      img: '/assets/images/courses/playwright.jpg',
+      img: '/assets/images/playwright1.jpg',
       backgroundImg: '/assets/images/automation-testing.gif',
       route: '/courses/playwright-automation'
     },
     {
       title: 'Java Development',
       subtitle: 'Master Java programming and Spring Boot development. Build robust applications with hands-on projects and expert guidance.',
-      img: '/assets/images/courses/Java.jpg',
+      img: '/assets/images/Java.jpg',
       backgroundImg: '/assets/images/java-development.jpg',
       route: '/courses/java-development'
     },
     {
       title: 'Security Testing',
       subtitle: 'Understand security testing fundamentals, tools, and techniques. Learn to identify vulnerabilities and secure your applications.',
-      img: '/assets/images/courses/Security.jpg',
+      img: '/assets/images/Security.jpg',
       backgroundImg: '/assets/images/security-testing2.jpg',
       route: '/courses/security-testing'
     }

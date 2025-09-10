@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
       
       // Manually preload the logo image to ensure it displays
       const logoImg = new Image();
-      logoImg.src = '/assets/images/logo/zenetra-logo.ico';
+      logoImg.src = '/assets/images/zenetra-logo.ico';
     }
   }
 
