@@ -21,14 +21,9 @@ export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'about', redirectTo: '/#about', pathMatch: 'full' }, // Redirect to home with about section hash
   { path: 'courses', component: CoursesComponent },
-  { 
-    path: 'courses', 
-    children: [
-      { path: 'playwright-automation', component: PlaywrightAutomationComponent },
-      { path: 'java-development', component: JavaDevelopmentComponent },
-      { path: 'security-testing', component: SecurityTestingComponent }
-    ]
-  },
+  { path: 'courses/playwright-automation', component: PlaywrightAutomationComponent },
+  { path: 'courses/java-development', component: JavaDevelopmentComponent },
+  { path: 'courses/security-testing', component: SecurityTestingComponent },
   { path: 'admissions', component: AdmissionsComponent },
   { path: 'gallery', component: GalleryComponent },
   { path: 'services', component: ServicesComponent },

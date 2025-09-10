@@ -12,28 +12,35 @@ export class ImagePreloadDirective implements OnInit {
   
   ngOnInit() {
     const img = new Image();
+    const element = this.el.nativeElement;
+    
+    // Add a placeholder loader class
+    this.renderer.addClass(element, 'image-loading');
+    this.renderer.setStyle(element, 'opacity', '0.7');
+    this.renderer.setStyle(element, 'filter', 'blur(2px)');
     
     // Add loading event
     img.onload = () => {
-      this.renderer.setAttribute(this.el.nativeElement, 'src', this.appImagePreload);
+      this.renderer.setAttribute(element, 'src', this.appImagePreload);
       this.removeLoader();
     };
     
     // Add error event
     img.onerror = () => {
-      this.renderer.setAttribute(this.el.nativeElement, 'src', this.fallbackImage);
+      console.warn(`Failed to load image: ${this.appImagePreload}, using fallback`);
+      this.renderer.setAttribute(element, 'src', this.fallbackImage);
       this.removeLoader();
     };
     
     // Start loading
     img.src = this.appImagePreload;
-    
-    // Add a placeholder loader class
-    this.renderer.addClass(this.el.nativeElement, 'image-loading');
   }
   
   private removeLoader() {
-    // Remove the loading class
-    this.renderer.removeClass(this.el.nativeElement, 'image-loading');
+    const element = this.el.nativeElement;
+    // Remove the loading class and effects
+    this.renderer.removeClass(element, 'image-loading');
+    this.renderer.setStyle(element, 'opacity', '1');
+    this.renderer.setStyle(element, 'filter', 'none');
   }
 }

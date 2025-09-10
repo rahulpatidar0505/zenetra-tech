@@ -9,7 +9,7 @@
         <div class="course-content">
           <h3 class="course-title">{{course.title}}</h3>
           <p class="course-description">{{course.description}}</p>
-          <a [routerLink]="course.route" class="enroll-btn">Enroll Now</a>
+          <a [routerLink]="['/contact-us']" [queryParams]="{course: course.title}" class="enroll-btn">Enroll Now</a>
         </div>
       </div>
     </div>

@@ -25,20 +25,38 @@ export class FlipkartBannerSliderComponent implements OnInit, OnDestroy {
 
   currentIndex = 0;
   autoplayId: any;
+  progressId: any;
   isHovered = false;
   touchStartX: number | null = null;
   touchEndX: number | null = null;
+  progressWidth = 0;
+  progressStartTime = 0;
 
   ngOnInit() {
+    this.preloadImages();
     this.startAutoplay();
+  }
+
+  private preloadImages() {
+    // Preload the first few images for better performance
+    this.slides.slice(0, 3).forEach(slide => {
+      const img = new Image();
+      img.src = slide.img;
+      if (slide.backgroundImg) {
+        const bgImg = new Image();
+        bgImg.src = slide.backgroundImg;
+      }
+    });
   }
 
   ngOnDestroy() {
     this.stopAutoplay();
+    this.stopProgress();
   }
 
   startAutoplay() {
     this.stopAutoplay();
+    this.startProgress();
     this.autoplayId = setInterval(() => {
       if (!this.isHovered) {
         this.nextSlide();
@@ -51,30 +69,66 @@ export class FlipkartBannerSliderComponent implements OnInit, OnDestroy {
       clearInterval(this.autoplayId);
       this.autoplayId = null;
     }
+    this.stopProgress();
+  }
+
+  startProgress() {
+    this.stopProgress();
+    this.progressWidth = 0;
+    this.progressStartTime = Date.now();
+    
+    const updateProgress = () => {
+      if (!this.isHovered) {
+        const elapsed = Date.now() - this.progressStartTime;
+        this.progressWidth = Math.min((elapsed / this.interval) * 100, 100);
+        
+        if (this.progressWidth < 100) {
+          this.progressId = requestAnimationFrame(updateProgress);
+        }
+      } else {
+        this.progressId = requestAnimationFrame(updateProgress);
+      }
+    };
+    
+    this.progressId = requestAnimationFrame(updateProgress);
+  }
+
+  stopProgress() {
+    if (this.progressId) {
+      cancelAnimationFrame(this.progressId);
+      this.progressId = null;
+    }
+  }
+
+  resetProgress() {
+    this.progressWidth = 0;
+    this.progressStartTime = Date.now();
   }
 
   nextSlide() {
     this.currentIndex = (this.currentIndex + 1) % this.slides.length;
+    this.resetProgress();
   }
 
   prevSlide() {
     this.currentIndex = (this.currentIndex - 1 + this.slides.length) % this.slides.length;
+    this.resetProgress();
   }
 
   goToSlide(idx: number) {
     this.currentIndex = idx;
+    this.resetProgress();
   }
 
   @HostListener('mouseenter')
   onMouseEnter() {
     this.isHovered = true;
-    this.stopAutoplay();
   }
 
   @HostListener('mouseleave')
   onMouseLeave() {
     this.isHovered = false;
-    this.startAutoplay();
+    this.resetProgress();
   }
 
   onTouchStart(event: TouchEvent) {

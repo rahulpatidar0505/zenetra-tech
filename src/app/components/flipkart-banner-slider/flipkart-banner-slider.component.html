@@ -8,7 +8,16 @@
           <a *ngIf="slide.buttonText && slide.link" [href]="slide.link" class="slide-button" target="_blank">{{slide.buttonText}}</a>
         </div>
         <div class="slide-image-container">
-          <img [src]="slide.img" [alt]="slide.alt || 'Banner'" class="slide-image" loading="lazy" appImagePreload [appImagePreload]="slide.img" [fallbackImage]="'/assets/images/placeholders/placeholder.svg'" />
+          <img 
+            [src]="slide.img" 
+            [alt]="slide.alt || 'Banner'" 
+            class="slide-image" 
+            loading="lazy"
+            appImagePreload 
+            [appImagePreload]="slide.img" 
+            [fallbackImage]="'/assets/images/placeholders/placeholder.svg'"
+            [style.transition]="'opacity 0.3s ease'"
+            [style.opacity]="1" />
         </div>
       </div>
     </div>
@@ -17,5 +26,10 @@
   <button class="banner-arrow right" (click)="nextSlide()" aria-label="Next banner">&#10095;</button>
   <div class="banner-pagination">
     <span *ngFor="let slide of slides; let i = index" class="banner-dot" [class.active]="i === currentIndex" (click)="goToSlide(i)"></span>
+  </div>
+  
+  <!-- Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" [style.width.%]="progressWidth"></div>
   </div>
 </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { EmailService } from '../../services/email.service';
 
 @Component({
@@ -16,17 +17,27 @@ export class ContactUsComponent implements OnInit {
   sending = false;
   successMessage = '';
   errorMessage = '';
+  selectedCourse = '';
   
   constructor(
     private formBuilder: FormBuilder, 
-    private emailService: EmailService
+    private emailService: EmailService,
+    private route: ActivatedRoute
   ) {}
   
   ngOnInit() {
+    // Check for course query parameter
+    this.route.queryParams.subscribe(params => {
+      if (params['course']) {
+        this.selectedCourse = params['course'];
+      }
+    });
+
     this.contactForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      message: ['', Validators.required]
+      course: [this.selectedCourse],
+      message: [this.selectedCourse ? `I am interested in enrolling for the ${this.selectedCourse} course. Please provide more details.` : '', Validators.required]
     });
   }
   
@@ -53,6 +64,7 @@ export class ContactUsComponent implements OnInit {
     const formData = {
       name: this.contactForm.value.name,
       email: this.contactForm.value.email,
+      course: this.contactForm.value.course,
       message: this.contactForm.value.message
     };
     
