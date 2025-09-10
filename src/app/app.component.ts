@@ -1,17 +1,41 @@
-import { Component, HostListener, ElementRef } from '@angular/core';
+import { Component, HostListener, ElementRef, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { ImageOptimizationService } from './services/image-optimization.service';
+import { LazyImageDirective } from './directives/lazy-image.directive';
+import { ImagePreloadDirective } from './directives/image-preload.directive';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule],
+  standalone: true,
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule, LazyImageDirective, ImagePreloadDirective],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'institute-site';
   isMobileMenuOpen = false;
   activeDropdown: string | null = null;
+  private isBrowser: boolean;
+
+  constructor(
+    private elementRef: ElementRef, 
+    private imageService: ImageOptimizationService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
+  
+  ngOnInit(): void {
+    if (this.isBrowser) {
+      // Preload critical images
+      this.imageService.preloadImages(this.imageService.getCriticalImages(), true);
+      
+      // Manually preload the logo image to ensure it displays
+      const logoImg = new Image();
+      logoImg.src = '/assets/images/logo/zenetra-logo.ico';
+    }
+  }
 
   isTrainingRoute(): boolean {
     const path = window.location.pathname;
@@ -55,8 +79,6 @@ export class AppComponent {
       this.closeMenu();
     }
   }
-
-  constructor(private elementRef: ElementRef) {}
 
   handleKeyboardNav(event: KeyboardEvent, dropdown: string) {
     if (event.key === 'Enter' || event.key === ' ') {

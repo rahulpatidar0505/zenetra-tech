@@ -68,7 +68,15 @@
             <p class="hero-subtitle">{{ slide.subtitle }}</p>
           </div>
           <div class="hero-right">
-            <img [src]="slide.img" alt="Hero Image" class="hero-img-flipkart" (click)="onSlideClick(slide)" style="cursor:pointer;" />
+            <img [appLazyImage]="slide.img" 
+                 [width]="320" 
+                 [height]="220"
+                 [alt]="slide.title"
+                 [priority]="true" 
+                 class="hero-img-flipkart" 
+                 (click)="onSlideClick(slide)" 
+                 style="cursor:pointer;"
+                 onerror="this.src='/assets/images/placeholders/placeholder.svg'" />
           </div>
         </div>
       </div>
@@ -247,7 +255,13 @@
       <div class="course-card">
         <div class="course-header">
           <div class="course-icon">
-            <img src="/assets/images/courses/playwright.jpg" alt="Playwright Automation" class="course-img" loading="lazy"/>
+            <img [appLazyImage]="'/assets/images/courses/playwright.jpg'"
+                 [width]="120"
+                 [height]="120" 
+                 alt="Playwright Automation"
+                 [priority]="true"
+                 class="course-img"
+                 onerror="this.src='/assets/images/placeholders/placeholder.svg'" />
           </div>
           <h3>Playwright Automation</h3>
         </div>
@@ -269,7 +283,13 @@
       <div class="course-card">
         <div class="course-header">
           <div class="course-icon">
-            <img src="/assets/images/courses/Java.jpg" alt="Java Development" class="course-img" loading="lazy"/>
+            <img [appLazyImage]="'/assets/images/courses/Java.jpg'"
+                 [width]="120"
+                 [height]="120"
+                 [priority]="true"
+                 alt="Java Development" 
+                 class="course-img"
+                 onerror="this.src='/assets/images/placeholders/placeholder.svg'" />
           </div>
           <h3>Java Development</h3>
         </div>
@@ -291,7 +311,13 @@
       <div class="course-card">
         <div class="course-header">
           <div class="course-icon">
-            <img src="/assets/images/courses/Security.jpg" alt="Security Testing" class="course-img" loading="lazy"/>
+            <img [appLazyImage]="'/assets/images/courses/Security.jpg'"
+                 [width]="120"
+                 [height]="120"
+                 [priority]="true"
+                 alt="Security Testing" 
+                 class="course-img"
+                 onerror="this.src='/assets/images/placeholders/placeholder.svg'" />
           </div>
           <h3>Security Testing</h3>
         </div>
@@ -375,12 +401,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
+      min-height: 120px; /* Ensure consistent height */
+      min-width: 120px;  /* Ensure consistent width */
+      box-shadow: 0 0 0 4px rgba(42, 245, 152, 0.2);
     }
 
     .course-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      background-color: #001a12;
     }
 
     h3 {
@@ -430,6 +461,37 @@
       font-size: 1.5rem;
     }
   }
+  
+  /* Additional styles for course icons */
+  .course-icon {
+    width: 120px !important;
+    height: 120px !important;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #001a12;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .course-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Loading spinner inside course icon */
+  .image-loading-spinner {
+    position: absolute;
+    z-index: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 </style>
 
 <!-- Testimonials Section -->
@@ -438,37 +500,55 @@
     <h2 class="testimonials-title"><span class="accent">Real People.</span><br/>Real Experiences.</h2>
     <div class="testimonials-grid">
       <div class="testimonial-card">
-        <img src="https://this-person-does-not-exist.com/img/avatar-gen11a4f69c890497ab47c86d55c5ba725d.jpg" alt="Priya Sharma" loading="lazy" />
+        <img [appLazyImage]="'https://this-person-does-not-exist.com/img/avatar-gen11a4f69c890497ab47c86d55c5ba725d.jpg'"
+             [width]="60"
+             [height]="60"
+             alt="Priya Sharma" />
         <div class="testimonial-name">Priya Sharma</div>
         <div class="testimonial-linkedin"><a href="#">in</a></div>
         <p>"The structured learning approach and regular assessments helped me track my progress effectively. The clear explanations and hands-on exercises made complex concepts easy to understand. Perfect for building a strong foundation in automation testing."</p>
       </div>
       <div class="testimonial-card">
-        <img src="https://this-person-does-not-exist.com/img/avatar-gen2267ed4c38cee8b6918f5fb2c62bb2f4.jpg" alt="Rajesh Kumar" loading="lazy" />
+        <img [appLazyImage]="'https://this-person-does-not-exist.com/img/avatar-gen2267ed4c38cee8b6918f5fb2c62bb2f4.jpg'"
+             [width]="60"
+             [height]="60"
+             alt="Rajesh Kumar" />
         <div class="testimonial-name">Rajesh Kumar</div>
         <div class="testimonial-linkedin"><a href="#">in</a></div>
         <p>"What stands out is the practical approach with real-world projects and the supportive community. The mentorship program helped me transition from manual testing to automation smoothly. Highly recommended for anyone looking to upskill!"</p>
       </div>
       <div class="testimonial-card">
-        <img src="https://this-person-does-not-exist.com/img/avatar-gen115c26bce2e972baa5d3d492540d1cdd.jpg" alt="Meera Patel" loading="lazy" />
+        <img [appLazyImage]="'https://this-person-does-not-exist.com/img/avatar-gen115c26bce2e972baa5d3d492540d1cdd.jpg'"
+             [width]="60"
+             [height]="60"
+             alt="Meera Patel" />
         <div class="testimonial-name">Meera Patel</div>
         <div class="testimonial-linkedin"><a href="#">in</a></div>
         <p>"The teaching methodology is exceptional. The instructor's ability to understand each student's pace and provide personalized guidance made the learning journey enjoyable. The course structure is well-thought-out for both beginners and experienced professionals."</p>
       </div>
       <div class="testimonial-card">
-        <img src="https://this-person-does-not-exist.com/img/avatar-gen3398561d8fcc87ee44c7f67cca99c85c.jpg" alt="Arun Verma" loading="lazy" />
+        <img [appLazyImage]="'https://this-person-does-not-exist.com/img/avatar-gen3398561d8fcc87ee44c7f67cca99c85c.jpg'"
+             [width]="60"
+             [height]="60"
+             alt="Arun Verma" />
         <div class="testimonial-name">Arun Verma</div>
         <div class="testimonial-linkedin"><a href="#">in</a></div>
         <p>"The comprehensive curriculum and hands-on labs helped me gain practical experience. The continuous support from mentors and quick doubt resolution made the learning process smooth. I'm now confidently implementing automation at my workplace."</p>
       </div>
       <div class="testimonial-card">
-        <img src="https://this-person-does-not-exist.com/img/avatar-gen445db8c9e8f54e69758c8c481f386925.jpg" alt="Ananya Singh" loading="lazy" />
+        <img [appLazyImage]="'https://this-person-does-not-exist.com/img/avatar-gen445db8c9e8f54e69758c8c481f386925.jpg'"
+             [width]="60"
+             [height]="60"
+             alt="Ananya Singh" />
         <div class="testimonial-name">Ananya Singh</div>
         <div class="testimonial-linkedin"><a href="#">in</a></div>
         <p>"Started with the Java Development course having no prior programming experience. The step-by-step approach and real-world project experience helped me understand core concepts thoroughly. Within months, I was able to contribute to development projects at my company."</p>
       </div>
       <div class="testimonial-card">
-        <img src="https://this-person-does-not-exist.com/img/avatar-gen556c2dc2c885d11b7c16927f81d28592.jpg" alt="Karthik Raman" loading="lazy" />
+        <img [appLazyImage]="'https://this-person-does-not-exist.com/img/avatar-gen556c2dc2c885d11b7c16927f81d28592.jpg'"
+             [width]="60"
+             [height]="60"
+             alt="Karthik Raman" />
         <div class="testimonial-name">Karthik Raman</div>
         <div class="testimonial-linkedin"><a href="#">in</a></div>
         <p>"The Security Testing course was exactly what I needed. The practical exposure to various security tools and techniques was invaluable. The instructor's expertise and industry insights helped me understand real-world security challenges and solutions."</p>
@@ -637,7 +717,7 @@
 
 /* Hero Section Styles */
 .hero {
-  background: linear-gradient(45deg, #000 0%, #013024 100%);
+  background: linear-gradient(45deg, #000 0%, #FFFFF0 100%);
   color: hsl(60, 100%, 97%);
   padding: 3rem 0;
   margin-bottom: 0;

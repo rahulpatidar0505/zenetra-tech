@@ -1,11 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { LazyImageDirective } from '../../directives/lazy-image.directive';
+import { ImageOptimizationService } from '../../services/image-optimization.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, LazyImageDirective],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -67,8 +69,29 @@ export class HomeComponent implements OnInit, OnDestroy {
   sliderPaused = false;
   resetAnimation = false;
 
+  constructor(private imageService: ImageOptimizationService) {}
+
   ngOnInit() {
     this.startSlider();
+    
+    // Verify image paths and preload all slider images
+    this.heroSlides.forEach(slide => {
+      // Create an image object to verify if the image exists
+      const img = new Image();
+      img.onload = () => {
+        // Image loaded successfully
+        console.log(`Image loaded: ${slide.img}`);
+      };
+      img.onerror = () => {
+        // Log error for tracking
+        console.error(`Failed to load image: ${slide.img}`);
+      };
+      img.src = slide.img;
+    });
+    
+    // Preload all slider images to prevent delays during transitions
+    const sliderImages = this.heroSlides.map(slide => slide.img);
+    this.imageService.preloadImages(sliderImages);
   }
 
   ngOnDestroy() {

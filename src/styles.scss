@@ -27,6 +27,17 @@ img {
   height: auto;
 }
 
+/* Lazy image styles */
+.lazy-image {
+  transition: opacity 0.3s ease-in-out;
+  will-change: opacity;
+  opacity: 0;
+}
+
+.lazy-image.loaded {
+  opacity: 1;
+}
+
 /* Image loading state animation */
 .image-loading {
   position: relative;
@@ -44,6 +55,23 @@ img {
   }
 }
 
+/* Loading spinner for images */
+.image-loading-spinner {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  border: 3px solid rgba(1, 48, 36, 0.1);
+  border-radius: 50%;
+  border-top-color: #013024;
+  animation: spin 1s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 @keyframes pulse {
   0% {
     opacity: 0.6;
@@ -57,7 +85,7 @@ img {
 }
 
 /* Prevent content layout shift during image loading */
-img[loading="lazy"] {
+img[loading="lazy"], img[loading="eager"] {
   min-height: 1px;
 }
 
