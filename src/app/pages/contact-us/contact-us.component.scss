@@ -1,14 +1,14 @@
 .contact-title {
-	font-family: 'Montserrat', 'Inter', Arial, sans-serif;
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 	font-size: 2.5rem;
-	font-weight: 800;
+	font-weight: 700;
 	color: #013024;
 	text-align: center;
 	margin-bottom: 1.2rem;
 	letter-spacing: -0.02em;
 }
 .contact-desc {
-	font-family: 'Inter', 'Montserrat', Arial, sans-serif;
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 	font-size: 1.15rem;
 	color: #222;
 	text-align: center;
@@ -29,7 +29,7 @@
 	letter-spacing: 0.5px;
 }
 .contact-input {
-	font-family: 'Inter', 'Montserrat', Arial, sans-serif;
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 	font-size: 1.1rem;
 	padding: 0.9em 1.2em;
 	border-radius: 8px;
@@ -45,7 +45,7 @@
 	outline: none;
 }
 .contact-textarea {
-	font-family: 'Inter', 'Montserrat', Arial, sans-serif;
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 	font-size: 1.1rem;
 	padding: 0.9em 1.2em;
 	border-radius: 8px;
@@ -62,19 +62,22 @@
 	outline: none;
 }
 .contact-btn {
-	font-family: 'Montserrat', 'Inter', Arial, sans-serif;
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 	font-size: 1.15rem;
-	font-weight: 700;
+	font-weight: 600;
 	background: #013024;
 	color: #FFFFF0;
-	border: none;
+	border: 2px solid transparent;
 	border-radius: 8px;
-	padding: 0.8em 2.2em;
+	padding: 0.75em 2em;
 	cursor: pointer;
-	box-shadow: 0 2px 8px rgba(37,117,252,0.10);
-	transition: background 0.2s;
+	box-shadow: 0 2px 8px rgba(1, 48, 36, 0.15);
+	transition: all 0.3s ease;
 	margin-top: 1.2rem;
 }
 .contact-btn:hover {
-	background: #174ea6;
+	background: #013024;
+	border-color: #00FFB9;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(1, 48, 36, 0.25);
 }

@@ -13,6 +13,25 @@
   /* Remove heading scale to avoid zoom issues */
   --base-font-size: 1rem;
   
+  /* Theme Colors */
+  --primary-color: #013024;
+  --secondary-color: #00FFB9;
+  --background-color: #FFFFF0;
+  --text-color: #222;
+  --text-light: #666;
+  --text-muted: #475569;
+  --border-color: rgba(0, 255, 136, 0.2);
+  --shadow-light: 0 2px 12px rgba(0,0,0,0.05);
+  --shadow-medium: 0 4px 20px rgba(0,0,0,0.1);
+  --shadow-heavy: 0 8px 30px rgba(0,0,0,0.15);
+  
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --heading-weight: 700;
+  --body-weight: 400;
+  --medium-weight: 500;
+  --semibold-weight: 600;
+  
   @media (min-width: 768px) {
     --container-padding: 2rem;
     --content-width: 100%;
@@ -123,11 +142,11 @@ html, body {
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-family);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #FFFFF0;
-  color: #222;
+  background: var(--background-color);
+  color: var(--text-color);
   min-height: 100vh;
   line-height: 1.7;
   -webkit-text-size-adjust: 100%;
@@ -143,9 +162,9 @@ body {
 h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
   /* Remove transform scale for better zoom compatibility */
-  font-family: inherit;
-  font-weight: 700;
-  color: #222;
+  font-family: var(--font-family);
+  font-weight: var(--heading-weight);
+  color: var(--text-color);
   margin-bottom: 0.75em;
   letter-spacing: -0.02em;
 }
@@ -175,7 +194,7 @@ img {
 } 
 
 a {
-  color: #00FFB9;
+  color: var(--secondary-color);
   text-decoration: none;
   transition: color 0.2s;
 
@@ -190,9 +209,9 @@ a {
 }
 
 .card {
-  background: #FFFFF0;
+  background: var(--background-color);
   border-radius: 16px;
-  box-shadow: 0 2px 16px rgba(37,117,252,0.08);
+  box-shadow: var(--shadow-medium);
   padding: 2rem;
   margin-bottom: 2rem;
 }
@@ -209,13 +228,13 @@ a {
   }
 
   .feature-card {
-    background: #FFFFF0;
+    background: var(--background-color);
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    box-shadow: var(--shadow-light);
     
     h3 {
-      color: #013024;
+      color: var(--primary-color);
       margin-bottom: 1rem;
       font-size: 1.25rem;
     }
@@ -233,19 +252,20 @@ a {
 }
 
 button, .btn {
-  background: #013024;
-  color: #FFFFF0;
+  background: var(--primary-color);
+  color: var(--background-color);
   border: 2px solid transparent;
   border-radius: 8px;
   padding: 0.75em 2em;
-  font-weight: 500;
+  font-weight: var(--medium-weight);
+  font-family: var(--font-family);
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(1, 48, 36, 0.15);
   transition: all 0.3s ease;
 
   &:hover {
-    background: #013024;
-    border-color: #00FFB9;
+    background: var(--primary-color);
+    border-color: var(--secondary-color);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(1, 48, 36, 0.25);
   }

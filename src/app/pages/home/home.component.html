@@ -62,21 +62,11 @@
         </div>
         
         <!-- Regular Course Slides -->
-        <div class="hero-slide-content-flipkart course-slide" *ngIf="!slide.customContent">
-          <div class="hero-left">
+        <div class="hero-slide-content-flipkart course-slide" *ngIf="!slide.customContent" 
+             [style.background-image]="slide.backgroundImg ? 'linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.7)), url(' + slide.backgroundImg + ')' : 'linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.7))'">
+          <div class="hero-left course-slide-content">
             <h1 class="hero-title">{{ slide.title }}</h1>
             <p class="hero-subtitle">{{ slide.subtitle }}</p>
-          </div>
-          <div class="hero-right">
-            <img [appLazyImage]="slide.img" 
-                 [width]="320" 
-                 [height]="220"
-                 [alt]="slide.title"
-                 [priority]="true" 
-                 class="hero-img-flipkart" 
-                 (click)="onSlideClick(slide)" 
-                 style="cursor:pointer;"
-                 onerror="this.src='/assets/images/placeholders/placeholder.svg'" />
           </div>
         </div>
       </div>

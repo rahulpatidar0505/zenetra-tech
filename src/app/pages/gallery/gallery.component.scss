@@ -1,0 +1,85 @@
+// Gallery Component Styles
+:host {
+  display: block;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.gallery-section {
+  padding: 4rem 0;
+  background: #FFFFF0;
+}
+
+.gallery-title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #013024;
+  margin-bottom: 3rem;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, #00FFB9, transparent);
+    border-radius: 2px;
+  }
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.gallery-item {
+  background: #FFFFF0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.05);
+  }
+}
+
+.gallery-content {
+  padding: 1.5rem;
+  
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #013024;
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+}

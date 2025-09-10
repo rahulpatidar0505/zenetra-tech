@@ -41,6 +41,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       title: 'What We Offer?',
       subtitle: 'We are a leading IT services company specializing in Project Development, Online Training, Workshops and Project Support.',
       img: '/assets/images/what-we-offer.jpg',
+      backgroundImg: '/assets/images/what-we-offer.jpg',
       route: '#',
       isCustomSlide: true,
       customContent: 'what-we-offer'
@@ -49,18 +50,21 @@ export class HomeComponent implements OnInit, OnDestroy {
       title: 'Playwright Testing Mastery',
       subtitle: 'A step-by-step program for Quality Engineers to master test automation with personalized mentorship and feedback.',
       img: '/assets/images/courses/playwright.jpg',
+      backgroundImg: '/assets/images/automation-testing.gif',
       route: '/courses/playwright-automation'
     },
     {
       title: 'Java Development',
       subtitle: 'Master Java programming and Spring Boot development. Build robust applications with hands-on projects and expert guidance.',
       img: '/assets/images/courses/Java.jpg',
+      backgroundImg: '/assets/images/java-development.jpg',
       route: '/courses/java-development'
     },
     {
       title: 'Security Testing',
       subtitle: 'Understand security testing fundamentals, tools, and techniques. Learn to identify vulnerabilities and secure your applications.',
       img: '/assets/images/courses/Security.jpg',
+      backgroundImg: '/assets/images/security-testing2.jpg',
       route: '/courses/security-testing'
     }
   ];
