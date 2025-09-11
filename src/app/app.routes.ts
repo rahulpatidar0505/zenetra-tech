@@ -19,7 +19,7 @@ import { WorkshopsComponent } from './pages/services/workshops.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'about', redirectTo: '/#about', pathMatch: 'full' }, // Redirect to home with about section hash
+  { path: 'about', redirectTo: '/', pathMatch: 'full' }, // Redirect to home page
   { path: 'courses', component: CoursesComponent },
   { path: 'courses/playwright-automation', component: PlaywrightAutomationComponent },
   { path: 'courses/java-development', component: JavaDevelopmentComponent },
@@ -35,4 +35,5 @@ export const routes: Routes = [
   { path: 'blog/playwright-vs-cypress-selenium', component: PlaywrightVsCypressSeleniumComponent },
   { path: 'blog/mcp-server', component: McpServerComponent },
   { path: 'contact-us', component: ContactUsComponent },
+  { path: '**', redirectTo: '/', pathMatch: 'full' } // 404 fallback
 ];

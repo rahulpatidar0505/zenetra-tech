@@ -6,7 +6,7 @@ import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 })
 export class ImagePreloadDirective implements OnInit {
   @Input() appImagePreload: string = '';
-  @Input() fallbackImage: string = '/assets/images/placeholder.jpg';
+  @Input() fallbackImage: string = '/assets/images/placeholders/placeholder.svg';
   
   constructor(private el: ElementRef, private renderer: Renderer2) {}
   

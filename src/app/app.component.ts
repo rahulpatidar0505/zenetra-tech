@@ -3,13 +3,12 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { ImageOptimizationService } from './services/image-optimization.service';
-import { LazyImageDirective } from './directives/lazy-image.directive';
-import { ImagePreloadDirective } from './directives/image-preload.directive';
+// Image directives removed - not used in app component template
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule, LazyImageDirective, ImagePreloadDirective],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   animations: [
