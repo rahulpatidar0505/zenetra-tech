@@ -2,10 +2,23 @@
   position: relative;
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 40px auto;
   overflow: hidden;
   border-radius: 16px;
   box-shadow: 0 2px 16px rgba(37,117,252,0.10);
+  
+  /* Enhanced border effect */
+  border: 2px solid transparent;
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(135deg, rgba(0, 255, 185, 0.3), rgba(37, 117, 252, 0.3)) border-box;
+  
+  /* Hover effect for the entire slider */
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 8px 32px rgba(37,117,252,0.20);
+    transform: translateY(-2px);
+  }
 }
 .banner-slider-track {
   display: flex;
@@ -18,12 +31,58 @@
   position: relative;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: local;
   background-color: #013024;
   color: #FFFFF0;
   height: 400px;
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: 40px;
+  
+  /* Enhanced background image effects */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(1, 48, 36, 0.7) 0%,
+      rgba(1, 48, 36, 0.4) 30%,
+      rgba(0, 255, 185, 0.1) 70%,
+      rgba(37, 117, 252, 0.3) 100%
+    );
+    z-index: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Hover effect to enhance background visibility */
+  &:hover::before {
+    opacity: 0.8;
+    background: linear-gradient(
+      135deg,
+      rgba(1, 48, 36, 0.6) 0%,
+      rgba(1, 48, 36, 0.3) 30%,
+      rgba(0, 255, 185, 0.15) 70%,
+      rgba(37, 117, 252, 0.25) 100%
+    );
+  }
+  
+  /* Add a subtle inner shadow for depth */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.2);
+    z-index: 0;
+    pointer-events: none;
+  }
 }
 .slide-content-wrapper {
   display: flex;
@@ -33,23 +92,70 @@
   height: 100%;
   position: relative;
   z-index: 1;
+  
+  /* Enhanced backdrop for better text readability */
+  backdrop-filter: blur(0.5px);
+  
+  /* Add subtle text shadow to make content pop */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 .slide-text-content {
   flex: 1;
-  padding: 20px;
+  padding: 0 20px;
   max-width: 50%;
+  position: relative;
+  z-index: 2;
+  
+  /* Add a subtle background for better readability */
+  background: linear-gradient(
+    135deg,
+    rgba(1, 48, 36, 0.8) 0%,
+    rgba(1, 48, 36, 0.6) 50%,
+    rgba(1, 48, 36, 0.4) 100%
+  );
+  border-radius: 12px;
+  padding: 30px 25px;
+  margin: 10px 0;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(0, 255, 185, 0.2);
+  box-shadow: 0 8px 32px rgba(1, 48, 36, 0.5);
 }
 .slide-title {
   font-size: 2.5rem;
   font-weight: 700;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   margin-bottom: 15px;
+  color: #FFFFF0;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  position: relative;
+  
+  /* Add a subtle glow effect */
+  filter: drop-shadow(0 0 8px rgba(0, 255, 185, 0.3));
+  
+  /* Gradient text effect */
+  background: linear-gradient(135deg, #FFFFF0 0%, #00FFB9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .slide-description {
   font-size: 1.2rem;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   margin-bottom: 20px;
   line-height: 1.6;
+  color: #FFFFF0;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+  opacity: 0.95;
+  
+  /* Add subtle highlight */
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 255, 185, 0.1) 50%,
+    transparent 100%
+  );
+  padding: 8px 0;
+  border-radius: 4px;
 }
 .slide-button {
   display: inline-block;
@@ -76,12 +182,37 @@
   justify-content: center;
   align-items: center;
   height: 100%;
+  padding: 0 20px;
+  position: relative;
+  z-index: 2;
+  
+  /* Add subtle background enhancement */
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 255, 185, 0.1) 0%,
+    rgba(37, 117, 252, 0.05) 50%,
+    transparent 100%
+  );
+  border-radius: 12px;
+  margin: 10px;
+  backdrop-filter: blur(2px);
 }
 .slide-image {
   max-width: 100%;
   max-height: 90%;
   object-fit: contain;
-  transition: opacity 0.3s ease, filter 0.3s ease;
+  transition: opacity 0.3s ease, filter 0.3s ease, transform 0.3s ease;
+  
+  /* Enhanced image effects */
+  filter: contrast(1.1) saturate(1.1) brightness(1.05);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  
+  &:hover {
+    transform: scale(1.02);
+    filter: contrast(1.15) saturate(1.15) brightness(1.1);
+    box-shadow: 0 12px 40px rgba(0, 255, 185, 0.2);
+  }
 }
 
 .slide-image.image-loading {
@@ -147,36 +278,79 @@
 .progress-bar {
   height: 100%;
   background: linear-gradient(90deg, #00FFB9 0%, #013024 50%, #00FFB9 100%);
-  transition: width 0.1s linear;
+  width: 0%;
+  transition: none;
   border-radius: 0 2px 2px 0;
   box-shadow: 0 0 8px rgba(0, 255, 185, 0.4);
+  animation: none;
 }
 @media (max-width: 768px) {
+  .banner-slider-wrapper {
+    margin: 20px auto;
+  }
+  
   .banner-slide {
     height: auto;
     min-height: 400px;
+    padding: 20px;
+    
+    &::before {
+      background: linear-gradient(
+        135deg,
+        rgba(1, 48, 36, 0.8) 0%,
+        rgba(1, 48, 36, 0.6) 50%,
+        rgba(0, 255, 185, 0.2) 100%
+      );
+    }
   }
+  
   .slide-content-wrapper {
     flex-direction: column;
     padding: 20px 0;
   }
+  
   .slide-text-content {
     max-width: 100%;
-    padding: 0 20px 20px;
+    padding: 20px 15px;
     text-align: center;
+    margin: 10px 5px;
   }
+  
   .slide-title {
     font-size: 2rem;
   }
+  
   .slide-description {
     font-size: 1rem;
   }
+  
   .slide-image-container {
-    padding: 20px;
+    padding: 20px 10px;
+    margin: 5px;
   }
+  
   .banner-arrow {
     width: 32px;
     height: 32px;
     font-size: 1.5rem;
   }
+}
+
+/* Background animation keyframes */
+@keyframes backgroundShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Add subtle animation to background overlay */
+.banner-slide::before {
+  animation: backgroundShift 20s ease-in-out infinite;
+  background-size: 200% 200%;
 }

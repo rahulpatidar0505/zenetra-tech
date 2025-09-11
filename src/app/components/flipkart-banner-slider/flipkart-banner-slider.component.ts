@@ -31,6 +31,7 @@ export class FlipkartBannerSliderComponent implements OnInit, OnDestroy {
   touchEndX: number | null = null;
   progressWidth = 0;
   progressStartTime = 0;
+  pausedProgress: number | undefined;
 
   ngOnInit() {
     this.preloadImages();
@@ -80,12 +81,17 @@ export class FlipkartBannerSliderComponent implements OnInit, OnDestroy {
     const updateProgress = () => {
       if (!this.isHovered) {
         const elapsed = Date.now() - this.progressStartTime;
-        this.progressWidth = Math.min((elapsed / this.interval) * 100, 100);
+        const progressPercentage = (elapsed / this.interval) * 100;
+        this.progressWidth = Math.min(progressPercentage, 100);
         
         if (this.progressWidth < 100) {
           this.progressId = requestAnimationFrame(updateProgress);
+        } else {
+          // Ensure progress bar completes exactly at 100%
+          this.progressWidth = 100;
         }
       } else {
+        // Keep updating even when hovered to maintain smooth animation when resumed
         this.progressId = requestAnimationFrame(updateProgress);
       }
     };
@@ -101,34 +107,47 @@ export class FlipkartBannerSliderComponent implements OnInit, OnDestroy {
   }
 
   resetProgress() {
+    this.stopProgress();
     this.progressWidth = 0;
     this.progressStartTime = Date.now();
+    this.startProgress();
   }
 
   nextSlide() {
     this.currentIndex = (this.currentIndex + 1) % this.slides.length;
     this.resetProgress();
+    this.startAutoplay(); // Restart autoplay with fresh timing
   }
 
   prevSlide() {
     this.currentIndex = (this.currentIndex - 1 + this.slides.length) % this.slides.length;
     this.resetProgress();
+    this.startAutoplay(); // Restart autoplay with fresh timing
   }
 
   goToSlide(idx: number) {
     this.currentIndex = idx;
     this.resetProgress();
+    this.startAutoplay(); // Restart autoplay with fresh timing
   }
 
   @HostListener('mouseenter')
   onMouseEnter() {
     this.isHovered = true;
+    // Store the current progress when hovering
+    const elapsed = Date.now() - this.progressStartTime;
+    this.pausedProgress = Math.min((elapsed / this.interval) * 100, 100);
   }
 
   @HostListener('mouseleave')
   onMouseLeave() {
     this.isHovered = false;
-    this.resetProgress();
+    // Resume from where we left off
+    if (this.pausedProgress !== undefined) {
+      const remainingTime = this.interval * (1 - this.pausedProgress / 100);
+      this.progressStartTime = Date.now() - (this.interval - remainingTime);
+      this.pausedProgress = undefined;
+    }
   }
 
   onTouchStart(event: TouchEvent) {
