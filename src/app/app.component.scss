@@ -636,3 +636,77 @@ body, html {
     font-size: 0.98rem;
   }
 }
+
+// GitHub Message Popup Styles
+.github-message-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  
+  .github-message-popup {
+    background: linear-gradient(135deg, #1a1e24 0%, #2d3748 100%);
+    border: 2px solid #00d9ff;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 217, 255, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    
+    .message-icon {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .message-text {
+      color: #ffffff;
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    
+    // Pulse animation for icon
+    .message-icon {
+      animation: pulse 2s infinite;
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// Responsive design for message popup
+@media (max-width: 480px) {
+  .github-message-popup {
+    padding: 1.5rem;
+    max-width: 320px;
+    
+    .message-icon {
+      font-size: 2.5rem;
+    }
+    
+    .message-text {
+      font-size: 1.1rem;
+    }
+  }
+}

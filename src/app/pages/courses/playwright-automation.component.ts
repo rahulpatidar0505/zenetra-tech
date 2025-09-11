@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-playwright-automation',
@@ -11,7 +12,18 @@ import { CommonModule } from '@angular/common';
 export class PlaywrightAutomationComponent {
   activeModule: string | null = null;
 
+  constructor(private router: Router) {}
+
   toggleModule(moduleId: string) {
     this.activeModule = this.activeModule === moduleId ? null : moduleId;
+  }
+
+  enrollNow() {
+    this.router.navigate(['/contact-us'], { 
+      queryParams: { 
+        course: 'Playwright Automation',
+        courseType: 'training'
+      }
+    });
   }
 }

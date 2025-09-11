@@ -1,6 +1,7 @@
 import { Component, HostListener, ElementRef, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 import { ImageOptimizationService } from './services/image-optimization.service';
 import { LazyImageDirective } from './directives/lazy-image.directive';
 import { ImagePreloadDirective } from './directives/image-preload.directive';
@@ -10,13 +11,25 @@ import { ImagePreloadDirective } from './directives/image-preload.directive';
   standalone: true,
   imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule, LazyImageDirective, ImagePreloadDirective],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-20px)' }),
+        animate('300ms ease-in', style({ opacity: 1, transform: 'translateY(0)' }))
+      ]),
+      transition(':leave', [
+        animate('300ms ease-out', style({ opacity: 0, transform: 'translateY(-20px)' }))
+      ])
+    ])
+  ]
 })
 export class AppComponent implements OnInit {
   title = 'institute-site';
   isMobileMenuOpen = false;
   activeDropdown: string | null = null;
   private isBrowser: boolean;
+  showGithubMessage = false;
 
   constructor(
     private elementRef: ElementRef, 
@@ -108,5 +121,15 @@ export class AppComponent implements OnInit {
     }
 
     (menuItems[nextIndex] as HTMLElement).focus();
+  }
+
+  onGithubClick(event: Event) {
+    event.preventDefault();
+    this.showGithubMessage = true;
+    
+    // Hide the message after 3 seconds
+    setTimeout(() => {
+      this.showGithubMessage = false;
+    }, 3000);
   }
 }

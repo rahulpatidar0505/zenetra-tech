@@ -1,6 +1,7 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter, withRouterConfig, withInMemoryScrolling } from '@angular/router';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
 import { ImageOptimizationService } from './services/image-optimization.service';
@@ -19,6 +20,7 @@ export const appConfig: ApplicationConfig = {
       })
     ),
     provideHttpClient(withFetch()),
+    provideAnimations(),
     ImageOptimizationService
   ]
 };
