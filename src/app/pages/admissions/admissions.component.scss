@@ -1,0 +1,132 @@
+// Admissions Component Styles
+:host {
+  display: block;
+  font-family: var(--font-family);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 2rem);
+}
+
+.admissions {
+  background: #FFFFF0;
+  padding: clamp(3rem, 8vw, 5rem) 0;
+  position: relative;
+}
+
+.admissions-content {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  
+  h1 {
+    color: #013024;
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: clamp(1rem, 3vw, 1.5rem);
+    line-height: 1.2;
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: clamp(60px, 15vw, 80px);
+      height: 4px;
+      background: linear-gradient(90deg, transparent, #00FFB9, transparent);
+      border-radius: 2px;
+    }
+  }
+  
+  p {
+    color: #475569;
+    font-size: clamp(1rem, 2.5vw, 1.15rem);
+    line-height: 1.6;
+    margin-bottom: clamp(2rem, 5vw, 2.5rem);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  ol {
+    margin: clamp(2rem, 5vw, 2.5rem) 0;
+    padding-left: 1.2rem;
+    text-align: left;
+    counter-reset: admissions-counter;
+    
+    li {
+      margin-bottom: clamp(0.7rem, 2vw, 1rem);
+      color: #475569;
+      font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+      line-height: 1.6;
+      position: relative;
+      padding-left: 1rem;
+      
+      &::before {
+        content: counter(admissions-counter) '.';
+        counter-increment: admissions-counter;
+        position: absolute;
+        left: -1.2rem;
+        top: 0;
+        color: #00FFB9;
+        font-weight: 600;
+        font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+      }
+    }
+  }
+  
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2rem);
+    background: #013024;
+    color: #FFFFF0;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    font-weight: 600;
+    font-family: var(--font-family);
+    font-size: clamp(1rem, 2.5vw, 1.15rem);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: clamp(1.5rem, 4vw, 2rem);
+    min-height: 48px;
+    box-shadow: 0 2px 8px rgba(1, 48, 36, 0.15);
+    
+    &:hover {
+      background: #00FFB9;
+      color: #013024;
+      border-color: #00FFB9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 255, 185, 0.25);
+    }
+    
+    &:focus-visible {
+      outline: 2px solid #00FFB9;
+      outline-offset: 2px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .admissions-content {
+    ol {
+      text-align: center;
+      padding-left: 0;
+      
+      li {
+        padding-left: 0;
+        
+        &::before {
+          position: static;
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+}

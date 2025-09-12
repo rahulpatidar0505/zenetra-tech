@@ -15,6 +15,11 @@
   background: #FFFFF0;
 }
 
+.gallery {
+  background: #FFFFF0;
+  padding: 4rem 0;
+}
+
 .gallery-title {
   text-align: center;
   font-size: clamp(2rem, 5vw, 2.5rem);
@@ -42,10 +47,19 @@
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: clamp(1.5rem, 4vw, 2rem);
   margin-top: clamp(1.5rem, 4vw, 2rem);
+  justify-items: center;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+  }
   
   @media (max-width: 768px) {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
+  }
+  
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
   }
   
   @media (max-width: 480px) {
@@ -71,6 +85,8 @@
     height: clamp(200px, 30vw, 250px);
     object-fit: cover;
     transition: transform 0.3s ease;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   }
 
   &:hover img {

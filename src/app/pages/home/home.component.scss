@@ -1180,28 +1180,7 @@
   align-items: center;
 }
 
-.enroll-btn {
-  font-size: 1.1rem;
-  padding: 0.75em 2em;
-  border-radius: 8px;
-  border: 2px solid transparent;
-  color: #FFFFF0;
-  background: #013024;
-  font-weight: 500;
-  font-family: var(--font-family);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  text-decoration: none;
-  box-shadow: 0 2px 8px rgba(1, 48, 36, 0.15);
 
-  &:hover {
-    background: #013024;
-    border-color: #00FFB9;
-    color: #FFFFF0;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(1, 48, 36, 0.25);
-  }
-}
 
 @media (max-width: 900px) {
   .course-row {
@@ -1232,10 +1211,6 @@
 
   .course-info p {
     font-size: 1rem;
-  }
-
-  .enroll-btn {
-    width: 100%;
   }
 }
 

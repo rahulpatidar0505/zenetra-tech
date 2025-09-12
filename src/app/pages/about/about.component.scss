@@ -92,6 +92,77 @@
   text-shadow: none;
   margin-bottom: 0;
 }
+
+// About Section with Background Image
+.about-section {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/assets/images/about-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  padding: 4rem 0;
+  position: relative;
+  overflow: hidden;
+  color: #ffffff;
+
+  @media (max-width: 768px) {
+    background-attachment: scroll;
+  }
+}
+
+.about-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 0 2rem;
+}
+
+.about-description {
+  font-size: clamp(1.1rem, 3vw, 1.3rem);
+  margin-bottom: 2rem;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+  line-height: 1.6;
+  color: #ffffff;
+}
+
+.about-highlight {
+  color: #00FFB9;
+  font-weight: 600;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.stat-item {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 2rem;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+}
+
+.stat-number {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  color: #00FFB9;
+  margin-bottom: 0.5rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.stat-label {
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
+  color: #ffffff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  font-weight: 500;
+}
+
+
 // Features Section
 .features-section {
   background: #FFFFF0;
@@ -222,6 +293,27 @@
       p {
         font-size: 1rem;
       }
+    }
+  }
+
+  .about-section {
+    padding: 4rem 0;
+
+    .about-title {
+      font-size: clamp(2.5rem, 6vw, 3.5rem);
+    }
+
+    .about-description {
+      font-size: clamp(1.1rem, 3vw, 1.3rem);
+    }
+
+    .about-stats {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .stat-item {
+      padding: 1.5rem;
     }
   }
 }

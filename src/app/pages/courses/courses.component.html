@@ -1,18 +1,93 @@
 <section class="courses">
   <div class="container">
-    <div class="container">
-      <h1 class="courses-title">Our Courses</h1>
-    </div>
-    <div class="courses-grid">
-      <div class="course-card" *ngFor="let course of courses">
-        <div class="course-image-container">
-          <img [src]="course.image" [alt]="course.title" class="course-image" loading="lazy">
+    <h1 class="courses-title">Our Courses</h1>
+    
+    <div class="modern-courses-grid">
+      <!-- Playwright Automation Course -->
+      <div class="modern-course-card">
+        <div class="course-icon">
+          <img [src]="courses[0].image"
+               width="120"
+               height="120" 
+               alt="Playwright Automation"
+               loading="eager"
+               class="course-img" />
         </div>
-        <div class="course-content">
-          <h3 class="course-title">{{course.title}}</h3>
-          <p class="course-description">{{course.description}}</p>
-          <a [routerLink]="['/contact-us']" [queryParams]="{course: course.title}" class="enroll-btn">Enroll Now</a>
+        <h3 class="course-name">{{courses[0].title}}</h3>
+        
+        <div class="course-description-container">
+          <p class="course-point">
+            <span class="point-icon">🎭</span> Master Microsoft Playwright with JavaScript Perfect for beginners and experienced testers alike!
+          </p>
+          <p class="course-point">
+            <span class="point-icon">🚀</span> Hands-on projects, real-world scenarios, and personalized mentorship every step of the way.
+          </p>
+          <p class="course-point">
+            <span class="point-icon">💪</span> Build automation skills that stand out!
+          </p>
         </div>
+        
+        <a [routerLink]="['/contact-us']" [queryParams]="{course: courses[0].title}" class="explore-course-btn">
+          Enroll Now →
+        </a>
+      </div>
+
+      <!-- Java Development Course -->
+      <div class="modern-course-card">
+        <div class="course-icon">
+          <img [src]="courses[1].image"
+               width="120"
+               height="120"
+               loading="eager"
+               alt="Java Development" 
+               class="course-img" />
+        </div>
+        <h3 class="course-name">{{courses[1].title}}</h3>
+        
+        <div class="course-description-container">
+          <p class="course-point">
+            <span class="point-icon">💻</span> Master Java with Spring Boot! Build powerful enterprise apps using modern architecture & best practices.
+          </p>
+          <p class="course-point">
+            <span class="point-icon">🎯</span> All through hands-on, project-based learning.
+          </p>
+          <p class="course-point">
+            <span class="point-icon">👨‍💻</span> Perfect for developers aiming to level up their backend skills and land high-impact roles!
+          </p>
+        </div>
+        
+        <a [routerLink]="['/contact-us']" [queryParams]="{course: courses[1].title}" class="explore-course-btn">
+          Enroll Now →
+        </a>
+      </div>
+
+      <!-- Security Testing Course -->
+      <div class="modern-course-card">
+        <div class="course-icon">
+          <img [src]="courses[2].image"
+               width="120"
+               height="120"
+               loading="eager"
+               alt="Security Testing" 
+               class="course-img" />
+        </div>
+        <h3 class="course-name">{{courses[2].title}}</h3>
+        
+        <div class="course-description-container">
+          <p class="course-point">
+            <span class="point-icon">🔐</span> Secure your applications before attackers do! Identify vulnerabilities and safeguard data.
+          </p>
+          <p class="course-point">
+            <span class="point-icon">🛡️</span> Stay ahead with proactive defense and real-world attack simulations.
+          </p>
+          <p class="course-point">
+            <span class="point-icon">🎯</span> Perfect for anyone aiming to build strong, secure systems.
+          </p>
+        </div>
+        
+        <a [routerLink]="['/contact-us']" [queryParams]="{course: courses[2].title}" class="explore-course-btn">
+          Enroll Now →
+        </a>
       </div>
     </div>
   </div>

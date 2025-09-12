@@ -73,38 +73,52 @@ export class ImageOptimizationService {
     // Only process local asset images
     if (!url || !url.startsWith('/assets/')) return url;
 
-    // For now, return the original URL until optimized versions are generated
-    // We'll update this implementation once the optimized images are available
-    return url;
-    
-    // Commented out until optimized versions are generated
-    /*
-    // Check if browser supports WebP
-    const supportsWebP = this.checkWebPSupport();
-    
-    // If format is not specified and browser supports WebP, use WebP
-    if (!format && supportsWebP) {
-      format = 'webp';
-    }
-    
-    // Create optimized URL (assuming you've added these to your assets folder)
-    // Structure: /assets/optimized/[width]x[height]/[original-path].[format]
-    const urlParts = url.split('/');
-    const filename = urlParts[urlParts.length - 1];
-    const filenameWithoutExt = filename.substring(0, filename.lastIndexOf('.'));
-    const pathWithoutFilename = urlParts.slice(0, urlParts.length - 1).join('/');
-    
-    // If width and height are defined, use them for the optimized version
-    if (width && height && format) {
-      return `${pathWithoutFilename}/optimized/${width}x${height}/${filenameWithoutExt}.${format}`;
-    } else if (format) {
-      // If only format is specified
-      return `${pathWithoutFilename}/optimized/${filenameWithoutExt}.${format}`;
+    // First, check if optimized images exist
+    // Create a path to check if this specific image has an optimized version
+    try {
+      // If format is not specified and browser supports WebP, use WebP
+      const supportsWebP = this.checkWebPSupport();
+      if (!format && supportsWebP) {
+        format = 'webp';
+      }
+      
+      // Extract image name and extension
+      const urlParts = url.split('/');
+      const filename = urlParts[urlParts.length - 1];
+      const filenameWithoutExt = filename.substring(0, filename.lastIndexOf('.'));
+      const ext = filename.substring(filename.lastIndexOf('.') + 1);
+      
+      // Try to use optimized version if width and height are specified
+      if (width && height) {
+        let sizeDir = "1200x900";
+        if (width <= 320 || height <= 240) {
+          sizeDir = "320x240";
+        } else if (width <= 640 || height <= 480) {
+          sizeDir = "640x480";
+        }
+        
+        // Try to use WebP if supported
+        if (format === 'webp') {
+          const webpUrl = `/assets/images/optimized/${sizeDir}/${filenameWithoutExt}.webp`;
+          // We will just return this URL and let the browser handle the 404 if it doesn't exist
+          // This avoids having to make a network request to check if the file exists
+          return webpUrl;
+        } else {
+          // Use JPG/PNG with the original extension
+          return `/assets/images/optimized/${sizeDir}/${filenameWithoutExt}.${ext}`;
+        }
+      } 
+      
+      // If only format is specified but no size
+      else if (format === 'webp') {
+        return `/assets/images/optimized/webp/${filenameWithoutExt}.webp`;
+      }
+    } catch (e) {
+      console.warn('Error optimizing image URL:', e);
     }
     
     // Fallback to original URL if no optimizations can be applied
     return url;
-    */
   }
   
   /**
