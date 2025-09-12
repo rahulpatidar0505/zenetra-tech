@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   max-width: 1200px;
-  margin: 40px auto;
+  margin: 2rem auto;
   overflow: hidden;
   border-radius: 16px;
   box-shadow: 0 2px 16px rgba(37,117,252,0.10);
@@ -14,6 +14,16 @@
   
   /* Hover effect for the entire slider */
   transition: all 0.3s ease;
+  
+  @media (max-width: 576px) {
+    margin: 1.5rem auto;
+    border-radius: 12px;
+  }
+  
+  @media (max-width: 375px) {
+    margin: 1rem auto;
+    border-radius: 10px;
+  }
   
   &:hover {
     box-shadow: 0 8px 32px rgba(37,117,252,0.20);
@@ -35,10 +45,10 @@
   background-attachment: local;
   background-color: #013024;
   color: #FFFFF0;
-  height: 400px;
+  height: clamp(280px, 50vh, 400px);
   display: flex;
   align-items: center;
-  padding: 40px;
+  padding: clamp(1rem, 5vw, 2.5rem);
   
   /* Enhanced background image effects */
   &::before {
@@ -83,6 +93,15 @@
     z-index: 0;
     pointer-events: none;
   }
+  
+  @media (max-width: 576px) {
+    height: clamp(250px, 45vh, 320px);
+    padding: clamp(1rem, 4vw, 1.5rem);
+  }
+  
+  @media (max-width: 375px) {
+    height: clamp(220px, 40vh, 280px);
+  }
 }
 .slide-content-wrapper {
   display: flex;
@@ -101,8 +120,8 @@
 }
 .slide-text-content {
   flex: 1;
-  padding: 0 20px;
-  max-width: 50%;
+  padding: 0 clamp(1rem, 3vw, 2rem);
+  max-width: 100%;
   position: relative;
   z-index: 2;
   
@@ -114,20 +133,31 @@
     rgba(1, 48, 36, 0.4) 100%
   );
   border-radius: 12px;
-  padding: 30px 25px;
+  padding: clamp(1.5rem, 4vw, 2rem);
   margin: 10px 0;
   backdrop-filter: blur(5px);
   border: 1px solid rgba(0, 255, 185, 0.2);
   box-shadow: 0 8px 32px rgba(1, 48, 36, 0.5);
+  
+  @media (max-width: 768px) {
+    max-width: 100%;
+    margin: 5px 0;
+  }
+  
+  @media (max-width: 576px) {
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border-radius: 10px;
+  }
 }
 .slide-title {
-  font-size: 2.5rem;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   font-weight: 700;
   font-family: var(--font-family);
   margin-bottom: 15px;
   color: #FFFFF0;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
   position: relative;
+  line-height: 1.2;
   
   /* Add a subtle glow effect */
   filter: drop-shadow(0 0 8px rgba(0, 255, 185, 0.3));
@@ -139,7 +169,7 @@
   background-clip: text;
 }
 .slide-description {
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
   font-family: var(--font-family);
   margin-bottom: 20px;
   line-height: 1.6;
@@ -159,15 +189,26 @@
 }
 .slide-button {
   display: inline-block;
-  padding: 10px 25px;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2rem);
   background: #00FFB9;
   color: #013024;
   text-decoration: none;
   border-radius: 8px;
   font-weight: 600;
   font-family: var(--font-family);
+  font-size: clamp(0.9rem, 2vw, 1rem);
   transition: all 0.3s ease;
   border: 2px solid transparent;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  @media (max-width: 576px) {
+    min-height: 48px;
+    width: auto;
+    min-width: 140px;
+  }
 }
 .slide-button:hover {
   background: #013024;
@@ -182,7 +223,7 @@
   justify-content: center;
   align-items: center;
   height: 100%;
-  padding: 0 20px;
+  padding: 0 clamp(1rem, 3vw, 2rem);
   position: relative;
   z-index: 2;
   
@@ -196,6 +237,11 @@
   border-radius: 12px;
   margin: 10px;
   backdrop-filter: blur(2px);
+  
+  @media (max-width: 768px) {
+    padding: 0 clamp(0.5rem, 2vw, 1rem);
+    margin: 5px;
+  }
 }
 .slide-image {
   max-width: 100%;
@@ -227,19 +273,40 @@
   color: #FFFFF0;
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 2rem;
+  width: clamp(36px, 8vw, 48px);
+  height: clamp(36px, 8vw, 48px);
+  font-size: clamp(1.2rem, 3vw, 2rem);
   cursor: pointer;
   z-index: 2;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  
+  &:focus-visible {
+    outline: 2px solid #00FFB9;
+    outline-offset: 2px;
+  }
+  
+  @media (max-width: 576px) {
+    min-height: 48px;
+    min-width: 48px;
+  }
 }
-.banner-arrow.left { left: 16px; }
-.banner-arrow.right { right: 16px; }
-.banner-arrow:hover { background: rgba(37,117,252,0.7); }
+.banner-arrow.left { 
+  left: clamp(8px, 2vw, 16px); 
+}
+
+.banner-arrow.right { 
+  right: clamp(8px, 2vw, 16px); 
+}
+
+.banner-arrow:hover { 
+  background: rgba(37,117,252,0.7); 
+  transform: translateY(-50%) scale(1.05);
+}
 .banner-pagination {
   position: absolute;
   bottom: 18px;
@@ -251,13 +318,27 @@
   z-index: 2;
 }
 .banner-dot {
-  width: 12px;
-  height: 12px;
+  width: clamp(10px, 2.5vw, 12px);
+  height: clamp(10px, 2.5vw, 12px);
   border-radius: 50%;
   background: #e0e7ff;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.2s;
   border: 2px solid #FFFFF0;
+  min-height: 24px;
+  min-width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:focus-visible {
+    outline: 2px solid #00FFB9;
+    outline-offset: 2px;
+  }
+  
+  &:hover {
+    transform: scale(1.1);
+  }
 }
 .banner-dot.active {
   background: #013024;
@@ -286,13 +367,12 @@
 }
 @media (max-width: 768px) {
   .banner-slider-wrapper {
-    margin: 20px auto;
+    margin: 1rem auto;
   }
   
   .banner-slide {
-    height: auto;
-    min-height: 400px;
-    padding: 20px;
+    min-height: clamp(250px, 45vh, 320px);
+    padding: clamp(1rem, 4vw, 1.5rem);
     
     &::before {
       background: linear-gradient(
@@ -306,33 +386,69 @@
   
   .slide-content-wrapper {
     flex-direction: column;
-    padding: 20px 0;
+    padding: clamp(1rem, 3vw, 1.5rem) 0;
+    gap: 1rem;
   }
   
   .slide-text-content {
     max-width: 100%;
-    padding: 20px 15px;
+    padding: clamp(1rem, 3vw, 1.5rem);
     text-align: center;
-    margin: 10px 5px;
+    margin: 5px;
   }
   
   .slide-title {
-    font-size: 2rem;
+    font-size: clamp(1.25rem, 5vw, 2rem);
+    margin-bottom: 12px;
   }
   
   .slide-description {
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 3vw, 1rem);
+    margin-bottom: 16px;
   }
   
   .slide-image-container {
-    padding: 20px 10px;
+    padding: clamp(0.5rem, 2vw, 1rem);
     margin: 5px;
   }
   
   .banner-arrow {
-    width: 32px;
-    height: 32px;
-    font-size: 1.5rem;
+    width: clamp(32px, 7vw, 40px);
+    height: clamp(32px, 7vw, 40px);
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+  }
+  
+  .banner-pagination {
+    gap: 6px;
+    bottom: 12px;
+  }
+}
+
+@media (max-width: 576px) {
+  .slide-content-wrapper {
+    padding: 1rem 0;
+  }
+  
+  .slide-text-content {
+    padding: 1rem;
+    margin: 3px;
+  }
+  
+  .slide-button {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 375px) {
+  .banner-slide {
+    padding: 0.75rem;
+  }
+  
+  .slide-text-content {
+    padding: 0.75rem;
+    border-radius: 8px;
   }
 }
 

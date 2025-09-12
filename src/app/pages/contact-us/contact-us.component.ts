@@ -32,43 +32,41 @@ export class ContactUsComponent implements OnInit {
         this.selectedCourse = params['course'];
       }
     });
-
+    
     this.contactForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      mobile: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      address: [''],
       course: [this.selectedCourse],
-      message: [this.selectedCourse ? `I am interested in enrolling for the ${this.selectedCourse} course. Please provide more details.` : '', Validators.required]
+      message: [this.selectedCourse ? `I am interested in enrolling for the ${this.selectedCourse} course. Please provide more details.` : '']
     });
   }
   
-  // Easy access for form fields
   get f() { 
     return this.contactForm.controls; 
   }
   
   onSubmit() {
     this.submitted = true;
-    
-    // Clear previous messages
     this.successMessage = '';
     this.errorMessage = '';
     
-    // Stop if form is invalid
     if (this.contactForm.invalid) {
       return;
     }
     
     this.sending = true;
     
-    // Create an object with all the form data
     const formData = {
       name: this.contactForm.value.name,
       email: this.contactForm.value.email,
+      mobile: this.contactForm.value.mobile,
+      address: this.contactForm.value.address,
       course: this.contactForm.value.course,
       message: this.contactForm.value.message
     };
     
-    // For demo purposes, simulate a successful email sending
     setTimeout(() => {
       this.successMessage = 'Your message has been sent successfully. We will get back to you soon!';
       this.contactForm.reset();
@@ -76,26 +74,6 @@ export class ContactUsComponent implements OnInit {
       this.sending = false;
     }, 1500);
     
-    // Log the data that would be sent (for demonstration purposes)
     console.log('Form data to send:', formData);
-    
-    // In a real implementation, you would uncomment this:
-    // this.emailService.sendEmail(formData).subscribe(
-    //   response => {
-    //     if (response && response.error) {
-    //       this.errorMessage = 'Failed to send message. Please try again later or contact us directly via email.';
-    //     } else {
-    //       this.successMessage = 'Your message has been sent successfully. We will get back to you soon!';
-    //       this.contactForm.reset();
-    //       this.submitted = false;
-    //     }
-    //     this.sending = false;
-    //   },
-    //   error => {
-    //     this.errorMessage = 'Failed to send message. Please try again later or contact us directly via email.';
-    //     console.error('Error sending email:', error);
-    //     this.sending = false;
-    //   }
-    // );
   }
 }

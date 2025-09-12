@@ -14,12 +14,12 @@
         </svg>
       </button>
       
-      <div class="hero-slider-flipkart" (mouseenter)="pauseSlider()" (mouseleave)="resumeSlider()">
+      <div class="hero-slider-zenetra" (mouseenter)="pauseSlider()" (mouseleave)="resumeSlider()">
       
       <!-- Regular Course Slides -->
-      <div class="hero-slide-flipkart" *ngFor="let slide of heroSlides; let i = index" [class.active]="i === currentSlide">
+      <div class="hero-slide-zenetra" *ngFor="let slide of heroSlides; let i = index" [class.active]="i === currentSlide">
         <!-- What We Offer Slide -->
-        <div class="hero-slide-content-flipkart what-we-offer-slide" *ngIf="slide.customContent === 'what-we-offer'">
+        <div class="hero-slide-content-zenetra what-we-offer-slide" *ngIf="slide.customContent === 'what-we-offer'">
           <div class="what-we-offer-left">
             <h1 class="what-we-offer-title">What <span class="accent">We</span> Offer?</h1>
             <p class="what-we-offer-desc">We are a leading IT services company specializing in Project Development, Online Training, Workshops and Project Support. Empowering businesses and individuals with innovative solutions and expert guidance.</p>
@@ -31,20 +31,9 @@
                   <path d="M21 21H3m3-7l3-3 3 3 6-6" stroke="#00FFB9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
-              <div>
-                <div class="offer-card-title">More <span class="accent">EFFICIENT</span></div>
-                <div class="offer-card-desc">than watching random tutorials</div>
-              </div>
-            </div>
-            <div class="offer-card">
-              <div class="offer-card-icon">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2L4 7l8 5 8-5-8-5zm0 10L4 17l8 5 8-5-8-5z" stroke="#00FFB9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div>
-                <div class="offer-card-title">FASTER results</div>
-                <div class="offer-card-desc">than expensive boot camps</div>
+              <div class="offer-card-content">
+                <div class="offer-card-title">More <span class="accent">EFFICIENT</span> & FASTER</div>
+                <div class="offer-card-desc">than random tutorials</div>
               </div>
             </div>
             <div class="offer-card">
@@ -53,16 +42,30 @@
                   <path d="M12 2v6m0 0v6m0-6h10m-10 0H2" stroke="#00FFB9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
-              <div>
+              <div class="offer-card-content">
                 <div class="offer-card-title">Expert <span class="accent">SUPPORT</span></div>
-                <div class="offer-card-desc">personalized to your needs</div>
+                <div class="offer-card-desc">personalized guidance</div>
+              </div>
+            </div>
+            <div class="offer-card">
+              <div class="offer-card-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 6V2m0 4v4m0-4h4m-4 0H8" stroke="#00FFB9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M20 12h2m-2 0h-4m4 0v4m0-4V8" stroke="#00FFB9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="7" cy="17" r="3" stroke="#00FFB9" stroke-width="2" fill="none"/>
+                  <path d="M14 21v-1a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v1" stroke="#00FFB9" stroke-width="2"/>
+                </svg>
+              </div>
+              <div class="offer-card-content">
+                <div class="offer-card-title">Proven <span class="accent">METHODOLOGY</span></div>
+                <div class="offer-card-desc">structured with results</div>
               </div>
             </div>
           </div>
         </div>
         
         <!-- Regular Course Slides -->
-        <div class="hero-slide-content-flipkart course-slide" *ngIf="!slide.customContent" 
+        <div class="hero-slide-content-zenetra course-slide" *ngIf="!slide.customContent" 
              [style.background-image]="slide.backgroundImg ? 'linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.7)), url(' + slide.backgroundImg + ')' : 'linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.7))'">
           <div class="hero-left course-slide-content">
             <h1 class="hero-title">{{ slide.title }}</h1>
@@ -351,26 +354,34 @@
 
 .course-cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: 2rem;
 
-  @media (max-width: 1024px) {
+  @media (min-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
   }
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+  
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  @media (max-width: 576px) {
+    gap: 1.5rem;
   }
 }
 
 .course-card {
   background: #FFFFF0;
   border-radius: 12px;
-  padding: 2rem;
+  padding: clamp(1.5rem, 4vw, 2rem);
   transition: all 0.4s ease;
   border: 1px solid transparent;
   display: flex;
   flex-direction: column;
+  min-height: 420px;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
 
   &:hover {
     transform: translateY(-5px);
@@ -383,8 +394,8 @@
     margin-bottom: 1.5rem;
 
     .course-icon {
-      width: 120px;
-      height: 120px;
+      width: clamp(100px, 20vw, 120px);
+      height: clamp(100px, 20vw, 120px);
       margin: 0 auto 1rem;
       border-radius: 50%;
       overflow: hidden;
@@ -393,8 +404,6 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      min-height: 120px; /* Ensure consistent height */
-      min-width: 120px;  /* Ensure consistent width */
       box-shadow: 0 0 0 4px rgba(42, 245, 152, 0.2);
     }
 
@@ -406,7 +415,7 @@
     }
 
     h3 {
-      font-size: 1.2rem;
+      font-size: clamp(1.1rem, 3vw, 1.2rem);
       font-weight: 700;
       color: #1a1a1a;
       margin: 1rem 0;
@@ -416,29 +425,36 @@
   .course-description {
     flex-grow: 1;
     margin-bottom: 1.5rem;
+    overflow-y: auto;
+    max-height: 240px;
+    padding-right: 0.5rem;
 
     p {
-      font-size: 1rem;
+      font-size: clamp(0.9rem, 2.2vw, 1rem);
       color: #666;
       line-height: 1.6;
       margin-bottom: 1rem;
+      white-space: normal;
+      overflow-wrap: break-word;
     }
   }
 
   .btn-primary {
-    display: inline-block;
-    padding: 0.75rem 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2rem);
     background: #013024;
     color: #FFFFF0;
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 2.2vw, 1rem);
     font-weight: 600;
- 
     border: none;
     border-radius: 50px;
     text-decoration: none;
     text-align: center;
     transition: all 0.4s ease;
     margin-top: auto;
+    min-height: 48px;
 
     &:hover {
       transform: translateY(-2px);
@@ -756,7 +772,7 @@
   gap: 1rem;
 }
 
-.hero-slider-flipkart {
+.hero-slider-zenetra {
   display: flex;
   width: 100%;
   overflow: hidden;
@@ -764,7 +780,7 @@
   min-height: 300px; /* Increased to accommodate padding */
 }
 
-.hero-slide-flipkart {
+.hero-slide-zenetra {
   flex: 1 0 100%;
   display: none;
   transition: opacity 0.5s;
@@ -775,14 +791,14 @@
   z-index: 0;
 }
 
-.hero-slide-flipkart.active {
+.hero-slide-zenetra.active {
   display: flex;
   opacity: 1;
 }
 
 
 
-.hero-img-flipkart {
+.hero-img-zenetra {
   width: 320px;
   height: 220px;
   object-fit: cover;

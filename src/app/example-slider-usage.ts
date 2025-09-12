@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { BannerSlide } from './components/flipkart-banner-slider/flipkart-banner-slider.component';
+import { BannerSlide } from './components/zenetra-banner-slider/zenetra-banner-slider.component';
 
 @Component({
   selector: 'app-example',
   template: `
-    <app-flipkart-banner-slider [slides]="bannerSlides" [interval]="5000"></app-flipkart-banner-slider>
+    <app-zenetra-banner-slider [slides]="bannerSlides" [interval]="5000"></app-zenetra-banner-slider>
   `
 })
 export class ExampleComponent {

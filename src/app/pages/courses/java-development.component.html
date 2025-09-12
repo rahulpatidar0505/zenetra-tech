@@ -5,7 +5,9 @@
       <div class="cta-content">
         <h2>Ready to Master<br>Java Development?</h2>
         <p>Join our comprehensive training program and become a professional Java developer. Master modern development practices and advance your career.</p>
-        <button class="cta-button" (click)="enrollNow()">ENROLL NOW <span class="arrow">→</span></button>
+        <div class="cta-buttons">
+          <button class="cta-button" (click)="enrollNow()">ENROLL NOW <span class="arrow">→</span></button>
+        </div>
       </div>
     </div>
   </section>
@@ -241,6 +243,14 @@
           <li>Portfolio Development → GitHub portfolio, project documentation.</li>
         </ul>
       </div>
+    </div>
+
+    <!-- Download Section -->
+    <div class="download-section">
+      <button class="download-button" (click)="downloadCoursePdf()">
+        <span class="download-icon">📄</span> Download Course Details PDF
+      </button>
+      <p class="download-info">Get a detailed PDF of the complete course syllabus and curriculum</p>
     </div>
     </div>
   </section>

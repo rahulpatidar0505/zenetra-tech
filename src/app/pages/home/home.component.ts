@@ -78,22 +78,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.startSlider();
     
-    // Verify image paths and preload all slider images
     this.heroSlides.forEach(slide => {
-      // Create an image object to verify if the image exists
       const img = new Image();
       img.onload = () => {
-        // Image loaded successfully
         console.log(`Image loaded: ${slide.img}`);
       };
       img.onerror = () => {
-        // Log error for tracking
         console.error(`Failed to load image: ${slide.img}`);
       };
       img.src = slide.img;
     });
     
-    // Preload all slider images to prevent delays during transitions
     const sliderImages = this.heroSlides.map(slide => slide.img);
     this.imageService.preloadImages(sliderImages);
   }
@@ -110,11 +105,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.currentSlide = (this.currentSlide + 1) % this.heroSlides.length;
         this.resetProgressBarAnimation();
       }
-    }, 3000); // Reduced to 3 seconds between slides
+    }, 3000);
   }
   
   resetProgressBarAnimation() {
-    // This triggers a DOM reflow to restart CSS animations
     this.resetAnimation = true;
     setTimeout(() => {
       this.resetAnimation = false;
@@ -146,7 +140,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.currentSlide = (this.currentSlide - 1 + this.heroSlides.length) % this.heroSlides.length;
     this.pauseSlider();
     this.resetProgressBarAnimation();
-    // Resume auto-sliding after a user interaction
     setTimeout(() => this.resumeSlider(), 3000);
   }
   
@@ -154,7 +147,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.currentSlide = (this.currentSlide + 1) % this.heroSlides.length;
     this.pauseSlider();
     this.resetProgressBarAnimation();
-    // Resume auto-sliding after a user interaction
     setTimeout(() => this.resumeSlider(), 3000);
   }
 }

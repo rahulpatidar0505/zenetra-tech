@@ -14,7 +14,7 @@ export class BlogComponent {
     {
       date: 'September 3, 2025',
       readTime: '15 min read',
-      image: '/assets/images/Playwright1.jpg',
+      image: '/assets/images/Playwright.jpg',
       title: 'Playwright vs Cypress vs Selenium: A Comprehensive Comparison',
       excerpt: 'Discover the key differences between today\'s most popular automation testing frameworks. Learn which tool best suits your project needs.',
       route: '/blog/playwright-vs-cypress-selenium',

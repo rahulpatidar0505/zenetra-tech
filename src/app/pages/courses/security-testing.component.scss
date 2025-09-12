@@ -373,6 +373,39 @@
   }
 }
 
+// Download Section
+.download-section {
+  background: #f0fff4;
+  padding: 2rem 0;
+  margin-top: 2rem;
+  text-align: center;
+
+  .download-btn {
+    background: #013024;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid #013024;
+
+    &:hover {
+      background: #00FFB9;
+      color: #013024;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 255, 185, 0.3);
+    }
+  }
+
+  .download-text {
+    color: #666;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+}
+
 // Responsive Design
 @media (max-width: 768px) {
   .hero-section {

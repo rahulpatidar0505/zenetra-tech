@@ -1,0 +1,361 @@
+import { Injectable } from '@angular/core';
+import { jsPDF } from 'jspdf';
+
+export interface CourseModule {
+  title: string;
+  goal: string;
+  content: string[];
+}
+
+export interface CourseData {
+  title: string;
+  description: string;
+  duration: string;
+  modules: CourseModule[];
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PdfService {
+  private readonly fonts = {
+    title: { size: 28, style: 'bold' },
+    subtitle: { size: 20, style: 'bold' },
+    heading: { size: 16, style: 'bold' },
+    subheading: { size: 14, style: 'semibold' },
+    body: { size: 12, style: 'normal' },
+    small: { size: 10, style: 'normal' }
+  };
+
+  private readonly colors = {
+    primary: { r: 1, g: 48, b: 36 },     // #013024 - Main brand color
+    secondary: { r: 0, g: 255, b: 185 }, // #00FFB9 - Accent color
+    text: { r: 51, g: 51, b: 51 },       // #333333 - Main text
+    lightText: { r: 102, g: 102, b: 102 },// #666666 - Secondary text
+    background: { r: 245, g: 245, b: 245 },// #F5F5F5 - Light background
+    white: { r: 255, g: 255, b: 255 }    // #FFFFFF - White
+  };
+
+  private readonly layout = {
+    lineHeight: 8,
+    margin: 25,
+    padding: 10,
+    footerHeight: 25,
+    pageBreakThreshold: 50,
+    contentMargins: {
+      top: 30,
+      bottom: 40,
+      left: 25,
+      right: 25
+    }
+  };
+
+  constructor() { }
+
+  public downloadCoursePdf(courseData: CourseData): void {
+    const pdf = this.generateCoursePdf(courseData);
+    pdf.save(`${courseData.title.toLowerCase().replace(/\s+/g, '-')}-course-details.pdf`);
+  }
+
+  public downloadAllCoursesPdf(coursesData: CourseData[]): void {
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4'
+    });
+    
+    // Generate cover page
+    this.generateCoverPage(pdf);
+    
+    let currentPage = 1;
+    coursesData.forEach((courseData, index) => {
+      pdf.addPage();
+      this.generateCoursePdf(courseData, pdf);
+      
+      // Add page number
+      pdf.setFontSize(10);
+      pdf.text(`Page ${currentPage + 1} of ${coursesData.length + 1}`, 
+               pdf.internal.pageSize.getWidth() - 40, 
+               pdf.internal.pageSize.getHeight() - 10);
+      currentPage++;
+    });
+
+    // Add page number to cover page
+    pdf.setPage(1);
+    pdf.setFontSize(10);
+    pdf.text(`Page 1 of ${coursesData.length + 1}`, 
+             pdf.internal.pageSize.getWidth() - 40, 
+             pdf.internal.pageSize.getHeight() - 10);
+
+    pdf.save('zenetra-course-catalog.pdf');
+  }
+
+  private generateCoursePdf(courseData: CourseData, existingPdf?: jsPDF): jsPDF {
+    const pdf = existingPdf || new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4'
+    });
+    
+    pdf.setFont('helvetica');
+    let yPos = this.generateHeader(pdf, courseData);
+    yPos = this.generateCourseContent(pdf, courseData, yPos);
+    this.generateFooter(pdf);
+    this.addPageNumbers(pdf);
+    return pdf;
+  }
+
+  private generateHeader(pdf: jsPDF, courseData: CourseData): number {
+    let yPos = this.layout.margin;
+    const pageWidth = pdf.internal.pageSize.getWidth();
+
+    // Add header background with gradient effect
+    const headerHeight = this.layout.margin * 3;
+    pdf.setFillColor(this.colors.primary.r, this.colors.primary.g, this.colors.primary.b);
+    pdf.rect(0, 0, pageWidth, headerHeight, 'F');
+    
+    // Add accent line
+    pdf.setFillColor(this.colors.secondary.r, this.colors.secondary.g, this.colors.secondary.b);
+    pdf.rect(0, headerHeight, pageWidth, 2, 'F');
+
+    // Logo/Header
+    pdf.setFontSize(this.fonts.title.size);
+    pdf.setTextColor(this.colors.white.r, this.colors.white.g, this.colors.white.b);
+    pdf.setFont('helvetica', this.fonts.title.style);
+    const zenetraText = "ZENETRA";
+    const textWidth = pdf.getTextWidth(zenetraText);
+    pdf.text(zenetraText, (pageWidth - textWidth) / 2, yPos + 12);
+
+    yPos += this.layout.lineHeight * 4;
+
+    if (courseData.title) {
+      // Course Title with elegant box
+      const titleBoxPadding = 15;
+      pdf.setFillColor(this.colors.background.r, this.colors.background.g, this.colors.background.b);
+      pdf.roundedRect(this.layout.margin - 10, yPos - 20, pageWidth - (this.layout.margin * 2) + 20, 40, 3, 3, 'F');
+      
+      pdf.setFontSize(this.fonts.subtitle.size);
+      pdf.setTextColor(this.colors.primary.r, this.colors.primary.g, this.colors.primary.b);
+      pdf.setFont('helvetica', this.fonts.subtitle.style);
+      const titleWidth = pdf.getTextWidth(courseData.title);
+      pdf.text(courseData.title, (pageWidth - titleWidth) / 2, yPos);
+      
+      // Add subtle underline
+      pdf.setDrawColor(this.colors.secondary.r, this.colors.secondary.g, this.colors.secondary.b);
+      pdf.setLineWidth(0.5);
+      pdf.line((pageWidth - titleWidth) / 2, yPos + 5, (pageWidth + titleWidth) / 2, yPos + 5);
+    }
+
+    return yPos + this.layout.lineHeight * 6;
+  }
+
+  private generateCourseContent(pdf: jsPDF, courseData: CourseData, startY: number): number {
+    let yPos = startY;
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    
+    // Course Info Box
+    const infoBoxMargin = 15;
+    pdf.setFillColor(this.colors.background.r, this.colors.background.g, this.colors.background.b);
+    pdf.roundedRect(
+      this.layout.margin - infoBoxMargin, 
+      yPos - 10, 
+      pageWidth - (this.layout.margin * 2) + (infoBoxMargin * 2), 
+      80, 
+      5, 
+      5, 
+      'F'
+    );
+
+    // Duration with modern icon
+    pdf.setFillColor(this.colors.secondary.r, this.colors.secondary.g, this.colors.secondary.b);
+    pdf.circle(this.layout.margin, yPos - 3, 3, 'F');
+    pdf.setFontSize(this.fonts.subheading.size);
+    pdf.setTextColor(this.colors.primary.r, this.colors.primary.g, this.colors.primary.b);
+    pdf.setFont('helvetica', this.fonts.subheading.style);
+    pdf.text(`Duration: ${courseData.duration}`, this.layout.margin + 10, yPos);
+    yPos += this.layout.lineHeight * 2.5;
+
+    // Description with elegant styling
+    pdf.setFontSize(this.fonts.body.size);
+    pdf.setFont('helvetica', this.fonts.body.style);
+    pdf.setTextColor(this.colors.text.r, this.colors.text.g, this.colors.text.b);
+    
+    // Description title
+    pdf.setFont('helvetica', 'bold');
+    pdf.text("Course Overview", this.layout.margin, yPos);
+    yPos += this.layout.lineHeight * 1.5;
+    
+    // Description content
+    pdf.setFont('helvetica', 'normal');
+    const descriptionLines = pdf.splitTextToSize(courseData.description, pageWidth - (3 * this.layout.margin));
+    pdf.text(descriptionLines, this.layout.margin, yPos);
+    yPos += (this.layout.lineHeight * descriptionLines.length) + this.layout.lineHeight * 2;
+
+    // Modules Header with styled banner
+    pdf.setFillColor(this.colors.primary.r, this.colors.primary.g, this.colors.primary.b);
+    pdf.rect(0, yPos - 15, pageWidth, 30, 'F');
+    pdf.setFontSize(20);
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text("Course Modules", this.layout.margin, yPos + 2);
+    yPos += this.layout.lineHeight * 3;
+
+    // Modules Content
+    pdf.setFontSize(14);
+    courseData.modules.forEach((module, index) => {
+      yPos = this.checkPageBreak(pdf, yPos);
+
+      // Module title with number badge
+      pdf.setFillColor(this.colors.secondary.r, this.colors.secondary.g, this.colors.secondary.b);
+      pdf.circle(this.layout.margin + 10, yPos - 4, 8, 'F');
+      pdf.setTextColor(this.colors.primary.r, this.colors.primary.g, this.colors.primary.b);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(`${index + 1}`, this.layout.margin + 7, yPos - 1);
+      pdf.text(module.title, this.layout.margin + 25, yPos);
+      yPos += this.layout.lineHeight * 1.5;
+
+      // Module goal with styled box
+      pdf.setFillColor(245, 245, 245);
+      pdf.setDrawColor(this.colors.secondary.r, this.colors.secondary.g, this.colors.secondary.b);
+      pdf.roundedRect(this.layout.margin + 20, yPos - 5, pageWidth - (2.5 * this.layout.margin), 30, 2, 2, 'FD');
+      
+      pdf.setFont('helvetica', 'normal');
+      pdf.setTextColor(this.colors.text.r, this.colors.text.g, this.colors.text.b);
+      pdf.setFontSize(12);
+      const goalLines = pdf.splitTextToSize(module.goal, pageWidth - 3 * this.layout.margin);
+      pdf.text("Goal:", this.layout.margin + 25, yPos + 5);
+      pdf.setFont('helvetica', 'italic');
+      pdf.text(goalLines, this.layout.margin + 55, yPos + 5);
+      yPos += (this.layout.lineHeight * goalLines.length) + this.layout.lineHeight * 2;
+
+      // Module content with bullet points and icons
+      module.content.forEach(item => {
+        yPos = this.checkPageBreak(pdf, yPos);
+        
+        // Custom bullet point
+        pdf.setFillColor(this.colors.primary.r, this.colors.primary.g, this.colors.primary.b);
+        pdf.circle(this.layout.margin + 25, yPos - 2, 1.5, 'F');
+        
+        pdf.setFont('helvetica', 'normal');
+        pdf.setTextColor(this.colors.lightText.r, this.colors.lightText.g, this.colors.lightText.b);
+        const contentLines = pdf.splitTextToSize(item, pageWidth - 3 * this.layout.margin);
+        pdf.text(contentLines, this.layout.margin + 32, yPos);
+        yPos += (this.layout.lineHeight * contentLines.length) + 2;
+      });
+
+      yPos += this.layout.lineHeight * 1.5;
+    });
+
+    return yPos;
+  }
+
+  private generateFooter(pdf: jsPDF): void {
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    // Footer background
+    pdf.setFillColor(this.colors.background.r, this.colors.background.g, this.colors.background.b);
+    pdf.rect(0, pageHeight - this.layout.footerHeight * 2, pageWidth, this.layout.footerHeight * 2, 'F');
+
+    // Accent line
+    pdf.setFillColor(this.colors.secondary.r, this.colors.secondary.g, this.colors.secondary.b);
+    pdf.rect(0, pageHeight - this.layout.footerHeight * 2, pageWidth, 1, 'F');
+
+    // Footer content
+    pdf.setFontSize(this.fonts.small.size);
+    pdf.setFont('helvetica', this.fonts.small.style);
+    
+    // Left side - Website
+    pdf.setTextColor(this.colors.primary.r, this.colors.primary.g, this.colors.primary.b);
+    pdf.text("www.zenetra.com", this.layout.margin, pageHeight - this.layout.footerHeight);
+    
+    // Right side - Contact
+    pdf.text("Contact: info@zenetra.com", pageWidth - 80, pageHeight - this.layout.footerHeight);
+
+    // Add copyright
+    pdf.setTextColor(this.colors.lightText.r, this.colors.lightText.g, this.colors.lightText.b);
+    const currentYear = new Date().getFullYear();
+    const copyright = `© ${currentYear} Zenetra Technologies. All rights reserved.`;
+    const copyrightWidth = pdf.getTextWidth(copyright);
+    pdf.text(copyright, (pageWidth - copyrightWidth) / 2, pageHeight - 10);
+  }
+
+  private addPageNumbers(pdf: jsPDF): void {
+    const pageCount = pdf.internal.pages.length - 1;
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    for (let i = 1; i <= pageCount; i++) {
+      pdf.setPage(i);
+      pdf.setFontSize(this.fonts.small.size);
+      pdf.setFont('helvetica', this.fonts.small.style);
+      pdf.setTextColor(this.colors.lightText.r, this.colors.lightText.g, this.colors.lightText.b);
+      
+      const pageText = `Page ${i} of ${pageCount}`;
+      pdf.text(pageText, pageWidth - 40, pageHeight - this.layout.footerHeight);
+    }
+  }
+
+  private checkPageBreak(pdf: jsPDF, currentY: number): number {
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    if (currentY > pageHeight - this.layout.pageBreakThreshold) {
+      pdf.addPage();
+      const newY = this.generateHeader(pdf, { title: '', description: '', duration: '', modules: [] });
+      this.generateFooter(pdf);
+      return newY;
+    }
+    return currentY;
+  }
+
+  private generateCoverPage(pdf: jsPDF): void {
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    // Background color
+    pdf.setFillColor(this.colors.primary.r, this.colors.primary.g, this.colors.primary.b);
+    pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+
+    // Accent line
+    pdf.setFillColor(this.colors.secondary.r, this.colors.secondary.g, this.colors.secondary.b);
+    pdf.rect(0, 50, pageWidth, 2, 'F');
+
+    // Logo
+    pdf.setFontSize(this.fonts.title.size * 1.5);
+    pdf.setTextColor(this.colors.white.r, this.colors.white.g, this.colors.white.b);
+    pdf.setFont('helvetica', 'bold');
+    const zenetraText = "ZENETRA";
+    const textWidth = pdf.getTextWidth(zenetraText);
+    pdf.text(zenetraText, (pageWidth - textWidth) / 2, 40);
+
+    // Title
+    pdf.setFontSize(this.fonts.subtitle.size);
+    pdf.setFont('helvetica', 'bold');
+    const catalogText = "Course Catalog";
+    const catalogWidth = pdf.getTextWidth(catalogText);
+    pdf.text(catalogText, (pageWidth - catalogWidth) / 2, 80);
+
+    // Subtitle
+    pdf.setFontSize(this.fonts.body.size);
+    pdf.setFont('helvetica', 'normal');
+    const subtitleText = "Complete Guide to Our Training Programs";
+    const subtitleWidth = pdf.getTextWidth(subtitleText);
+    pdf.text(subtitleText, (pageWidth - subtitleWidth) / 2, 90);
+
+    // Date with styled box
+    pdf.setFillColor(this.colors.secondary.r, this.colors.secondary.g, this.colors.secondary.b, 0.1);
+    const today = new Date();
+    const dateText = `Generated on: ${today.toLocaleDateString()}`;
+    const dateWidth = pdf.getTextWidth(dateText);
+    const dateBoxPadding = 10;
+    pdf.roundedRect(
+      (pageWidth - dateWidth) / 2 - dateBoxPadding,
+      105 - dateBoxPadding,
+      dateWidth + (dateBoxPadding * 2),
+      20,
+      3,
+      3,
+      'F'
+    );
+    pdf.text(dateText, (pageWidth - dateWidth) / 2, 110);
+  }
+}

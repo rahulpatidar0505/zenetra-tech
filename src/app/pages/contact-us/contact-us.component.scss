@@ -1,18 +1,23 @@
 .contact-title {
 	font-family: var(--font-family);
-	font-size: 2.5rem;
+	font-size: clamp(1.8rem, 5vw, 2.5rem);
 	font-weight: 700;
 	color: #013024;
 	text-align: center;
-	margin-bottom: 1.2rem;
+	margin-bottom: clamp(1rem, 3vw, 1.2rem);
 	letter-spacing: -0.02em;
+	line-height: 1.2;
 }
 .contact-desc {
 	font-family: var(--font-family);
-	font-size: 1.15rem;
+	font-size: clamp(1rem, 2.5vw, 1.15rem);
 	color: #222;
 	text-align: center;
-	margin-bottom: 2.2rem;
+	margin-bottom: clamp(1.5rem, 4vw, 2.2rem);
+	line-height: 1.6;
+	max-width: 600px;
+	margin-left: auto;
+	margin-right: auto;
 }
 .contact-email {
 	color: #013024;
@@ -25,59 +30,88 @@
 	background: #e3f0ff;
 	padding: 0.2em 0.5em;
 	border-radius: 6px;
-	font-size: 1.15rem;
+	font-size: clamp(1rem, 2.5vw, 1.15rem);
 	letter-spacing: 0.5px;
 }
 .contact-input {
 	font-family: var(--font-family);
-	font-size: 1.1rem;
-	padding: 0.9em 1.2em;
+	font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+	padding: clamp(0.75rem, 2.5vw, 0.9rem) clamp(1rem, 3vw, 1.2rem);
 	border-radius: 8px;
 	border: 1px solid #e0e7ef;
-	margin-bottom: 1.1rem;
+	margin-bottom: clamp(0.8rem, 2.5vw, 1.1rem);
 	width: 100%;
 	box-sizing: border-box;
 	background: #FFFFF0;
 	transition: border-color 0.2s;
+	min-height: 48px;
 }
 .contact-input:focus {
 	border-color: #013024;
 	outline: none;
+	box-shadow: 0 0 0 3px rgba(1, 48, 36, 0.1);
 }
 .contact-textarea {
 	font-family: var(--font-family);
-	font-size: 1.1rem;
-	padding: 0.9em 1.2em;
+	font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+	padding: clamp(0.75rem, 2.5vw, 0.9rem) clamp(1rem, 3vw, 1.2rem);
 	border-radius: 8px;
 	border: 1px solid #e0e7ef;
-	margin-bottom: 1.1rem;
+	margin-bottom: clamp(0.8rem, 2.5vw, 1.1rem);
 	width: 100%;
-	min-height: 120px;
+	min-height: clamp(100px, 20vw, 120px);
 	box-sizing: border-box;
 	background: #FFFFF0;
 	transition: border-color 0.2s;
+	resize: vertical;
 }
 .contact-textarea:focus {
 	border-color: #013024;
 	outline: none;
+	box-shadow: 0 0 0 3px rgba(1, 48, 36, 0.1);
 }
 .contact-btn {
 	font-family: var(--font-family);
-	font-size: 1.15rem;
+	font-size: clamp(1rem, 2.5vw, 1.15rem);
 	font-weight: 600;
 	background: #013024;
 	color: #FFFFF0;
 	border: 2px solid transparent;
 	border-radius: 8px;
-	padding: 0.75em 2em;
+	padding: clamp(0.75rem, 2vw, 0.75rem) clamp(1.5rem, 4vw, 2rem);
 	cursor: pointer;
 	box-shadow: 0 2px 8px rgba(1, 48, 36, 0.15);
 	transition: all 0.3s ease;
-	margin-top: 1.2rem;
+	margin-top: clamp(1rem, 3vw, 1.2rem);
+	min-height: 48px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 }
 .contact-btn:hover {
 	background: #013024;
 	border-color: #00FFB9;
 	transform: translateY(-2px);
 	box-shadow: 0 4px 12px rgba(1, 48, 36, 0.25);
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+	.contact-title {
+		margin-bottom: 1rem;
+	}
+	
+	.contact-desc {
+		margin-bottom: 1.5rem;
+	}
+	
+	.contact-input, .contact-textarea {
+		font-size: 16px; // Prevent zoom on iOS
+		padding: 0.75rem 1rem;
+	}
+	
+	.contact-btn {
+		width: 100%;
+		margin-top: 1rem;
+	}
 }

@@ -3,7 +3,6 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { ImageOptimizationService } from './services/image-optimization.service';
-// Image directives removed - not used in app component template
 
 @Component({
   selector: 'app-root',
@@ -40,10 +39,8 @@ export class AppComponent implements OnInit {
   
   ngOnInit(): void {
     if (this.isBrowser) {
-      // Preload critical images
       this.imageService.preloadImages(this.imageService.getCriticalImages(), true);
       
-      // Manually preload the logo image to ensure it displays
       const logoImg = new Image();
       logoImg.src = '/assets/images/zenetra-logo.ico';
     }

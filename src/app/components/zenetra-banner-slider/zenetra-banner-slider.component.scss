@@ -1,0 +1,491 @@
+.banner-slider-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 0;
+  box-shadow: none;
+  
+  /* Enhanced border effect */
+  border: none;
+  background: none;
+  
+  /* Hover effect for the entire slider */
+  transition: all 0.3s ease;
+  
+  @media (max-width: 576px) {
+    margin: 1.5rem auto;
+    border-radius: 12px;
+  }
+  
+  @media (max-width: 375px) {
+    margin: 1rem auto;
+    border-radius: 10px;
+  }
+  
+  &:hover {
+    box-shadow: 0 8px 32px rgba(37,117,252,0.20);
+    transform: translateY(-2px);
+  }
+}
+.banner-slider-track {
+  display: flex;
+  transition: transform 0.7s cubic-bezier(0.4,0.2,0.2,1);
+  will-change: transform;
+}
+.banner-slide {
+  min-width: 100vw;
+  width: 100vw;
+  box-sizing: border-box;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: #013024;
+  color: #FFFFF0;
+  height: calc(100vh - 20px); /* Further reduced header height subtraction to make it taller */
+  min-height: 800px; /* Significantly increased minimum height */
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  
+  /* Enhanced background image effects */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(1, 48, 36, 0.4) 0%,
+      rgba(1, 48, 36, 0.2) 30%,
+      rgba(0, 255, 185, 0.05) 70%,
+      rgba(37, 117, 252, 0.2) 100%
+    );
+    z-index: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Hover effect to enhance background visibility */
+  &:hover::before {
+    opacity: 0.8;
+    background: linear-gradient(
+      135deg,
+      rgba(1, 48, 36, 0.6) 0%,
+      rgba(1, 48, 36, 0.3) 30%,
+      rgba(0, 255, 185, 0.15) 70%,
+      rgba(37, 117, 252, 0.25) 100%
+    );
+  }
+  
+  /* Add a subtle inner shadow for depth */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.2);
+    z-index: 0;
+    pointer-events: none;
+  }
+  
+  @media (max-width: 576px) {
+    height: clamp(350px, 65vh, 450px); /* Increased height on mobile */
+    padding: clamp(1.5rem, 5vw, 2rem);
+  }
+  
+  @media (max-width: 375px) {
+    height: clamp(300px, 60vh, 400px); /* Increased height on smaller devices */
+  }
+}
+.slide-content-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  padding: 40px 60px; /* Added significant padding on all sides */
+  max-width: 1920px;
+  margin: 0 auto;
+  
+  /* Enhanced backdrop for better text readability */
+  backdrop-filter: blur(1px);
+  
+  /* Add subtle text shadow to make content pop */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+.slide-text-content {
+  flex: 1;
+  padding: 0;
+  width: 100%;
+  max-width: 90%; /* Increased from 80% to 90% */
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  
+  /* Add a subtle background for better readability */
+  background: linear-gradient(
+    135deg,
+    rgba(1, 48, 36, 0.6) 0%,
+    rgba(1, 48, 36, 0.4) 50%,
+    rgba(1, 48, 36, 0.3) 100%
+  );
+  border-radius: 12px; /* Increased rounded corners */
+  padding: clamp(5rem, 12vw, 10rem); /* Further increased padding on all sides */
+  margin: 30px; /* Increased margin around the content */
+  backdrop-filter: blur(3px);
+  border: 1px solid rgba(0, 255, 185, 0.1); /* Added subtle border */
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+  
+  @media (max-width: 768px) {
+    max-width: 100%;
+    margin: 15px;
+    padding: clamp(3rem, 8vw, 5rem);
+  }
+  
+  @media (max-width: 576px) {
+    padding: clamp(1.5rem, 5vw, 2.5rem);
+    border-radius: 10px;
+    margin: 10px;
+  }
+}
+.slide-title {
+  font-size: clamp(2rem, 5vw, 3.5rem); /* Increased font size */
+  font-weight: 700;
+  font-family: var(--font-family);
+  margin-bottom: 25px; /* Increased bottom margin */
+  color: #FFFFF0;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  position: relative;
+  line-height: 1.2;
+  
+  /* Add a subtle glow effect */
+  filter: drop-shadow(0 0 8px rgba(0, 255, 185, 0.3));
+  
+  /* Gradient text effect */
+  background: linear-gradient(135deg, #FFFFF0 0%, #00FFB9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.slide-description {
+  font-size: clamp(1.2rem, 3vw, 1.6rem); /* Increased font size */
+  font-family: var(--font-family);
+  margin-bottom: 30px; /* Increased bottom margin */
+  line-height: 1.7; /* Increased line height */
+  color: #FFFFF0;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+  opacity: 0.95;
+  
+  /* Add subtle highlight */
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 255, 185, 0.1) 50%,
+    transparent 100%
+  );
+  padding: 8px 0;
+  border-radius: 4px;
+}
+.slide-button {
+  display: inline-block;
+  padding: clamp(1rem, 3vw, 1.5rem) clamp(2rem, 5vw, 3rem); /* Increased padding */
+  background: #00FFB9;
+  color: #013024;
+  text-decoration: none;
+  border-radius: 10px; /* Increased border radius */
+  font-weight: 600;
+  font-family: var(--font-family);
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem); /* Increased font size */
+  transition: all 0.3s ease;
+  border: 3px solid transparent; /* Thicker border */
+  min-height: 55px; /* Increased min height */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  @media (max-width: 576px) {
+    min-height: 48px;
+    width: auto;
+    min-width: 140px;
+  }
+}
+.slide-button:hover {
+  background: #013024;
+  color: #FFFFF0;
+  border-color: #00FFB9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(1, 48, 36, 0.25);
+}
+.slide-image-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: clamp(2rem, 5vw, 3.5rem); /* Increased padding on all sides */
+  position: relative;
+  z-index: 2;
+  
+  /* Add subtle background enhancement */
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 255, 185, 0.15) 0%,
+    rgba(37, 117, 252, 0.08) 50%,
+    rgba(1, 48, 36, 0.05) 100%
+  );
+  border-radius: 16px; /* Increased border radius */
+  margin: 20px; /* Increased margin */
+  backdrop-filter: blur(2px);
+  border: 1px solid rgba(0, 255, 185, 0.1); /* Added subtle border */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Added shadow */
+  
+  @media (max-width: 768px) {
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    margin: 15px;
+  }
+  
+  @media (max-width: 576px) {
+    padding: clamp(1rem, 3vw, 1.5rem);
+    margin: 10px;
+  }
+}
+.slide-image {
+  max-width: 100%;
+  max-height: 90%;
+  object-fit: contain;
+  transition: opacity 0.3s ease, filter 0.3s ease, transform 0.3s ease;
+  
+  /* Enhanced image effects */
+  filter: contrast(1.1) saturate(1.1) brightness(1.05);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  
+  &:hover {
+    transform: scale(1.02);
+    filter: contrast(1.15) saturate(1.15) brightness(1.1);
+    box-shadow: 0 12px 40px rgba(0, 255, 185, 0.2);
+  }
+}
+
+.slide-image.image-loading {
+  opacity: 0.7;
+  filter: blur(2px);
+}
+.banner-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.25); /* Slightly darker background */
+  color: #FFFFF0;
+  border: 2px solid rgba(255, 255, 240, 0.3); /* Added subtle border */
+  border-radius: 50%;
+  width: clamp(48px, 10vw, 60px); /* Increased size */
+  height: clamp(48px, 10vw, 60px); /* Increased size */
+  font-size: clamp(1.5rem, 3.5vw, 2.5rem); /* Larger icons */
+  cursor: pointer;
+  z-index: 2;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px; /* Increased min size */
+  min-width: 50px; /* Increased min size */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Added shadow */
+  
+  &:focus-visible {
+    outline: 2px solid #00FFB9;
+    outline-offset: 3px;
+  }
+  
+  @media (max-width: 576px) {
+    min-height: 48px;
+    min-width: 48px;
+    width: clamp(40px, 9vw, 50px);
+    height: clamp(40px, 9vw, 50px);
+  }
+}
+.banner-arrow.left { 
+  left: clamp(20px, 4vw, 40px); /* Increased distance from edge */
+}
+
+.banner-arrow.right { 
+  right: clamp(20px, 4vw, 40px); /* Increased distance from edge */
+}
+
+.banner-arrow:hover { 
+  background: rgba(37,117,252,0.7); 
+  transform: translateY(-50%) scale(1.05);
+}
+.banner-pagination {
+  position: absolute;
+  bottom: 40px; /* Moved even further down to match increased height */
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 15px; /* Increased gap between dots */
+  z-index: 2;
+}
+.banner-dot {
+  width: clamp(12px, 3vw, 16px); /* Increased dot size */
+  height: clamp(12px, 3vw, 16px); /* Increased dot size */
+  border-radius: 50%;
+  background: #e0e7ff;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  border: 3px solid #FFFFF0; /* Thicker border */
+  min-height: 28px; /* Increased min size */
+  min-width: 28px; /* Increased min size */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:focus-visible {
+    outline: 3px solid #00FFB9;
+    outline-offset: 3px;
+  }
+  
+  &:hover {
+    transform: scale(1.15);
+  }
+}
+.banner-dot.active {
+  background: #013024;
+  border-color: #013024;
+}
+
+/* Progress Bar Styles */
+.progress-bar-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  z-index: 3;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #00FFB9 0%, #013024 50%, #00FFB9 100%);
+  width: 0%;
+  transition: none;
+  border-radius: 0 2px 2px 0;
+  box-shadow: 0 0 8px rgba(0, 255, 185, 0.4);
+  animation: none;
+}
+@media (max-width: 768px) {
+  .banner-slider-wrapper {
+    margin: 1rem auto;
+  }
+  
+  .banner-slide {
+    min-height: clamp(450px, 70vh, 550px); /* Further increased min height on tablet */
+    padding: clamp(2rem, 6vw, 3rem); /* Increased padding */
+    
+    &::before {
+      background: linear-gradient(
+        135deg,
+        rgba(1, 48, 36, 0.8) 0%,
+        rgba(1, 48, 36, 0.6) 50%,
+        rgba(0, 255, 185, 0.2) 100%
+      );
+    }
+  }
+  
+  .slide-content-wrapper {
+    flex-direction: column;
+    padding: clamp(1rem, 3vw, 1.5rem) 0;
+    gap: 1rem;
+  }
+  
+  .slide-text-content {
+    max-width: 100%;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    text-align: center;
+    margin: 5px;
+  }
+  
+  .slide-title {
+    font-size: clamp(1.25rem, 5vw, 2rem);
+    margin-bottom: 12px;
+  }
+  
+  .slide-description {
+    font-size: clamp(0.9rem, 3vw, 1rem);
+    margin-bottom: 16px;
+  }
+  
+  .slide-image-container {
+    padding: clamp(0.5rem, 2vw, 1rem);
+    margin: 5px;
+  }
+  
+  .banner-arrow {
+    width: clamp(32px, 7vw, 40px);
+    height: clamp(32px, 7vw, 40px);
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+  }
+  
+  .banner-pagination {
+    gap: 6px;
+    bottom: 12px;
+  }
+}
+
+@media (max-width: 576px) {
+  .slide-content-wrapper {
+    padding: 1rem 0;
+  }
+  
+  .slide-text-content {
+    padding: 1rem;
+    margin: 3px;
+  }
+  
+  .slide-button {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 375px) {
+  .banner-slide {
+    padding: 0.75rem;
+  }
+  
+  .slide-text-content {
+    padding: 0.75rem;
+    border-radius: 8px;
+  }
+}
+
+/* Background animation keyframes */
+@keyframes backgroundShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Add subtle animation to background overlay */
+.banner-slide::before {
+  animation: backgroundShift 20s ease-in-out infinite;
+  background-size: 200% 200%;
+}
