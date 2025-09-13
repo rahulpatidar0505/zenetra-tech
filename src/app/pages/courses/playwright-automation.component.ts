@@ -18,9 +18,32 @@ export class PlaywrightAutomationComponent {
     title: 'Playwright Automation Testing Training',
     duration: '6 Weeks',
     description: 'Playwright is a modern, fast, and reliable framework for cross-browser testing. Our training program is designed to take you from beginner to advanced with hands-on exercises, live projects, and industry-level frameworks. By the end of the course, you\'ll be ready to build automation frameworks, integrate with CI/CD, and crack automation interviews.',
+    outcomes: [
+      'Build and execute comprehensive test automation frameworks using Playwright',
+      'Master cross-browser automation across Chrome, Firefox, Safari, and Edge',
+      'Implement advanced testing patterns including Page Object Model and Data-Driven Testing',
+      'Integrate Playwright tests with CI/CD pipelines and DevOps workflows',
+      'Develop API testing capabilities alongside UI automation',
+      'Create robust, maintainable test suites with proper error handling and reporting'
+    ],
+    benefits: [
+      'Industry-leading curriculum designed by automation experts',
+      'Hands-on projects with real-world application scenarios',
+      'Personalized mentorship from experienced automation engineers',
+      'Access to latest Playwright features and best practices',
+      'Career guidance and interview preparation for automation roles',
+      'Lifetime access to course materials and regular updates'
+    ],
+    prerequisites: [
+      'Basic understanding of web technologies (HTML, CSS, JavaScript)',
+      'Familiarity with software testing concepts',
+      'Experience with any programming language (preferred but not required)',
+      'Computer with Node.js installation capability'
+    ],
     modules: [
       {
         title: 'Module 1: Foundations',
+        duration: '1 Week',
         goal: 'Build a solid base in Playwright and automation fundamentals',
         content: [
           'Introduction to Playwright → Learn what Playwright is, why it\'s popular, and where it fits in modern automation.',
@@ -33,6 +56,7 @@ export class PlaywrightAutomationComponent {
       },
       {
         title: 'Module 2: JavaScript Fundamentals',
+        duration: '1 Week',
         goal: 'Learn the JavaScript skills required for Playwright automation',
         content: [
           'Variables & Data Types → Understand different ways of storing and using data in automation.',
@@ -45,6 +69,7 @@ export class PlaywrightAutomationComponent {
       },
       {
         title: 'Module 3: Playwright Essentials',
+        duration: '1 Week',
         goal: 'Get hands-on with Playwright and write your first automation scripts',
         content: [
           'Installation & Setup → Install Playwright and configure the environment.',
@@ -58,6 +83,7 @@ export class PlaywrightAutomationComponent {
       },
       {
         title: 'Module 4: Test Design & Best Practices',
+        duration: '1 Week',
         goal: 'Design scalable, maintainable, and reusable automation frameworks',
         content: [
           'Page Object Model (POM) → Implement a clean and modular framework structure.',
@@ -71,6 +97,7 @@ export class PlaywrightAutomationComponent {
       },
       {
         title: 'Module 5: API Testing',
+        duration: '3 Days',
         goal: 'Learn API testing using Playwright and integrate UI + API automation',
         content: [
           'Postman Basics → Understand API workflows, requests, and responses.',
@@ -81,6 +108,7 @@ export class PlaywrightAutomationComponent {
       },
       {
         title: 'Module 6: Configurations & Environment Handling',
+        duration: '3 Days',
         goal: 'Make your Playwright framework flexible and environment-ready',
         content: [
           'Environment Variables → Securely manage sensitive data and configurations.',
@@ -93,6 +121,7 @@ export class PlaywrightAutomationComponent {
       },
       {
         title: 'Module 7: Advanced Playwright',
+        duration: '4 Days',
         goal: 'Master advanced Playwright features for real-world automation challenges',
         content: [
           'NPM Scripts & CLI Commands → Simplify test execution with custom commands.',
@@ -103,6 +132,7 @@ export class PlaywrightAutomationComponent {
       },
       {
         title: 'Module 8: CI/CD & DevOps',
+        duration: '4 Days',
         goal: 'Automate Playwright execution in modern DevOps pipelines',
         content: [
           'Introduction to CI/CD → Learn continuous integration and deployment basics.',
@@ -113,6 +143,7 @@ export class PlaywrightAutomationComponent {
       },
       {
         title: 'Module 9: Artificial Intelligence in Playwright',
+        duration: '3 Days',
         goal: 'Leverage AI for smarter and faster test automation',
         content: [
           'GitHub Copilot for Test Writing → Generate Playwright scripts using AI-powered suggestions.',
@@ -123,6 +154,7 @@ export class PlaywrightAutomationComponent {
       },
       {
         title: 'Module 10: Career Preparation',
+        duration: '5 Days',
         goal: 'Become job-ready and prepare for real-world automation challenges',
         content: [
           'Live Project (End-to-End Automation) → Automate a complete application using Playwright.',
@@ -150,6 +182,6 @@ export class PlaywrightAutomationComponent {
   }
 
   downloadCoursePdf() {
-    this.pdfService.downloadCoursePdf(this.courseData);
+    this.pdfService.downloadCoursePdf('Playwright Automation Testing Training');
   }
 }
