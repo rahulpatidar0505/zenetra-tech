@@ -63,6 +63,6 @@ export class JavaDevelopmentComponent {
   }
 
   downloadCoursePdf() {
-    this.pdfService.downloadCoursePdf('Java Development');
+    this.pdfService.downloadCoursePdf('Java Development Training');
   }
 }

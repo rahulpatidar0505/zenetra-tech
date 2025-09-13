@@ -158,6 +158,6 @@ export class SecurityTestingComponent {
   }
 
   downloadCoursePdf() {
-    this.pdfService.downloadCoursePdf('Security Testing');
+    this.pdfService.downloadCoursePdf('Security Testing Training');
   }
 }
