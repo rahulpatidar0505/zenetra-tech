@@ -87,12 +87,6 @@
     background: linear-gradient(90deg, transparent, #00FFB9, transparent);
   }
   
-  /* Hide any loading spinner that appears after this section */
-  & + .image-loading-spinner,
-  & + div.image-loading-spinner {
-    display: none !important;
-  }
-  
   .title-underline {
     position: absolute;
     bottom: -8px;
@@ -709,12 +703,6 @@
   }
 }
 
-/* Hide any loading spinner between sections */
-section + .image-loading-spinner,
-section + div.image-loading-spinner {
-  display: none !important;
-}
-
 /* Course slide images removed for cleaner look */
 /*
 .hero-img-zenetra {
@@ -1097,12 +1085,6 @@ section + div.image-loading-spinner {
 @keyframes fadeInFaq {
   from { opacity: 0; transform: translateY(-8px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-/* Hide the spinner between About Us and Courses Preview */
-.about-us-section + .image-loading-spinner,
-.about-us-section + div:not(.courses-preview) {
-  display: none !important;
 }
 
 // Courses preview section
