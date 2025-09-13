@@ -20,45 +20,47 @@
       <div class="hero-slide-zenetra" *ngFor="let slide of heroSlides; let i = index" [class.active]="i === currentSlide">
         <!-- What We Offer Slide -->
         <div class="hero-slide-content-zenetra what-we-offer-slide" *ngIf="slide.customContent === 'what-we-offer'">
-          <div class="what-we-offer-left">
-            <h1 class="what-we-offer-title">What <span class="accent">We</span> Offer?</h1>
-            <p class="what-we-offer-desc">We are a leading IT services company specializing in Project Development, Online Training, Workshops and Project Support. Empowering businesses and individuals with innovative solutions and expert guidance.</p>
-          </div>
-          <div class="what-we-offer-right">
-            <div class="offer-card">
-              <div class="offer-card-icon">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21 21H3m3-7l3-3 3 3 6-6" stroke="#00FFB9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="offer-card-content">
-                <div class="offer-card-title">More <span class="accent">EFFICIENT</span> & FASTER</div>
-                <div class="offer-card-desc">than random tutorials</div>
-              </div>
+          <div class="what-we-offer-container">
+            <div class="what-we-offer-left">
+              <h1 class="what-we-offer-title">What <span class="accent">We</span> Offer?</h1>
+              <p class="what-we-offer-desc">We are a leading IT services company specializing in Project Development, Online Training, Workshops and Project Support. Empowering businesses and individuals with innovative solutions and expert guidance.</p>
             </div>
-            <div class="offer-card">
-              <div class="offer-card-icon">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2v6m0 0v6m0-6h10m-10 0H2" stroke="#00FFB9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+            <div class="what-we-offer-right">
+              <div class="offer-card">
+                <div class="offer-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M21 21H3m3-7l3-3 3 3 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="offer-card-content">
+                  <div class="offer-card-title">More <span class="accent">EFFICIENT</span> & FASTER</div>
+                  <div class="offer-card-desc">than random tutorials</div>
+                </div>
               </div>
-              <div class="offer-card-content">
-                <div class="offer-card-title">Expert <span class="accent">SUPPORT</span></div>
-                <div class="offer-card-desc">personalized guidance</div>
+              <div class="offer-card">
+                <div class="offer-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 2v6m0 0v6m0-6h10m-10 0H2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="offer-card-content">
+                  <div class="offer-card-title">Expert <span class="accent">SUPPORT</span></div>
+                  <div class="offer-card-desc">personalized guidance</div>
+                </div>
               </div>
-            </div>
-            <div class="offer-card">
-              <div class="offer-card-icon">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 6V2m0 4v4m0-4h4m-4 0H8" stroke="#00FFB9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M20 12h2m-2 0h-4m4 0v4m0-4V8" stroke="#00FFB9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <circle cx="7" cy="17" r="3" stroke="#00FFB9" stroke-width="2" fill="none"/>
-                  <path d="M14 21v-1a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v1" stroke="#00FFB9" stroke-width="2"/>
-                </svg>
-              </div>
-              <div class="offer-card-content">
-                <div class="offer-card-title">Proven <span class="accent">METHODOLOGY</span></div>
-                <div class="offer-card-desc">structured with results</div>
+              <div class="offer-card">
+                <div class="offer-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 6V2m0 4v4m0-4h4m-4 0H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M20 12h2m-2 0h-4m4 0v4m0-4V8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="7" cy="17" r="3" stroke="currentColor" stroke-width="2" fill="none"/>
+                    <path d="M14 21v-1a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v1" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                </div>
+                <div class="offer-card-content">
+                  <div class="offer-card-title">Proven <span class="accent">METHODOLOGY</span></div>
+                  <div class="offer-card-desc">structured with results</div>
+                </div>
               </div>
             </div>
           </div>
