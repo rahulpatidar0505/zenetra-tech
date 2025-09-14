@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     },
     {
       title: 'Playwright Testing Mastery',
-      subtitle: 'A step-by-step program for Quality Engineers to master test automation with personalized mentorship and feedback.',
+      subtitle: 'A step-by-step program for Quality Engineers to master test automation with personalized mentorship.',
       img: '/assets/images/playwright1.jpg',
       backgroundImg: '/assets/images/automation-testing.gif',
       route: '/courses/playwright-automation'
