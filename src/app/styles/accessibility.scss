@@ -1,0 +1,250 @@
+/* Accessibility Enhancement Utilities */
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Skip to main content link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--primary-color);
+  color: var(--background-color);
+  padding: 8px;
+  z-index: 9999;
+  text-decoration: none;
+  border-radius: 0 0 4px 4px;
+  font-weight: 600;
+  transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid var(--secondary-color);
+  outline-offset: 2px;
+}
+
+/* Enhanced focus styles */
+*:focus-visible {
+  outline: 3px solid var(--secondary-color);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Button focus improvements */
+button:focus-visible,
+.btn:focus-visible,
+[role="button"]:focus-visible {
+  outline: 3px solid var(--secondary-color);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 1px var(--background-color), 0 0 0 4px var(--secondary-color);
+}
+
+/* Link focus improvements */
+a:focus-visible {
+  outline: 3px solid var(--secondary-color);
+  outline-offset: 2px;
+  background-color: rgba(0, 255, 185, 0.1);
+  border-radius: 2px;
+}
+
+/* Form element focus improvements */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--secondary-color);
+  outline-offset: 1px;
+  border-color: var(--secondary-color);
+}
+
+/* High contrast mode enhancements */
+@media (prefers-contrast: high) {
+  .card,
+  .feature-card,
+  .course-card {
+    border: 2px solid var(--text-color);
+  }
+
+  .btn,
+  button {
+    border: 2px solid var(--text-color);
+    font-weight: 700;
+  }
+
+  .shadow,
+  [class*="shadow"] {
+    box-shadow: none !important;
+  }
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .slider,
+  .carousel,
+  .hero-slide {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Improved text readability */
+p,
+li,
+div,
+span {
+  line-height: 1.6;
+  word-spacing: 0.1em;
+}
+
+/* Better touch targets */
+button,
+a,
+[role="button"],
+[tabindex] {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Color contrast improvements */
+.text-light {
+  color: #4a5568; /* Better contrast than previous light gray */
+}
+
+.text-muted {
+  color: #718096; /* Improved contrast for muted text */
+}
+
+/* Error states for better accessibility */
+.error,
+.invalid,
+[aria-invalid="true"] {
+  border-color: #e53e3e;
+  color: #e53e3e;
+}
+
+.error-message,
+[role="alert"] {
+  color: #e53e3e;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.error-message::before {
+  content: "⚠️";
+  font-size: 1.1em;
+}
+
+/* Success states */
+.success,
+.valid {
+  border-color: #38a169;
+  color: #38a169;
+}
+
+.success-message {
+  color: #38a169;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.success-message::before {
+  content: "✓";
+  font-size: 1.1em;
+}
+
+/* Loading states for screen readers */
+[aria-busy="true"] {
+  cursor: wait;
+}
+
+[aria-busy="true"]::after {
+  content: " (Loading...)";
+  position: absolute;
+  left: -9999px;
+}
+
+/* Improve dropdown accessibility */
+.dropdown-content {
+  border: 1px solid var(--text-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dropdown-content a:focus {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  outline: none;
+}
+
+/* Table accessibility (if any tables are added) */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  font-weight: 700;
+}
+
+/* Print styles for accessibility */
+@media print {
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+  }
+
+  .skip-link,
+  .sr-only {
+    position: static !important;
+    clip: auto !important;
+    height: auto !important;
+    width: auto !important;
+    overflow: visible !important;
+  }
+}

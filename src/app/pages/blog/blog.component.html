@@ -6,8 +6,11 @@
             <article class="blog-card" *ngFor="let post of blogPosts">
                 <div class="blog-image">
                     <img [src]="post.image" 
-                         [alt]="post.title"
+                         [alt]="post.title + ' - ' + post.excerpt.substring(0, 50) + '...'"
                          class="blog-feature-image"
+                         loading="lazy"
+                         width="300"
+                         height="200"
                          (error)="post.image = '/assets/images/placeholder.jpg'">
                 </div>
                 <div class="blog-content">

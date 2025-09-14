@@ -3,11 +3,13 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { ImageOptimizationService } from './services/image-optimization.service';
+import { SkipLinksComponent } from './components/skip-links/skip-links.component';
+import { CookieConsentComponent } from './components/cookie-consent/cookie-consent.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule, SkipLinksComponent, CookieConsentComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   animations: [

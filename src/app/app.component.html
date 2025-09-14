@@ -1,3 +1,9 @@
+<!-- Skip Links for Accessibility -->
+<app-skip-links></app-skip-links>
+
+<!-- Cookie Consent Banner -->
+<app-cookie-consent></app-cookie-consent>
+
 <!-- Header -->
 <header class="site-header">
   <div class="container header-content">
@@ -135,7 +141,7 @@
 </header>
 
 <!-- Main Content -->
-<main class="main-content">
+<main class="main-content" id="main-content" tabindex="-1">
   <div class="main-container">
     <router-outlet></router-outlet>
   </div>
@@ -144,7 +150,7 @@
 <!-- Modern IT Services Footer -->
 
 <!-- Professional Modern Footer -->
-<footer class="modern-footer">
+<footer class="modern-footer" id="site-footer">
   <div class="footer-container">
     <div class="footer-grid">
       <div class="footer-section about">

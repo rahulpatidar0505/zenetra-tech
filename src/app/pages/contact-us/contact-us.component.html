@@ -3,60 +3,99 @@
   <div class="container contact-content">
     <h1>Contact Us</h1>
     <p class="contact-desc">Have questions or need support? Reach out to us using the form below or contact us directly at <a href="mailto:contactus&#64;zenetratechnologies.com" class="contact-email">contactus&#64;zenetratechnologies.com</a>.</p>
-    <form class="contact-form" [formGroup]="contactForm" (ngSubmit)="onSubmit()">
-  <div class="input-container">
-    <div class="input-group">
-      <input type="text" placeholder="Your Name *" class="contact-input" formControlName="name" required />
-    </div>
-  </div>
-  <div *ngIf="submitted && f['name'].errors" class="form-error">
-    <div *ngIf="f['name'].errors['required']">Name is required</div>
-  </div>
-  
-  <div class="input-container">
-    <div class="input-group">
-      <input type="email" placeholder="Your Email *" class="contact-input" formControlName="email" required />
-    </div>
-  </div>
-  <div *ngIf="submitted && f['email'].errors" class="form-error">
-    <div *ngIf="f['email'].errors['required']">Email is required</div>
-    <div *ngIf="f['email'].errors['email']">Please enter a valid email</div>
-  </div>
+    <form class="contact-form" [formGroup]="contactForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="input-container">
+        <div class="input-group">
+          <label for="name" class="sr-only">Full Name</label>
+          <input type="text" 
+                 id="name"
+                 placeholder="Your Name *" 
+                 class="contact-input" 
+                 formControlName="name" 
+                 required 
+                 aria-describedby="name-error"
+                 [attr.aria-invalid]="submitted && f['name'].errors ? 'true' : 'false'" />
+        </div>
+      </div>
+      <div *ngIf="submitted && f['name'].errors" class="form-error" id="name-error" role="alert">
+        <div *ngIf="f['name'].errors['required']">Name is required</div>
+      </div>
+      
+      <div class="input-container">
+        <div class="input-group">
+          <label for="email" class="sr-only">Email Address</label>
+          <input type="email" 
+                 id="email"
+                 placeholder="Your Email *" 
+                 class="contact-input" 
+                 formControlName="email" 
+                 required 
+                 aria-describedby="email-error"
+                 [attr.aria-invalid]="submitted && f['email'].errors ? 'true' : 'false'" />
+        </div>
+      </div>
+      <div *ngIf="submitted && f['email'].errors" class="form-error" id="email-error" role="alert">
+        <div *ngIf="f['email'].errors['required']">Email is required</div>
+        <div *ngIf="f['email'].errors['email']">Please enter a valid email</div>
+      </div>
 
-  <div class="input-container">
-    <div class="input-group">
-      <input type="tel" placeholder="Enter Mobile Number *" class="contact-input" formControlName="mobile" required />
-    </div>
-  </div>
-  <div *ngIf="submitted && f['mobile'].errors" class="form-error">
-    <div *ngIf="f['mobile'].errors['required']">Mobile number is required</div>
-    <div *ngIf="f['mobile'].errors['pattern']">Please enter a valid mobile number</div>
-  </div>
+      <div class="input-container">
+        <div class="input-group">
+          <label for="mobile" class="sr-only">Mobile Number</label>
+          <input type="tel" 
+                 id="mobile"
+                 placeholder="Enter Mobile Number *" 
+                 class="contact-input" 
+                 formControlName="mobile" 
+                 required 
+                 aria-describedby="mobile-error"
+                 [attr.aria-invalid]="submitted && f['mobile'].errors ? 'true' : 'false'" />
+        </div>
+      </div>
+      <div *ngIf="submitted && f['mobile'].errors" class="form-error" id="mobile-error" role="alert">
+        <div *ngIf="f['mobile'].errors['required']">Mobile number is required</div>
+        <div *ngIf="f['mobile'].errors['pattern']">Please enter a valid mobile number</div>
+      </div>
 
-  <div class="input-container">
-    <div class="input-group">
-      <textarea placeholder="Enter Your Address" class="contact-textarea" formControlName="address"></textarea>
-    </div>
-  </div>
+      <div class="input-container">
+        <div class="input-group">
+          <label for="address" class="sr-only">Address</label>
+          <textarea placeholder="Enter Your Address" 
+                    id="address"
+                    class="contact-textarea" 
+                    formControlName="address"
+                    rows="3"></textarea>
+        </div>
+      </div>
 
-  <div *ngIf="selectedCourse" class="course-info">
-    <p class="course-selected">📚 Course of Interest: <strong>{{ selectedCourse }}</strong></p>
-  </div>
-  
-  <input type="hidden" formControlName="course" />
-  
-  <div class="input-container">
-    <div class="input-group">
-      <textarea placeholder="Your Message" class="contact-textarea" formControlName="message"></textarea>
-    </div>
-  </div>
-  <div *ngIf="submitted && f['message'].errors" class="form-error">
-    <div *ngIf="f['message'].errors['required']">Message is required</div>
-  </div>
-  
-  <button class="contact-btn" type="submit" [disabled]="sending">
-    {{ sending ? 'Sending...' : 'Send Message' }}
-  </button>
+      <div *ngIf="selectedCourse" class="course-info">
+        <p class="course-selected">📚 Course of Interest: <strong>{{ selectedCourse }}</strong></p>
+      </div>
+      
+      <input type="hidden" formControlName="course" />
+      
+      <div class="input-container">
+        <div class="input-group">
+          <label for="message" class="sr-only">Your Message</label>
+          <textarea placeholder="Your Message" 
+                    id="message"
+                    class="contact-textarea" 
+                    formControlName="message"
+                    rows="4"
+                    aria-describedby="message-error"
+                    [attr.aria-invalid]="submitted && f['message'].errors ? 'true' : 'false'"></textarea>
+        </div>
+      </div>
+      <div *ngIf="submitted && f['message'].errors" class="form-error" id="message-error" role="alert">
+        <div *ngIf="f['message'].errors['required']">Message is required</div>
+      </div>
+      
+      <button class="contact-btn" 
+              type="submit" 
+              [disabled]="sending"
+              [attr.aria-busy]="sending ? 'true' : 'false'">
+        {{ sending ? 'Sending...' : 'Send Message' }}
+      </button>
     </form>
     
     <div *ngIf="successMessage" class="success-message">
