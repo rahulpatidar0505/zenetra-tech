@@ -99,9 +99,6 @@ export class LazyImageDirective implements OnInit, OnDestroy {
     // Set placeholder immediately with low quality image
     this.el.nativeElement.src = this.placeholderSrc;
     
-    // Add loading indicator
-    this.addLoadingIndicator();
-    
     // Store the original source for later
     this.originalSrc = this.appLazyImage;
     
@@ -131,7 +128,6 @@ export class LazyImageDirective implements OnInit, OnDestroy {
     img.onload = () => {
       this.renderer.setAttribute(this.el.nativeElement, 'src', src);
       this.renderer.setStyle(this.el.nativeElement, 'opacity', '1');
-      this.removeLoadingIndicator();
       
       // Add performance attributes after successful load
       this.renderer.setAttribute(this.el.nativeElement, 'data-loaded', 'true');
@@ -150,20 +146,17 @@ export class LazyImageDirective implements OnInit, OnDestroy {
         originalImg.onload = () => {
           this.renderer.setAttribute(this.el.nativeElement, 'src', this.originalSrc);
           this.renderer.setStyle(this.el.nativeElement, 'opacity', '1');
-          this.removeLoadingIndicator();
         };
         
         originalImg.onerror = () => {
           console.error(`Failed to load original image: ${this.originalSrc}`);
           this.renderer.setAttribute(this.el.nativeElement, 'src', this.placeholderSrc);
-          this.removeLoadingIndicator();
         };
         
         originalImg.src = this.originalSrc;
       } else {
         // Final fallback to placeholder
         this.renderer.setAttribute(this.el.nativeElement, 'src', this.placeholderSrc);
-        this.removeLoadingIndicator();
       }
     };
     
@@ -204,8 +197,5 @@ export class LazyImageDirective implements OnInit, OnDestroy {
     if (this.intersectionObserver) {
       this.intersectionObserver.disconnect();
     }
-    
-    // Remove loading indicator if it exists
-    this.removeLoadingIndicator();
   }
 }
