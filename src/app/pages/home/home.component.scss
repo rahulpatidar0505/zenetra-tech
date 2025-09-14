@@ -146,8 +146,8 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    gap: clamp(1rem, 2vw, 1.5rem);
-    padding: clamp(1rem, 2.5vw, 1.5rem);
+    gap: clamp(0.8rem, 1.5vw, 1.2rem);
+    padding: clamp(0.8rem, 2vw, 1.2rem);
   }
   
   // Mobile medium and small - below 576px
@@ -157,8 +157,8 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    gap: clamp(0.8rem, 1.5vw, 1.2rem);
-    padding: clamp(0.8rem, 2vw, 1.2rem);
+    gap: clamp(0.6rem, 1.2vw, 1rem);
+    padding: clamp(0.6rem, 1.5vw, 1rem);
   }
   
   // Landscape specific adjustments
@@ -506,18 +506,20 @@
   @media (min-width: 576px) and (max-width: 767px) {
     width: 100%;
     max-width: 100%;
-    gap: clamp(0.6rem, 1.2vw, 0.8rem);
-    margin: clamp(0.3rem, 0.8vw, 0.5rem) 0 0;
+    gap: clamp(0.1rem, 0.4vw, 0.2rem);
+    margin: clamp(0.1rem, 0.4vw, 0.2rem) 0 0;
     align-items: stretch;
+    padding: 0 0.2rem;
   }
   
   // Mobile small - below 576px
   @media (max-width: 575px) {
     width: 100%;
     max-width: 100%;
-    gap: clamp(0.5rem, 1vw, 0.7rem);
-    margin: clamp(0.2rem, 0.5vw, 0.3rem) 0 0;
+    gap: clamp(0.08rem, 0.3vw, 0.15rem);
+    margin: clamp(0.08rem, 0.2vw, 0.12rem) 0 0;
     align-items: stretch;
+    padding: 0 0.1rem;
   }
   
   // Landscape orientation adjustments
@@ -570,7 +572,7 @@
   // Mobile - below 768px
   @media (max-width: 767px) {
     font-size: clamp(1.4rem, 5vw, 1.8rem);
-    margin-bottom: clamp(0.7rem, 1.5vw, 1rem);
+    margin-bottom: clamp(0.3rem, 1vw, 0.6rem);
     text-align: center;
   }
   
@@ -696,18 +698,20 @@
   
   // Mobile large - 576px to 767px
   @media (min-width: 576px) and (max-width: 767px) {
-    height: clamp(65px, 14vw, 75px);
-    padding: clamp(0.6rem, 1.8vw, 0.9rem);
-    gap: clamp(0.6rem, 1.8vw, 0.9rem);
-    border-radius: 7px;
+    height: auto;
+    min-height: 32px;
+    padding: clamp(0.2rem, 0.8vw, 0.3rem);
+    gap: clamp(0.2rem, 0.8vw, 0.3rem);
+    border-radius: 4px;
   }
   
   // Mobile small - below 576px
   @media (max-width: 575px) {
-    height: clamp(60px, 16vw, 70px);
-    padding: clamp(0.5rem, 2vw, 0.8rem);
-    gap: clamp(0.5rem, 2vw, 0.8rem);
-    border-radius: 6px;
+    height: auto;
+    min-height: 28px;
+    padding: clamp(0.15rem, 1vw, 0.25rem);
+    gap: clamp(0.15rem, 1vw, 0.25rem);
+    border-radius: 3px;
   }
   
   // Landscape adjustments
@@ -767,15 +771,15 @@
   
   // Mobile - below 1024px
   @media (max-width: 1023px) {
-    width: clamp(30px, 7vw, 36px);
-    height: clamp(30px, 7vw, 36px);
-    border-radius: clamp(5px, 1vw, 6px);
+    width: clamp(18px, 4vw, 22px);
+    height: clamp(18px, 4vw, 22px);
+    border-radius: clamp(2px, 0.5vw, 3px);
   }
   
   // Very small mobile
   @media (max-width: 375px) {
-    width: clamp(28px, 8vw, 32px);
-    height: clamp(28px, 8vw, 32px);
+    width: clamp(16px, 5vw, 20px);
+    height: clamp(16px, 5vw, 20px);
   }
   
   svg {
@@ -796,8 +800,13 @@
     }
     
     @media (max-width: 767px) {
-      width: clamp(14px, 4vw, 18px);
-      height: clamp(14px, 4vw, 18px);
+      width: clamp(10px, 3vw, 14px);
+      height: clamp(10px, 3vw, 14px);
+    }
+    
+    @media (max-width: 375px) {
+      width: clamp(8px, 2.5vw, 12px);
+      height: clamp(8px, 2.5vw, 12px);
     }
   }
   
@@ -815,6 +824,12 @@
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
   word-wrap: break-word;
   hyphens: auto;
+  overflow-wrap: break-word;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
   
   // Enhanced responsive typography
   
@@ -838,13 +853,20 @@
   
   // Mobile - below 1024px
   @media (max-width: 1023px) {
-    font-size: clamp(0.85rem, 2.2vw, 1rem);
-    margin-bottom: 0.15rem;
+    font-size: clamp(0.6rem, 1.5vw, 0.7rem);
+    margin-bottom: 0.05rem;
+    line-height: 1.05;
+    word-break: break-word;
+    hyphens: auto;
   }
   
   // Very small mobile
   @media (max-width: 375px) {
-    font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+    font-size: clamp(0.55rem, 1.8vw, 0.6rem);
+    margin-bottom: 0.03rem;
+    line-height: 1.0;
+    word-break: break-word;
+    hyphens: auto;
   }
 }
 
@@ -894,17 +916,18 @@
   
   // Mobile - below 1024px
   @media (max-width: 1023px) {
-    font-size: clamp(0.75rem, 1.8vw, 0.85rem);
-    line-height: 1.25;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
+    font-size: clamp(0.5rem, 1.2vw, 0.6rem);
+    line-height: 1.1;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
   }
   
   // Very small mobile
   @media (max-width: 375px) {
-    font-size: clamp(0.7rem, 2vw, 0.8rem);
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
+    font-size: clamp(0.45rem, 1.4vw, 0.55rem);
+    line-height: 1.05;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
   }
 }
 
@@ -1235,7 +1258,11 @@
     text-align: center;
     
     @media (max-width: 768px) {
-      padding: 0 1rem;
+      padding: 0 0.8rem;
+    }
+    
+    @media (max-width: 576px) {
+      padding: 0 0.6rem;
     }
     
     .hero-title {
@@ -1244,8 +1271,18 @@
       text-align: center;
       
       @media (max-width: 768px) {
-        font-size: 2.5rem;
-        margin-bottom: 1.5rem;
+        font-size: 2.2rem;
+        margin-bottom: 1.2rem;
+      }
+      
+      @media (max-width: 576px) {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+      }
+      
+      @media (max-width: 375px) {
+        font-size: 1.6rem;
+        margin-bottom: 0.8rem;
       }
     }
     
@@ -1257,7 +1294,17 @@
       line-height: 1.6;
       
       @media (max-width: 768px) {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+      }
+      
+      @media (max-width: 576px) {
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+      
+      @media (max-width: 375px) {
+        font-size: 0.9rem;
+        line-height: 1.4;
       }
     }
   }
