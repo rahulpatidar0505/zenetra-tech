@@ -47,6 +47,15 @@ export class HomeComponent implements OnInit, OnDestroy {
       customContent: 'what-we-offer'
     },
     {
+      title: 'Career Counseling',
+      subtitle: 'Get personalized career guidance and mentorship to navigate your professional journey. Expert advice to help you make informed decisions about your career path.',
+      img: '/assets/images/career counceling.jpg',
+      backgroundImg: '/assets/images/career counceling.jpg',
+      route: '/services',
+      isCustomSlide: true,
+      customContent: 'career-counseling'
+    },
+    {
       title: 'Playwright Testing Mastery',
       subtitle: 'A step-by-step program for Quality Engineers to master test automation with personalized mentorship.',
       img: '/assets/images/playwright1.jpg',
