@@ -16,19 +16,6 @@
     </image:image>
   </url>
   
-  <!-- About Page -->
-  <url>
-    <loc>https://zenetratechnologies.com/about</loc>
-    <lastmod>2024-12-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://zenetratechnologies.com/assets/images/about-bg.jpg</image:loc>
-      <image:title>About Zenetra Technologies</image:title>
-      <image:caption>Learn about our mission and expertise in IT training</image:caption>
-    </image:image>
-  </url>
-  
   <!-- Courses Page -->
   <url>
     <loc>https://zenetratechnologies.com/courses</loc>

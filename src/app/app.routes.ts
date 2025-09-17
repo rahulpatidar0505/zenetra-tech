@@ -3,7 +3,6 @@ import { HomeComponent } from './pages/home/home.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'about', redirectTo: '/', pathMatch: 'full' }, // Redirect to home page
   { 
     path: 'courses', 
     loadComponent: () => import('./pages/courses/courses.component').then(m => m.CoursesComponent)
