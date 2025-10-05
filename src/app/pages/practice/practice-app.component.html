@@ -45,13 +45,24 @@
     </div>
     
     <!-- Status Message -->
-    <div class="status-message" *ngIf="submitMessage" [class.loading]="isLoading">
+    <div class="status-message" *ngIf="submitMessage" 
+         [class.loading]="isLoading"
+         [class.success]="!isLoading && messageType === 'success'"
+         [class.error]="!isLoading && messageType === 'error'"
+         [class.warning]="!isLoading && messageType === 'warning'"
+         [class.info]="!isLoading && messageType === 'info'">
       <div *ngIf="isLoading" class="loading-spinner">
         <div class="spinner"></div>
         <span>Processing...</span>
       </div>
-      <div *ngIf="!isLoading" class="success-message">
-        ✅ <span [innerHTML]="submitMessage"></span>
+      <div *ngIf="!isLoading" class="message-content">
+        <span class="message-icon">
+          <span *ngIf="messageType === 'success'">✅</span>
+          <span *ngIf="messageType === 'error'">❌</span>
+          <span *ngIf="messageType === 'warning'">⚠️</span>
+          <span *ngIf="messageType === 'info'">ℹ️</span>
+        </span>
+        <span class="message-text" [innerHTML]="submitMessage"></span>
       </div>
     </div>
 

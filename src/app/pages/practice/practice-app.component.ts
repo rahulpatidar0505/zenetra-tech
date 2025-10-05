@@ -193,6 +193,7 @@ export class PracticeAppComponent implements OnInit, OnDestroy {
   // State variables
   isLoading = false;
   submitMessage = '';
+  messageType: 'success' | 'error' | 'warning' | 'info' = 'success';
   selectedTab = 'using-the-grid';
   completedModules: Set<string> = new Set();
   
@@ -340,7 +341,43 @@ export class PracticeAppComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder
   ) {
     this.initializeForms();
-  }  ngOnInit() {
+  }
+
+  // Message Handling Methods
+  setMessage(message: string, type: 'success' | 'error' | 'warning' | 'info' = 'success') {
+    this.submitMessage = message;
+    this.messageType = type;
+    this.isLoading = false;
+    
+    // Auto-hide message after 5 seconds
+    setTimeout(() => {
+      this.submitMessage = '';
+    }, 5000);
+  }
+
+  setSuccessMessage(message: string) {
+    this.setMessage(message, 'success');
+  }
+
+  setErrorMessage(message: string) {
+    this.setMessage(message, 'error');
+  }
+
+  setWarningMessage(message: string) {
+    this.setMessage(message, 'warning');
+  }
+
+  setInfoMessage(message: string) {
+    this.setMessage(message, 'info');
+  }
+
+  // Show both main message and toastr for important operations
+  setMessageWithToastr(message: string, type: 'success' | 'error' | 'warning' | 'info' = 'success') {
+    this.setMessage(message, type);
+    this.showToastrNotification(type, message);
+  }
+
+  ngOnInit() {
     // Add class to body to hide header/footer for standalone mode
     document.body.classList.add('practice-app-active');
     
@@ -861,14 +898,32 @@ export class PracticeAppComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       this.submitMessage = '';
       
+      // Check for specific validation scenarios to show different message types
+      const formData = this.gridForm.value;
+      
       // Simulate API call
       setTimeout(() => {
-        this.isLoading = false;
-        this.submitMessage = 'Grid form submitted successfully!';
+        // Demo: Show different message types based on form data
+        if (formData.email && formData.email.includes('test')) {
+          this.setWarningMessage('Form submitted successfully, but test email detected. Please use a real email for production.');
+        } else if (formData.firstName && formData.firstName.toLowerCase().includes('admin')) {
+          this.setInfoMessage('Admin user detected. Form submitted with special privileges.');
+        } else {
+          this.setSuccessMessage('Grid form submitted successfully!');
+        }
         console.log('Grid Form Data:', this.gridForm.value);
       }, 2000);
     } else {
-      this.submitMessage = 'Please fill all required fields correctly.';
+      // Show specific error based on validation state
+      const firstInvalidField = Object.keys(this.gridForm.controls).find(key => 
+        this.gridForm.get(key)?.invalid
+      );
+      
+      if (firstInvalidField) {
+        this.setErrorMessage(`Please fix the validation errors. First invalid field: ${firstInvalidField}`);
+      } else {
+        this.setErrorMessage('Please fill all required fields correctly.');
+      }
     }
   }
 
@@ -879,7 +934,7 @@ export class PracticeAppComponent implements OnInit, OnDestroy {
       const confirmPassword = this.combinedForm.get('confirmPassword')?.value;
       
       if (password !== confirmPassword) {
-        this.submitMessage = 'Passwords do not match!';
+        this.setErrorMessage('Passwords do not match!');
         return;
       }
       
@@ -888,12 +943,31 @@ export class PracticeAppComponent implements OnInit, OnDestroy {
       
       // Simulate API call
       setTimeout(() => {
-        this.isLoading = false;
-        this.submitMessage = 'Combined form submitted successfully! All data validated and processed.';
+        const formData = this.combinedForm.value;
+        
+        // Demo: Show different message types based on form data
+        if (formData.salary && formData.salary < 30000) {
+          this.setWarningMessage('Form submitted successfully, but salary seems low. Please verify the amount.');
+        } else if (formData.age && formData.age > 65) {
+          this.setInfoMessage('Senior applicant detected. Form submitted with age verification note.');
+        } else if (formData.skills && formData.skills.length > 5) {
+          this.setSuccessMessage('Excellent! Combined form submitted successfully with multiple skills!');
+        } else {
+          this.setSuccessMessage('Combined form submitted successfully! All data validated and processed.');
+        }
         console.log('Combined Form Data:', this.combinedForm.value);
       }, 3000);
     } else {
-      this.submitMessage = 'Please fill all required fields correctly.';
+      // Show specific error information
+      const invalidFields = Object.keys(this.combinedForm.controls).filter(key => 
+        this.combinedForm.get(key)?.invalid
+      );
+      
+      if (invalidFields.length > 0) {
+        this.setErrorMessage(`Please fix validation errors in: ${invalidFields.join(', ')}`);
+      } else {
+        this.setErrorMessage('Please fill all required fields correctly.');
+      }
       this.markFormGroupTouched(this.combinedForm);
     }
   }
