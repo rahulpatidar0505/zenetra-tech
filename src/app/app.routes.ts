@@ -12,6 +12,16 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/courses/playwright-automation.component').then(m => m.PlaywrightAutomationComponent)
   },
   { 
+    path: 'practice-app', 
+    loadComponent: () => import('./pages/practice/practice-app.component').then(m => m.PracticeAppComponent),
+    title: 'Playwright Practice Application - Standalone Testing Environment'
+  },
+  { 
+    path: 'practice-standalone', 
+    loadComponent: () => import('./pages/practice/practice-app.component').then(m => m.PracticeAppComponent),
+    title: 'Playwright Practice Application - Standalone Testing Environment'
+  },
+  { 
     path: 'courses/java-development', 
     loadComponent: () => import('./pages/courses/java-development.component').then(m => m.JavaDevelopmentComponent)
   },

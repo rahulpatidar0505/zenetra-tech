@@ -1,0 +1,3990 @@
+<!-- Practice Application Header -->
+<div class="practice-header">
+  <div class="container">
+    <div class="header-content">
+      <h1>🎭 Playwright Practice Application</h1>
+      <p class="subtitle">Professional automation testing environment for hands-on practice</p>
+      <div class="header-stats">
+        <span class="stat-item">8 Practice Modules</span>
+        <span class="stat-item">Real-world Scenarios</span>
+        <span class="stat-item">Industry Standards</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content Area -->
+<div class="practice-content">
+  <div class="container">
+    
+    <!-- Progress Tracker -->
+    <div class="progress-tracker">
+      <div class="progress-header">
+        <h3>🎯 Practice Progress</h3>
+        <span class="progress-text">Complete all modules to master automation testing</span>
+      </div>
+      <div class="progress-modules">
+        <div class="module-progress" 
+             *ngFor="let tab of ['using-the-grid', 'combined-forms', 'modal-overlays', 'smart-table', 'file-operations', 'api-practice', 'ui-elements', 'playwright-quiz']"
+             [class.completed]="completedModules.has(tab)"
+             [class.active]="selectedTab === tab"
+             (click)="setActiveTab(tab)">
+          <span class="module-icon" [innerHTML]="getTabIcon(tab)"></span>
+          <span class="module-name" [innerHTML]="getTabName(tab)"></span>
+          <span class="completion-badge" *ngIf="completedModules.has(tab)">✓</span>
+        </div>
+      </div>
+      <div class="progress-summary" *ngIf="completedModules.size > 0">
+        <div class="summary-stats">
+          <span class="completed-count"><span [innerHTML]="completedModules.size"></span>/8 Modules Completed</span>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="(completedModules.size / 8) * 100"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Status Message -->
+    <div class="status-message" *ngIf="submitMessage" [class.loading]="isLoading">
+      <div *ngIf="isLoading" class="loading-spinner">
+        <div class="spinner"></div>
+        <span>Processing...</span>
+      </div>
+      <div *ngIf="!isLoading" class="success-message">
+        ✅ <span [innerHTML]="submitMessage"></span>
+      </div>
+    </div>
+
+    <!-- Using the Grid Tab -->
+    <div class="tab-content" *ngIf="selectedTab === 'using-the-grid'">
+      <div class="form-section">
+        <h2>Grid Layout Form</h2>
+        <p class="form-description">Practice with complex grid-based form layouts and multiple field types.</p>
+        
+        <form [formGroup]="gridForm" (ngSubmit)="onGridFormSubmit()" class="grid-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name *</label>
+              <input 
+                type="text" 
+                id="firstName" 
+                formControlName="firstName"
+                placeholder="Enter first name (letters only)"
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('gridForm', 'firstName')"
+                [class.is-valid]="isFieldValid('gridForm', 'firstName')"
+                data-testid="firstName">
+              <div class="error-message" *ngIf="isFieldInvalid('gridForm', 'firstName')" [innerHTML]="getGridFormError('firstName')">
+              </div>
+              <div class="success-message" *ngIf="isFieldValid('gridForm', 'firstName')">
+                ✓ Valid first name
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="lastName">Last Name *</label>
+              <input 
+                type="text" 
+                id="lastName" 
+                formControlName="lastName"
+                placeholder="Enter last name (letters only)"
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('gridForm', 'lastName')"
+                [class.is-valid]="isFieldValid('gridForm', 'lastName')"
+                data-testid="lastName">
+              <div class="error-message" *ngIf="isFieldInvalid('gridForm', 'lastName')" [innerHTML]="getGridFormError('lastName')">
+              </div>
+              <div class="success-message" *ngIf="isFieldValid('gridForm', 'lastName')">
+                ✓ Valid last name
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label for="gridEmail">Email *</label>
+              <input 
+                type="email" 
+                id="gridEmail" 
+                formControlName="email"
+                placeholder="Enter email address (e.g., user@example.com)"
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('gridForm', 'email')"
+                [class.is-valid]="isFieldValid('gridForm', 'email')"
+                data-testid="gridEmail">
+              <div class="error-message" *ngIf="isFieldInvalid('gridForm', 'email')" [innerHTML]="getGridFormError('email')">
+              </div>
+              <div class="success-message" *ngIf="isFieldValid('gridForm', 'email')">
+                ✓ Valid email address
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="country">Country *</label>
+              <select 
+                id="country" 
+                formControlName="country"
+                class="form-control"
+                data-testid="country">
+                <option value="">Select Country</option>
+                <option *ngFor="let country of countries" [value]="country" [innerHTML]="country"></option>
+              </select>
+              <div class="error-message" *ngIf="gridForm.get('country')?.invalid && gridForm.get('country')?.touched">
+                Country is required
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="city">City *</label>
+              <select 
+                id="city" 
+                formControlName="city"
+                class="form-control"
+                data-testid="city">
+                <option value="">Select City</option>
+                <option *ngFor="let city of cities" [value]="city" [innerHTML]="city"></option>
+              </select>
+              <div class="error-message" *ngIf="gridForm.get('city')?.invalid && gridForm.get('city')?.touched">
+                City is required
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="jobRole">Job Role *</label>
+              <input 
+                type="text" 
+                id="jobRole" 
+                formControlName="jobRole"
+                placeholder="e.g. Software Engineer"
+                class="form-control"
+                data-testid="jobRole">
+              <div class="error-message" *ngIf="gridForm.get('jobRole')?.invalid && gridForm.get('jobRole')?.touched">
+                Job role is required
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="experience">Experience *</label>
+              <select 
+                id="experience" 
+                formControlName="experience"
+                class="form-control"
+                data-testid="experience">
+                <option value="">Select Experience</option>
+                <option value="0-1 years">0-1 years</option>
+                <option value="2-5 years">2-5 years</option>
+                <option value="6-10 years">6-10 years</option>
+                <option value="10+ years">10+ years</option>
+              </select>
+              <div class="error-message" *ngIf="gridForm.get('experience')?.invalid && gridForm.get('experience')?.touched">
+                Experience is required
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" [disabled]="isLoading" data-testid="gridSubmit">
+              Submit
+            </button>
+            <button type="button" class="btn-secondary" (click)="clearForm('grid')" data-testid="gridClear">
+              Clear
+            </button>
+            <button type="button" class="btn-info" (click)="fillSampleData('grid')" data-testid="gridSample">
+              Fill Sample Data
+            </button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Testing Instructions for Grid Layout Form -->
+      <div class="testing-instructions-section">
+        <div class="testing-header">
+          <h3>🧪 Grid Layout Form - Testing Instructions</h3>
+          <p class="testing-subtitle">Comprehensive test scenarios for form validation and user interactions</p>
+        </div>
+        
+        <div class="testing-categories">
+          <!-- Positive Test Cases -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">✅</span>
+              <h4>Positive Test Cases (Valid Data Entry)</h4>
+              <span class="category-description">Test successful form completion scenarios</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC001: Valid Form Submission</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify successful form submission with all valid data</p>
+                  <ol>
+                    <li>Enter valid first name: "John" (letters only)</li>
+                    <li>Enter valid last name: "Doe" (letters only)</li>
+                    <li>Enter valid email: "john.doe@example.com"</li>
+                    <li>Select country from dropdown: "USA"</li>
+                    <li>Select city from dropdown: "New York"</li>
+                    <li>Select job role: "Software Engineer"</li>
+                    <li>Select experience level: "2-5 years"</li>
+                    <li>Click Submit button</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Form submits successfully, success message appears, green checkmarks show for all fields</p>
+                </div>
+              </div>
+              
+              <div class="test-scenario">
+                <h5>TC002: Sample Data Auto-Fill</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify sample data populates all fields correctly</p>
+                  <ol>
+                    <li>Click "Fill Sample Data" button</li>
+                    <li>Verify all fields are populated with valid sample data</li>
+                    <li>Check that all validation indicators show green (valid state)</li>
+                    <li>Submit the form with sample data</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> All fields filled with valid data, form submits successfully</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Negative Test Cases -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">❌</span>
+              <h4>Negative Test Cases (Invalid Data Entry)</h4>
+              <span class="category-description">Test form validation and error handling</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC003: Required Field Validation</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify required field validation prevents submission</p>
+                  <ol>
+                    <li>Leave First Name field empty, enter other valid data</li>
+                    <li>Click Submit button</li>
+                    <li>Verify error message: "First Name is required"</li>
+                    <li>Repeat for each required field individually</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Form doesn't submit, specific error messages shown, red border on invalid fields</p>
+                </div>
+              </div>
+              
+              <div class="test-scenario">
+                <h5>TC004: Name Field Character Validation</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify name fields reject invalid characters</p>
+                  <ol>
+                    <li>Enter "John123" in First Name field</li>
+                    <li>Tab out of field</li>
+                    <li>Verify error: "Name can only contain letters, spaces, hyphens, and apostrophes"</li>
+                    <li>Test special characters: "John@#$"</li>
+                    <li>Test numbers: "John123"</li>
+                    <li>Test valid names: "O'Connor", "Mary-Jane"</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Invalid characters rejected with appropriate error messages, valid names accepted</p>
+                </div>
+              </div>
+              
+              <div class="test-scenario">
+                <h5>TC005: Email Format Validation</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify email field validates proper format</p>
+                  <ol>
+                    <li>Enter invalid email: "notanemail"</li>
+                    <li>Verify error: "Please enter a valid email address"</li>
+                    <li>Test various invalid formats: "user@", "@domain.com", "user.domain"</li>
+                    <li>Test valid email: "user@example.com"</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Invalid emails rejected, valid emails accepted with green checkmark</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- UI/UX Test Cases -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">🎨</span>
+              <h4>UI/UX Test Cases</h4>
+              <span class="category-description">Test user interface and experience aspects</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC006: Visual Feedback Testing</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify proper visual feedback for user actions</p>
+                  <ol>
+                    <li>Focus on each input field and verify blue border appears</li>
+                    <li>Enter invalid data and verify red border with error message</li>
+                    <li>Enter valid data and verify green border with checkmark</li>
+                    <li>Check that error messages are clear and helpful</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Clear visual indicators for all field states, helpful error messages</p>
+                </div>
+              </div>
+              
+              <div class="test-scenario">
+                <h5>TC007: Responsive Design Testing</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify form works on different screen sizes</p>
+                  <ol>
+                    <li>Test on desktop resolution (1920x1080)</li>
+                    <li>Test on tablet resolution (768x1024)</li>
+                    <li>Test on mobile resolution (375x667)</li>
+                    <li>Verify form layout adapts properly</li>
+                    <li>Ensure all elements remain accessible</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Form adapts to different screen sizes, maintains usability</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Automation Test Cases -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">🤖</span>
+              <h4>Automation Test Cases</h4>
+              <span class="category-description">Specific scenarios for automation testing practice</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC008: Playwright Automation Examples</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Practice common Playwright automation patterns</p>
+                  <div class="code-examples">
+                    <h6>Element Locators to Practice:</h6>
+                    <ul>
+                      <li><code>page.getByTestId('firstName')</code> - Test ID locator</li>
+                      <li><code>page.locator('#gridEmail')</code> - ID locator</li>
+                      <li><code>page.getByLabel('Country *')</code> - Label locator</li>
+                      <li><code [innerHTML]="getPlaywrightExamples().roleLocator"></code> - Role locator</li>
+                    </ul>
+                    <h6>Actions to Practice:</h6>
+                    <ul>
+                      <li>Fill text inputs: <code>await page.fill('[data-testid="firstName"]', 'John')</code></li>
+                      <li>Select dropdowns: <code>await page.selectOption('#country', 'USA')</code></li>
+                      <li>Click buttons: <code>await page.click('button[type="submit"]')</code></li>
+                      <li>Verify text: <code>await expect(page.locator('.success-message')).toContainText('Form submitted')</code></li>
+                    </ul>
+                  </div>
+                  <p><strong>Expected Result:</strong> Successful automation of all form interactions using various Playwright methods</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Combined Forms Tab -->
+    <div class="tab-content" *ngIf="selectedTab === 'combined-forms'">
+      <div class="form-section">
+        <h2>Comprehensive Forms Practice</h2>
+        <p class="form-description">Practice with all form elements including text inputs, email, password, dropdowns, radio buttons, checkboxes, and validations. This section covers all common form scenarios for automation testing.</p>
+        
+        <form [formGroup]="combinedForm" (ngSubmit)="onCombinedFormSubmit()" class="combined-form">
+          
+          <!-- Personal Information Section -->
+          <div class="form-section-group">
+            <h3>Personal Information</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="combinedFirstName">First Name *</label>
+                <input 
+                  type="text" 
+                  id="combinedFirstName" 
+                  formControlName="firstName"
+                  placeholder="Enter first name (letters only)"
+                  class="form-control"
+                  [class.is-invalid]="isFieldInvalid('combinedForm', 'firstName')"
+                  [class.is-valid]="isFieldValid('combinedForm', 'firstName')"
+                  data-testid="combinedFirstName">
+                <div class="error-message" *ngIf="isFieldInvalid('combinedForm', 'firstName')" [innerHTML]="getCombinedFormError('firstName')">
+                </div>
+                <div class="success-message" *ngIf="isFieldValid('combinedForm', 'firstName')">
+                  ✓ Valid first name
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="combinedLastName">Last Name *</label>
+                <input 
+                  type="text" 
+                  id="combinedLastName" 
+                  formControlName="lastName"
+                  placeholder="Enter last name (letters only)"
+                  class="form-control"
+                  [class.is-invalid]="isFieldInvalid('combinedForm', 'lastName')"
+                  [class.is-valid]="isFieldValid('combinedForm', 'lastName')"
+                  data-testid="combinedLastName">
+                <div class="error-message" *ngIf="isFieldInvalid('combinedForm', 'lastName')" [innerHTML]="getCombinedFormError('lastName')">
+                </div>
+                <div class="success-message" *ngIf="isFieldValid('combinedForm', 'lastName')">
+                  ✓ Valid last name
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="combinedEmail">Email *</label>
+                <input 
+                  type="email" 
+                  id="combinedEmail" 
+                  formControlName="email"
+                  placeholder="Enter email address"
+                  class="form-control"
+                  data-testid="combinedEmail">
+                <div class="error-message" *ngIf="combinedForm.get('email')?.invalid && combinedForm.get('email')?.touched">
+                  Valid email is required
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="combinedPhone">Phone Number *</label>
+                <input 
+                  type="tel" 
+                  id="combinedPhone" 
+                  formControlName="phone"
+                  placeholder="+1-555-123-4567 (digits only)"
+                  class="form-control"
+                  [class.is-invalid]="isFieldInvalid('combinedForm', 'phone')"
+                  [class.is-valid]="isFieldValid('combinedForm', 'phone')"
+                  data-testid="combinedPhone">
+                <div class="error-message" *ngIf="isFieldInvalid('combinedForm', 'phone')" [innerHTML]="getCombinedFormError('phone')">
+                </div>
+                <div class="success-message" *ngIf="isFieldValid('combinedForm', 'phone')">
+                  ✓ Valid phone number
+                </div>
+                <div class="field-hint">
+                  <small>Format: Use digits, spaces, hyphens, parentheses, or plus sign. Example: +1-555-123-4567</small>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="combinedDateOfBirth">Date of Birth *</label>
+                <input 
+                  type="date" 
+                  id="combinedDateOfBirth" 
+                  formControlName="dateOfBirth"
+                  class="form-control"
+                  [class.is-invalid]="isFieldInvalid('combinedForm', 'dateOfBirth')"
+                  [class.is-valid]="isFieldValid('combinedForm', 'dateOfBirth')"
+                  data-testid="combinedDateOfBirth">
+                <div class="error-message" *ngIf="isFieldInvalid('combinedForm', 'dateOfBirth')" [innerHTML]="getCombinedFormError('dateOfBirth')">
+                </div>
+                <div class="success-message" *ngIf="isFieldValid('combinedForm', 'dateOfBirth')">
+                  ✓ Valid date of birth
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="combinedAge">Age (Optional)</label>
+                <input 
+                  type="number" 
+                  id="combinedAge" 
+                  formControlName="age"
+                  placeholder="Enter age (18-100)"
+                  class="form-control"
+                  [class.is-invalid]="isFieldInvalid('combinedForm', 'age')"
+                  [class.is-valid]="isFieldValid('combinedForm', 'age')"
+                  data-testid="combinedAge">
+                <div class="error-message" *ngIf="isFieldInvalid('combinedForm', 'age')" [innerHTML]="getCombinedFormError('age')">
+                </div>
+                <div class="success-message" *ngIf="isFieldValid('combinedForm', 'age')">
+                  ✓ Valid age
+                </div>
+                <div class="field-hint">
+                  <small>Age must be between 18 and 100 years</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Address Information Section -->
+          <div class="form-section-group">
+            <h3>Address Information</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="combinedCountry">Country *</label>
+                <select 
+                  id="combinedCountry" 
+                  formControlName="country"
+                  class="form-control"
+                  data-testid="combinedCountry">
+                  <option value="">Select Country</option>
+                  <option *ngFor="let country of countries" [value]="country" [innerHTML]="country"></option>
+                </select>
+                <div class="error-message" *ngIf="combinedForm.get('country')?.invalid && combinedForm.get('country')?.touched">
+                  Country is required
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="combinedCity">City *</label>
+                <select 
+                  id="combinedCity" 
+                  formControlName="city"
+                  class="form-control"
+                  data-testid="combinedCity">
+                  <option value="">Select City</option>
+                  <option *ngFor="let city of cities" [value]="city" [innerHTML]="city"></option>
+                </select>
+                <div class="error-message" *ngIf="combinedForm.get('city')?.invalid && combinedForm.get('city')?.touched">
+                  City is required
+                </div>
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="combinedAddress">Address *</label>
+                <input 
+                  type="text" 
+                  id="combinedAddress" 
+                  formControlName="address"
+                  placeholder="Enter full address"
+                  class="form-control"
+                  data-testid="combinedAddress">
+                <div class="error-message" *ngIf="combinedForm.get('address')?.invalid && combinedForm.get('address')?.touched">
+                  Address is required
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="combinedZipCode">Zip Code *</label>
+                <input 
+                  type="text" 
+                  id="combinedZipCode" 
+                  formControlName="zipCode"
+                  placeholder="12345"
+                  class="form-control"
+                  data-testid="combinedZipCode">
+                <div class="error-message" *ngIf="combinedForm.get('zipCode')?.invalid && combinedForm.get('zipCode')?.touched">
+                  Zip code is required
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Professional Information Section -->
+          <div class="form-section-group">
+            <h3>Professional Information</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="combinedJobRole">Job Role *</label>
+                <select 
+                  id="combinedJobRole" 
+                  formControlName="jobRole"
+                  class="form-control"
+                  data-testid="combinedJobRole">
+                  <option value="">Select Job Role</option>
+                  <option *ngFor="let role of jobRoles" [value]="role" [innerHTML]="role"></option>
+                </select>
+                <div class="error-message" *ngIf="combinedForm.get('jobRole')?.invalid && combinedForm.get('jobRole')?.touched">
+                  Job role is required
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="combinedCompany">Company *</label>
+                <input 
+                  type="text" 
+                  id="combinedCompany" 
+                  formControlName="company"
+                  placeholder="Enter company name"
+                  class="form-control"
+                  data-testid="combinedCompany">
+                <div class="error-message" *ngIf="combinedForm.get('company')?.invalid && combinedForm.get('company')?.touched">
+                  Company is required
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="combinedSalary">Expected Salary *</label>
+                <input 
+                  type="number" 
+                  id="combinedSalary" 
+                  formControlName="salary"
+                  placeholder="80000"
+                  class="form-control"
+                  data-testid="combinedSalary">
+                <div class="error-message" *ngIf="combinedForm.get('salary')?.invalid && combinedForm.get('salary')?.touched">
+                  Salary is required
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Account Information Section -->
+          <div class="form-section-group">
+            <h3>Account Information</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="combinedUsername">Username *</label>
+                <input 
+                  type="text" 
+                  id="combinedUsername" 
+                  formControlName="username"
+                  placeholder="Enter username (min 3 chars)"
+                  class="form-control"
+                  data-testid="combinedUsername">
+                <div class="error-message" *ngIf="combinedForm.get('username')?.invalid && combinedForm.get('username')?.touched">
+                  Username is required (minimum 3 characters)
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="combinedPassword">Password *</label>
+                <input 
+                  type="password" 
+                  id="combinedPassword" 
+                  formControlName="password"
+                  placeholder="Enter password (min 6 chars)"
+                  class="form-control"
+                  data-testid="combinedPassword">
+                <div class="error-message" *ngIf="combinedForm.get('password')?.invalid && combinedForm.get('password')?.touched">
+                  Password is required (minimum 6 characters)
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="combinedConfirmPassword">Confirm Password *</label>
+                <input 
+                  type="password" 
+                  id="combinedConfirmPassword" 
+                  formControlName="confirmPassword"
+                  placeholder="Confirm password"
+                  class="form-control"
+                  data-testid="combinedConfirmPassword">
+                <div class="error-message" *ngIf="combinedForm.get('confirmPassword')?.invalid && combinedForm.get('confirmPassword')?.touched">
+                  Password confirmation is required
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Additional Information Section -->
+          <div class="form-section-group">
+            <h3>Additional Information</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="combinedWebsite">Website</label>
+                <input 
+                  type="url" 
+                  id="combinedWebsite" 
+                  formControlName="website"
+                  placeholder="https://yourwebsite.com"
+                  class="form-control"
+                  data-testid="combinedWebsite">
+              </div>
+              
+              <div class="form-group">
+                <label for="combinedLinkedIn">LinkedIn Profile</label>
+                <input 
+                  type="url" 
+                  id="combinedLinkedIn" 
+                  formControlName="linkedIn"
+                  placeholder="https://linkedin.com/in/yourprofile"
+                  class="form-control"
+                  data-testid="combinedLinkedIn">
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="combinedSkills">Skills</label>
+                <input 
+                  type="text" 
+                  id="combinedSkills" 
+                  formControlName="skills"
+                  placeholder="JavaScript, TypeScript, Angular, React..."
+                  class="form-control"
+                  data-testid="combinedSkills">
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="combinedComments">Additional Comments</label>
+                <textarea 
+                  id="combinedComments" 
+                  formControlName="comments"
+                  placeholder="Any additional information..."
+                  class="form-control"
+                  rows="4"
+                  data-testid="combinedComments"></textarea>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Preferences Section -->
+          <div class="form-section-group">
+            <h3>Preferences</h3>
+            <div class="checkbox-group">
+              <div class="checkbox-item">
+                <input 
+                  type="checkbox" 
+                  id="combinedNewsletter" 
+                  formControlName="newsletter"
+                  data-testid="combinedNewsletter">
+                <label for="combinedNewsletter">Subscribe to newsletter</label>
+              </div>
+              
+              <div class="checkbox-item">
+                <input 
+                  type="checkbox" 
+                  id="combinedNotifications" 
+                  formControlName="notifications"
+                  data-testid="combinedNotifications">
+                <label for="combinedNotifications">Enable email notifications</label>
+              </div>
+              
+              <div class="checkbox-item">
+                <input 
+                  type="checkbox" 
+                  id="combinedTerms" 
+                  formControlName="terms"
+                  data-testid="combinedTerms">
+                <label for="combinedTerms">I agree to the terms and conditions *</label>
+                <div class="error-message" *ngIf="combinedForm.get('terms')?.invalid && combinedForm.get('terms')?.touched">
+                  You must agree to the terms and conditions
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Radio Buttons & Links Section -->
+          <div class="form-section-group">
+            <h3>Radio Buttons & Links Practice</h3>
+            
+            <!-- Radio Button Groups -->
+            <div class="radio-section">
+              <h4>Communication Preference</h4>
+              <div class="radio-group">
+                <div class="radio-item">
+                  <input 
+                    type="radio" 
+                    id="commEmail" 
+                    name="communicationPref" 
+                    value="email"
+                    formControlName="communicationPref"
+                    data-testid="radioCommEmail">
+                  <label for="commEmail">Email</label>
+                </div>
+                
+                <div class="radio-item">
+                  <input 
+                    type="radio" 
+                    id="commPhone" 
+                    name="communicationPref" 
+                    value="phone"
+                    formControlName="communicationPref"
+                    data-testid="radioCommPhone">
+                  <label for="commPhone">Phone</label>
+                </div>
+                
+                <div class="radio-item">
+                  <input 
+                    type="radio" 
+                    id="commSMS" 
+                    name="communicationPref" 
+                    value="sms"
+                    formControlName="communicationPref"
+                    data-testid="radioCommSMS">
+                  <label for="commSMS">SMS</label>
+                </div>
+                
+                <div class="radio-item">
+                  <input 
+                    type="radio" 
+                    id="commNone" 
+                    name="communicationPref" 
+                    value="none"
+                    formControlName="communicationPref"
+                    data-testid="radioCommNone">
+                  <label for="commNone">No Communication</label>
+                </div>
+              </div>
+            </div>
+            
+            <div class="radio-section">
+              <h4>Work Mode Preference</h4>
+              <div class="radio-group">
+                <div class="radio-item">
+                  <input 
+                    type="radio" 
+                    id="workRemote" 
+                    name="workMode" 
+                    value="remote"
+                    formControlName="workMode"
+                    data-testid="radioWorkRemote">
+                  <label for="workRemote">Remote Work</label>
+                </div>
+                
+                <div class="radio-item">
+                  <input 
+                    type="radio" 
+                    id="workHybrid" 
+                    name="workMode" 
+                    value="hybrid"
+                    formControlName="workMode"
+                    data-testid="radioWorkHybrid">
+                  <label for="workHybrid">Hybrid Work</label>
+                </div>
+                
+                <div class="radio-item">
+                  <input 
+                    type="radio" 
+                    id="workOffice" 
+                    name="workMode" 
+                    value="office"
+                    formControlName="workMode"
+                    data-testid="radioWorkOffice">
+                  <label for="workOffice">Office Work</label>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Links Section -->
+            <div class="links-section">
+              <h4>Practice Links</h4>
+              <div class="links-grid">
+                <div class="link-group">
+                  <h5>External Links</h5>
+                  <ul class="practice-links">
+                    <li>
+                      <a href="https://playwright.dev" target="_blank" data-testid="linkPlaywright">
+                        Playwright Documentation
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://angular.io" target="_blank" data-testid="linkAngular">
+                        Angular Framework
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://www.typescriptlang.org" target="_blank" data-testid="linkTypeScript">
+                        TypeScript Language
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://github.com" target="_blank" data-testid="linkGitHub">
+                        GitHub Repository
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div class="link-group">
+                  <h5>Internal Navigation</h5>
+                  <ul class="practice-links">
+                    <li>
+                      <a href="javascript:void(0)" (click)="scrollToTop()" data-testid="linkScrollTop">
+                        Scroll to Top
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" (click)="scrollToSection('combined-forms')" data-testid="linkFormSection">
+                        Go to Forms Section
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" (click)="setActiveTab('using-the-grid')" data-testid="linkGridLayout">
+                        Switch to Grid Layout
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" (click)="setActiveTab('smart-table')" data-testid="linkSmartTable">
+                        Switch to Smart Table
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" (click)="setActiveTab('file-operations')" data-testid="linkFileOperations">
+                        Switch to File Operations
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div class="link-group">
+                  <h5>Action Links</h5>
+                  <ul class="practice-links">
+                    <li>
+                      <a href="javascript:void(0)" (click)="fillSampleData('combined')" data-testid="linkFillSample">
+                        Fill Sample Data
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" (click)="clearForm('combined')" data-testid="linkClearForm">
+                        Clear Form
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" (click)="showToastrNotification('info', 'Test link clicked!')" data-testid="linkShowToast">
+                        Show Test Notification
+                      </a>
+                    </li>
+                    <li>
+                      <a href="mailto:test@example.com" data-testid="linkEmail">
+                        Send Test Email
+                      </a>
+                    </li>
+                    <li>
+                      <a href="tel:+1234567890" data-testid="linkPhone">
+                        Call Phone Number
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Link States Practice -->
+            <div class="link-states-section">
+              <h4>Link States & Behaviors</h4>
+              <div class="link-states-grid">
+                <div class="state-group">
+                  <h5>Link States</h5>
+                  <ul class="state-links">
+                    <li><a href="javascript:void(0)" (click)="handleLinkClick('normal')" class="normal-link" data-testid="linkNormal">Normal Link</a></li>
+                    <li><a href="javascript:void(0)" (click)="handleLinkClick('visited')" class="visited-link" data-testid="linkVisited">Visited Link</a></li>
+                    <li><a href="javascript:void(0)" (click)="handleLinkClick('hover')" class="hover-link" data-testid="linkHover">Hover Link</a></li>
+                    <li><a href="javascript:void(0)" (click)="handleLinkClick('active')" class="active-link" data-testid="linkActive">Active Link</a></li>
+                    <li><a href="javascript:void(0)" (click)="handleLinkClick('disabled')" class="disabled-link" data-testid="linkDisabled">Disabled Link</a></li>
+                  </ul>
+                </div>
+                
+                <div class="state-group">
+                  <h5>Dynamic Links</h5>
+                  <ul class="dynamic-links">
+                    <li>
+                      <a href="#" 
+                         [class.enabled]="combinedForm.valid" 
+                         [class.disabled]="!combinedForm.valid" 
+                         data-testid="linkConditional">
+                        Form Valid Link (<span [innerHTML]="getFormValidStatus()"></span>)
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" 
+                         (click)="toggleLink($event)" 
+                         [class.toggled]="isLinkToggled"
+                         data-testid="linkToggle">
+                        Toggle Link (<span [innerHTML]="getLinkToggleStatus()"></span>)
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" 
+                         (click)="incrementCounter($event)" 
+                         data-testid="linkCounter">
+                        Click Counter: <span [innerHTML]="linkClickCounter"></span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" [disabled]="isLoading" data-testid="combinedSubmit">
+              Submit Complete Form
+            </button>
+            <button type="button" class="btn-secondary" (click)="clearForm('combined')" data-testid="combinedClear">
+              Clear All
+            </button>
+            <button type="button" class="btn-info" (click)="fillSampleData('combined')" data-testid="combinedSample">
+              Fill Sample Data
+            </button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Testing Instructions for Combined Forms -->
+      <div class="testing-instructions-section">
+        <div class="testing-header">
+          <h3>🧪 Combined Forms - Testing Instructions</h3>
+          <p class="testing-subtitle">Advanced form validation testing with complex field types and dependencies</p>
+        </div>
+        
+        <div class="testing-categories">
+          <!-- Phone Number Validation -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">📱</span>
+              <h4>Phone Number Validation Testing</h4>
+              <span class="category-description">Test phone field accepts only valid formats and rejects invalid characters</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC009: Valid Phone Number Formats</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify phone field accepts various valid formats</p>
+                  <ol>
+                    <li>Test: "+1-555-123-4567" ✅ Should be accepted</li>
+                    <li>Test: "(555) 123-4567" ✅ Should be accepted</li>
+                    <li>Test: "555.123.4567" ✅ Should be accepted</li>
+                    <li>Test: "15551234567" ✅ Should be accepted</li>
+                    <li>Test: "+44 20 7946 0958" ✅ Should be accepted (international)</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> All valid formats accepted with green checkmark</p>
+                </div>
+              </div>
+              
+              <div class="test-scenario">
+                <h5>TC010: Invalid Phone Number Rejection</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify phone field rejects alphabets and special characters</p>
+                  <ol>
+                    <li>Test: "555-CALL-NOW" ❌ Should show error (contains letters)</li>
+                    <li>Test: "555@123#4567" ❌ Should show error (invalid special chars)</li>
+                    <li>Test: "abc-def-ghij" ❌ Should show error (all letters)</li>
+                    <li>Test: "123" ❌ Should show error (too short)</li>
+                    <li>Test: "123456789012345678" ❌ Should show error (too long)</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Error message: "Phone number can only contain digits, spaces, hyphens, parentheses, and plus sign"</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Password Strength Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">🔒</span>
+              <h4>Password Strength Validation</h4>
+              <span class="category-description">Test password meets security requirements</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC011: Password Requirements Testing</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify password meets all security criteria</p>
+                  <ol>
+                    <li>Test: "password" ❌ Missing uppercase, numbers, special chars</li>
+                    <li>Test: "Password" ❌ Missing numbers, special chars</li>
+                    <li>Test: "Password1" ❌ Missing special chars</li>
+                    <li>Test: "Password1!" ✅ Meets all requirements</li>
+                    <li>Test: "MySecure@Pass123" ✅ Strong password</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Specific error messages for missing requirements, green checkmark for valid passwords</p>
+                </div>
+              </div>
+              
+              <div class="test-scenario">
+                <h5>TC012: Password Confirmation Matching</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify password confirmation field validates matching</p>
+                  <ol>
+                    <li>Enter password: "MySecure@Pass123"</li>
+                    <li>Enter different confirmation: "DifferentPass123!"</li>
+                    <li>Verify error: "Passwords do not match"</li>
+                    <li>Change confirmation to match password</li>
+                    <li>Verify green checkmark appears</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Mismatch shows error, matching passwords show success</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Address and ZIP Code Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">🏠</span>
+              <h4>Address and ZIP Code Validation</h4>
+              <span class="category-description">Test address fields and ZIP code format validation</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC013: ZIP Code Format Validation</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify ZIP code accepts only valid US formats</p>
+                  <ol>
+                    <li>Test: "12345" ✅ Valid 5-digit format</li>
+                    <li>Test: "12345-6789" ✅ Valid ZIP+4 format</li>
+                    <li>Test: "1234" ❌ Too short</li>
+                    <li>Test: "ABCDE" ❌ Contains letters</li>
+                    <li>Test: "12345-678" ❌ Invalid ZIP+4 format</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Error message: "ZIP code must be in format 12345 or 12345-6789"</p>
+                </div>
+              </div>
+              
+              <div class="test-scenario">
+                <h5>TC014: Address Length Validation</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify address requires minimum length</p>
+                  <ol>
+                    <li>Enter short address: "123 Main" ❌ Should show error</li>
+                    <li>Enter valid address: "123 Main Street, Apt 4B" ✅ Should be accepted</li>
+                    <li>Verify minimum 10 characters required</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Error for short addresses, acceptance for detailed addresses</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Professional Information Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">💼</span>
+              <h4>Professional Information Validation</h4>
+              <span class="category-description">Test salary, company, and professional field validation</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC015: Salary Validation Testing</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify salary field accepts only valid numbers</p>
+                  <ol>
+                    <li>Test: "50000" ✅ Valid number</li>
+                    <li>Test: "50000.50" ✅ Valid decimal</li>
+                    <li>Test: "-1000" ❌ Negative number</li>
+                    <li>Test: "fifty thousand" ❌ Text instead of number</li>
+                    <li>Test: "99999999999" ❌ Unrealistically high</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Appropriate error messages for invalid salary formats</p>
+                </div>
+              </div>
+              
+              <div class="test-scenario">
+                <h5>TC016: Username Validation Testing</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify username follows alphanumeric and underscore rules</p>
+                  <ol>
+                    <li>Test: "user123" ✅ Valid alphanumeric</li>
+                    <li>Test: "user_name_123" ✅ Valid with underscores</li>
+                    <li>Test: "user@domain" ❌ Contains special characters</li>
+                    <li>Test: "us" ❌ Too short (minimum 3 characters)</li>
+                    <li>Test: "a".repeat(25) ❌ Too long (maximum 20 characters)</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Error message: "Username can only contain letters, numbers, and underscores"</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Form Submission Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">📝</span>
+              <h4>Complete Form Submission Testing</h4>
+              <span class="category-description">Test end-to-end form completion scenarios</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC017: Required Fields Enforcement</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify all required fields must be completed</p>
+                  <ol>
+                    <li>Fill all fields except Terms & Conditions checkbox</li>
+                    <li>Attempt to submit form</li>
+                    <li>Verify error: "You must accept the terms and conditions"</li>
+                    <li>Check Terms & Conditions and resubmit</li>
+                    <li>Verify successful submission</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Form submission blocked until all required fields are valid</p>
+                </div>
+              </div>
+              
+              <div class="test-scenario">
+                <h5>TC018: Optional Fields Testing</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify optional fields work correctly</p>
+                  <ol>
+                    <li>Complete all required fields with valid data</li>
+                    <li>Leave optional fields (Website, LinkedIn, Skills) empty</li>
+                    <li>Submit form successfully</li>
+                    <li>Test with valid optional data: "https://example.com"</li>
+                    <li>Test with invalid optional data: "not-a-url"</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Optional fields don't prevent submission when empty, but are validated when filled</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal & Overlays Tab -->
+    <div class="tab-content" *ngIf="selectedTab === 'modal-overlays'">
+      <div class="form-section">
+        <h2>Modal & Overlays</h2>
+        <p class="form-description">Practice with interactive modal dialogs, windows, popovers, notifications, and tooltips.</p>
+        
+        <div class="modal-section">
+          
+          <!-- Dialog Section -->
+          <div class="modal-group">
+            <h3>📋 Dialog</h3>
+            <p>Test modal dialog interactions with confirmation and cancellation.</p>
+            <div class="modal-actions">
+              <button class="btn-primary" (click)="openDialog()" data-testid="openDialog">
+                Open Dialog
+              </button>
+            </div>
+          </div>
+          
+          <!-- Window Section -->
+          <div class="modal-group">
+            <h3>🪟 Window</h3>
+            <p>Practice with larger modal windows for complex content.</p>
+            <div class="modal-actions">
+              <button class="btn-primary" (click)="openWindow()" data-testid="openWindow">
+                Open Window
+              </button>
+            </div>
+          </div>
+          
+          <!-- Popover Section -->
+          <div class="modal-group">
+            <h3>💬 Popover</h3>
+            <p>Test popover interactions and positioning.</p>
+            <div class="modal-actions">
+              <button class="btn-primary" (click)="togglePopover()" data-testid="togglePopover">
+                <span [innerHTML]="getPopoverToggleText()"></span> Popover
+              </button>
+              <div class="popover-container" [class.show]="showPopover">
+                <div class="popover-content" data-testid="popoverContent">
+                  <h4>Popover Title</h4>
+                  <p>This is a popover content example. You can test automation interactions with this element.</p>
+                  <button class="btn-sm" (click)="togglePopover()">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Toastr Notifications Section -->
+          <div class="modal-group">
+            <h3>🔔 Toastr Notifications</h3>
+            <p>Practice with different types of toast notifications.</p>
+            <div class="modal-actions toastr-actions">
+              <button class="btn-success" (click)="showSuccessToastr()" data-testid="successToastr">
+                Success Toastr
+              </button>
+              <button class="btn-error" (click)="showErrorToastr()" data-testid="errorToastr">
+                Error Toastr
+              </button>
+              <button class="btn-warning" (click)="showWarningToastr()" data-testid="warningToastr">
+                Warning Toastr
+              </button>
+              <button class="btn-info" (click)="showInfoToastr()" data-testid="infoToastr">
+                Info Toastr
+              </button>
+            </div>
+          </div>
+          
+          <!-- Tooltip Section -->
+          <div class="modal-group">
+            <h3>💡 Tooltip</h3>
+            <p>Test tooltip hover and click interactions.</p>
+            <div class="modal-actions">
+              <div class="tooltip-container">
+                <button 
+                  class="btn-primary tooltip-trigger" 
+                  (mouseenter)="showTooltip = true"
+                  (mouseleave)="showTooltip = false"
+                  (click)="toggleTooltip()"
+                  data-testid="tooltipTrigger">
+                  Hover or Click for Tooltip
+                </button>
+                <div class="tooltip-content" [class.show]="showTooltip" data-testid="tooltipContent">
+                  This is a tooltip that appears on hover or click. Perfect for automation testing!
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+    <!-- Modal Dialogs -->
+    <!-- Dialog Modal -->
+    <div class="modal-overlay" [class.show]="showDialog" (click)="closeDialog()" data-testid="dialogOverlay">
+      <div class="modal-dialog" (click)="$event.stopPropagation()" data-testid="dialogModal">
+        <div class="modal-header">
+          <h3>Confirmation Dialog</h3>
+          <button class="modal-close" (click)="closeDialog()" data-testid="dialogClose">×</button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to perform this action? This is a confirmation dialog for automation testing.</p>
+          <div class="dialog-icon">⚠️</div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" (click)="closeDialog()" data-testid="dialogCancel">
+            Cancel
+          </button>
+          <button class="btn-primary" (click)="closeDialog()" data-testid="dialogConfirm">
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Window Modal -->
+    <div class="modal-overlay" [class.show]="showWindow" (click)="closeWindow()" data-testid="windowOverlay">
+      <div class="modal-window" (click)="$event.stopPropagation()" data-testid="windowModal">
+        <div class="modal-header">
+          <h3>Modal Window</h3>
+          <button class="modal-close" (click)="closeWindow()" data-testid="windowClose">×</button>
+        </div>
+        <div class="modal-body">
+          <h4>Window Content</h4>
+          <p>This is a larger modal window that can contain more complex content and interactions.</p>
+          
+          <div class="window-form">
+            <div class="form-group">
+              <label for="windowInput">Sample Input</label>
+              <input type="text" id="windowInput" class="form-control" placeholder="Test input field" data-testid="windowInput">
+            </div>
+            
+            <div class="form-group">
+              <label for="windowSelect">Sample Select</label>
+              <select id="windowSelect" class="form-control" data-testid="windowSelect">
+                <option value="">Choose option...</option>
+                <option value="option1">Option 1</option>
+                <option value="option2">Option 2</option>
+                <option value="option3">Option 3</option>
+              </select>
+            </div>
+            
+            <div class="checkbox-group">
+              <input type="checkbox" id="windowCheck" data-testid="windowCheckbox">
+              <label for="windowCheck">Sample checkbox in window</label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" (click)="closeWindow()" data-testid="windowCancel">
+            Close
+          </button>
+          <button class="btn-primary" data-testid="windowSave">
+            Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Toastr Notification -->
+    <div class="toastr-notification" [class.show]="showToastr" [class]="'toastr-' + toastrType" data-testid="toastrNotification">
+      <div class="toastr-content">
+        <div class="toastr-icon">
+          <span *ngIf="toastrType === 'success'">✅</span>
+          <span *ngIf="toastrType === 'error'">❌</span>
+          <span *ngIf="toastrType === 'warning'">⚠️</span>
+          <span *ngIf="toastrType === 'info'">ℹ️</span>
+        </div>
+        <div class="toastr-message" [innerHTML]="toastrMessage"></div>
+        <button class="toastr-close" (click)="hideToastr()" data-testid="toastrClose">×</button>
+      </div>
+      
+      <!-- Testing Instructions for Modal & Overlays -->
+      <div class="testing-instructions-section">
+        <div class="testing-header">
+          <h3>🧪 Modal & Overlays - Testing Instructions</h3>
+          <p class="testing-subtitle">Test interactive UI components and overlay behaviors</p>
+        </div>
+        
+        <div class="testing-categories">
+          <!-- Modal Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">🪟</span>
+              <h4>Modal Dialog Testing</h4>
+              <span class="category-description">Test modal opening, closing, and interaction behaviors</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC019: Modal Open/Close Operations</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify modal dialog opens and closes correctly</p>
+                  <ol>
+                    <li>Click "Show Dialog" button</li>
+                    <li>Verify modal appears with overlay</li>
+                    <li>Verify background is dimmed/disabled</li>
+                    <li>Click "Close" button in modal</li>
+                    <li>Verify modal disappears</li>
+                    <li>Test backdrop click (click outside modal) closes dialog</li>
+                    <li>Test Escape key closes modal</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Modal opens/closes properly with all interaction methods</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Notification Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">🔔</span>
+              <h4>Notification System Testing</h4>
+              <span class="category-description">Test notification display, timing, and dismissal</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC020: Notification Types and Behavior</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify different notification types work correctly</p>
+                  <ol>
+                    <li>Click "Show Success" - verify green notification appears</li>
+                    <li>Click "Show Error" - verify red notification appears</li>
+                    <li>Click "Show Warning" - verify yellow notification appears</li>
+                    <li>Click "Show Info" - verify blue notification appears</li>
+                    <li>Test manual close button on each notification</li>
+                    <li>Test auto-dismiss after 3 seconds</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Correct colors, timing, and dismissal for all notification types</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Tooltip and Popover Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">💭</span>
+              <h4>Tooltip and Popover Testing</h4>
+              <span class="category-description">Test hover and click-triggered overlay elements</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC021: Hover and Click Interactions</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify tooltip and popover trigger correctly</p>
+                  <ol>
+                    <li>Hover over "Show Tooltip" button - verify tooltip appears</li>
+                    <li>Move mouse away - verify tooltip disappears</li>
+                    <li>Click "Toggle Popover" - verify popover appears</li>
+                    <li>Click button again - verify popover disappears</li>
+                    <li>Test popover positioning (doesn't go off-screen)</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Proper trigger behavior and positioning for all overlay elements</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Automation Scenarios -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">🤖</span>
+              <h4>Automation Testing Scenarios</h4>
+              <span class="category-description">Playwright-specific test cases for overlay elements</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC022: Modal Automation Testing</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Practice automation of modal interactions</p>
+                  <div class="code-examples">
+                    <h6>Key Automation Patterns:</h6>
+                    <ul>
+                      <li>Wait for modal: <code [innerHTML]="getPlaywrightExamples().waitForVisible"></code></li>
+                      <li>Handle backdrop click: <code>await page.locator('.modal-backdrop').click()</code></li>
+                      <li>Wait for element to disappear: <code [innerHTML]="getPlaywrightExamples().waitForHidden"></code></li>
+                      <li>Test notifications: <code>await page.waitForSelector('.toastr.success')</code></li>
+                      <li>Hover for tooltip: <code>await page.hover('[data-testid="tooltipTrigger"]')</code></li>
+                    </ul>
+                  </div>
+                  <p><strong>Expected Result:</strong> Successful automation of all modal and overlay interactions</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Smart Table Tab -->
+    <div class="tab-content" *ngIf="selectedTab === 'smart-table'">
+      <div class="form-section">
+        <h2>Smart Table</h2>
+        <p class="form-description">Practice with interactive data tables including add, edit, delete operations and data manipulation.</p>
+        
+        <!-- Table Actions -->
+        <div class="table-actions">
+          <button class="btn-primary" (click)="showAddRowForm()" [disabled]="showAddRow" data-testid="addRowBtn">
+            ➕ Add New Row
+          </button>
+          <button class="btn-info" (click)="generateSampleData()" data-testid="generateSampleBtn">
+            📊 Generate Sample Data
+          </button>
+          <button class="btn-warning" (click)="resetTableData()" data-testid="resetTableBtn">
+            🔄 Reset Table
+          </button>
+          <button class="btn-error" (click)="clearAllTableData()" data-testid="clearTableBtn">
+            🗑️ Clear All
+          </button>
+        </div>
+        
+        <!-- Add New Row Form -->
+        <div class="add-row-form" *ngIf="showAddRow" data-testid="addRowForm">
+          <h4>Add New Row</h4>
+          <div class="form-grid">
+            <input 
+              type="text" 
+              [(ngModel)]="newRowData.firstName" 
+              placeholder="First Name *" 
+              class="form-control"
+              data-testid="newFirstName">
+            <input 
+              type="text" 
+              [(ngModel)]="newRowData.lastName" 
+              placeholder="Last Name *" 
+              class="form-control"
+              data-testid="newLastName">
+            <input 
+              type="text" 
+              [(ngModel)]="newRowData.username" 
+              placeholder="Username" 
+              class="form-control"
+              data-testid="newUsername">
+            <input 
+              type="email" 
+              [(ngModel)]="newRowData.email" 
+              placeholder="E-mail *" 
+              class="form-control"
+              data-testid="newEmail">
+            <input 
+              type="number" 
+              [(ngModel)]="newRowData.age" 
+              placeholder="Age" 
+              class="form-control"
+              data-testid="newAge">
+          </div>
+          <div class="form-actions">
+            <button class="btn-primary" (click)="addNewRow()" data-testid="saveNewRow">
+              ✅ Save Row
+            </button>
+            <button class="btn-secondary" (click)="hideAddRowForm()" data-testid="cancelNewRow">
+              ❌ Cancel
+            </button>
+          </div>
+        </div>
+        
+        <!-- Smart Table -->
+        <div class="smart-table-container">
+          <table class="smart-table" data-testid="smartTable">
+            <thead>
+              <tr>
+                <th>Actions</th>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Username</th>
+                <th>E-mail</th>
+                <th>Age</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Add Row (when not in separate form) -->
+              <tr class="add-row" *ngIf="showAddRow">
+                <td>
+                  <button class="btn-sm btn-primary" (click)="addNewRow()" data-testid="addRowSave">➕</button>
+                </td>
+                <td>ID</td>
+                <td>
+                  <input 
+                    type="text" 
+                    [(ngModel)]="newRowData.firstName" 
+                    placeholder="First Name" 
+                    class="table-input"
+                    data-testid="addFirstName">
+                </td>
+                <td>
+                  <input 
+                    type="text" 
+                    [(ngModel)]="newRowData.lastName" 
+                    placeholder="Last Name" 
+                    class="table-input"
+                    data-testid="addLastName">
+                </td>
+                <td>
+                  <input 
+                    type="text" 
+                    [(ngModel)]="newRowData.username" 
+                    placeholder="Username" 
+                    class="table-input"
+                    data-testid="addUsername">
+                </td>
+                <td>
+                  <input 
+                    type="email" 
+                    [(ngModel)]="newRowData.email" 
+                    placeholder="E-mail" 
+                    class="table-input"
+                    data-testid="addEmail">
+                </td>
+                <td>
+                  <input 
+                    type="number" 
+                    [(ngModel)]="newRowData.age" 
+                    placeholder="Age" 
+                    class="table-input"
+                    data-testid="addAge">
+                </td>
+              </tr>
+              
+              <!-- Data Rows -->
+              <tr *ngFor="let row of tableData; trackBy: trackByRowId" 
+                  [attr.data-testid]="'tableRow-' + row.id"
+                  class="data-row">
+                <td class="actions-cell">
+                  <div class="action-buttons">
+                    <button 
+                      *ngIf="!isEditing(row.id)" 
+                      class="btn-sm btn-info" 
+                      (click)="editRow(row.id)"
+                      [attr.data-testid]="'editBtn-' + row.id">
+                      ✏️
+                    </button>
+                    <button 
+                      *ngIf="isEditing(row.id)" 
+                      class="btn-sm btn-success" 
+                      (click)="saveRowEdit()"
+                      [attr.data-testid]="'saveBtn-' + row.id">
+                      ✅
+                    </button>
+                    <button 
+                      *ngIf="isEditing(row.id)" 
+                      class="btn-sm btn-secondary" 
+                      (click)="cancelRowEdit()"
+                      [attr.data-testid]="'cancelBtn-' + row.id">
+                      ❌
+                    </button>
+                    <button 
+                      *ngIf="!isEditing(row.id)" 
+                      class="btn-sm btn-error" 
+                      (click)="deleteRow(row.id)"
+                      [attr.data-testid]="'deleteBtn-' + row.id">
+                      🗑️
+                    </button>
+                  </div>
+                </td>
+                <td [attr.data-testid]="'id-' + row.id" [innerHTML]="row.id"></td>
+                <td>
+                  <span *ngIf="!isEditing(row.id)" [attr.data-testid]="'firstName-' + row.id" [innerHTML]="row.firstName"></span>
+                  <input 
+                    *ngIf="isEditing(row.id)" 
+                    type="text" 
+                    [(ngModel)]="editRowData.firstName" 
+                    class="table-input"
+                    [attr.data-testid]="'editFirstName-' + row.id">
+                </td>
+                <td>
+                  <span *ngIf="!isEditing(row.id)" [attr.data-testid]="'lastName-' + row.id" [innerHTML]="row.lastName"></span>
+                  <input 
+                    *ngIf="isEditing(row.id)" 
+                    type="text" 
+                    [(ngModel)]="editRowData.lastName" 
+                    class="table-input"
+                    [attr.data-testid]="'editLastName-' + row.id">
+                </td>
+                <td>
+                  <span *ngIf="!isEditing(row.id)" [attr.data-testid]="'username-' + row.id" [innerHTML]="row.username"></span>
+                  <input 
+                    *ngIf="isEditing(row.id)" 
+                    type="text" 
+                    [(ngModel)]="editRowData.username" 
+                    class="table-input"
+                    [attr.data-testid]="'editUsername-' + row.id">
+                </td>
+                <td>
+                  <span *ngIf="!isEditing(row.id)" [attr.data-testid]="'email-' + row.id" [innerHTML]="row.email"></span>
+                  <input 
+                    *ngIf="isEditing(row.id)" 
+                    type="email" 
+                    [(ngModel)]="editRowData.email" 
+                    class="table-input"
+                    [attr.data-testid]="'editEmail-' + row.id">
+                </td>
+                <td>
+                  <span *ngIf="!isEditing(row.id)" [attr.data-testid]="'age-' + row.id" [innerHTML]="row.age"></span>
+                  <input 
+                    *ngIf="isEditing(row.id)" 
+                    type="number" 
+                    [(ngModel)]="editRowData.age" 
+                    class="table-input"
+                    [attr.data-testid]="'editAge-' + row.id">
+                </td>
+              </tr>
+              
+              <!-- Empty State -->
+              <tr *ngIf="tableData.length === 0" class="empty-row">
+                <td colspan="7" class="empty-message">
+                  <div class="empty-state">
+                    <div class="empty-icon">📋</div>
+                    <p>No data available in table</p>
+                    <button class="btn-primary" (click)="resetTableData()" data-testid="loadDataBtn">
+                      Load Sample Data
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Table Statistics -->
+        <div class="table-stats">
+          <div class="stat-item">
+            <strong>Total Rows:</strong> <span [innerHTML]="tableData.length"></span>
+          </div>
+          <div class="stat-item">
+            <strong>Average Age:</strong> <span [innerHTML]="getAverageAge()"></span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Testing Instructions for Smart Table -->
+      <div class="testing-instructions-section">
+        <div class="testing-header">
+          <h3>🧪 Smart Table - Testing Instructions</h3>
+          <p class="testing-subtitle">Test data table operations, CRUD functionality, and data validation</p>
+        </div>
+        
+        <div class="testing-categories">
+          <!-- Data Display Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">📊</span>
+              <h4>Data Display Testing</h4>
+              <span class="category-description">Test table rendering, sorting, and data visibility</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC023: Table Display and Sorting</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify table displays data correctly and sorting works</p>
+                  <ol>
+                    <li>Verify table displays all columns (Name, Email, Age, Department)</li>
+                    <li>Check table loads with initial data (3+ rows)</li>
+                    <li>Click Name column header - verify alphabetical sorting</li>
+                    <li>Click Age column header - verify numerical sorting</li>
+                    <li>Verify sort direction indicators (↑/↓) appear</li>
+                    <li>Test reverse sorting by clicking same column again</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Table displays correctly with functional sorting on all columns</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- CRUD Operations Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">✏️</span>
+              <h4>CRUD Operations Testing</h4>
+              <span class="category-description">Test Create, Read, Update, Delete functionality</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC024: Add/Edit/Delete Records</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify all CRUD operations work correctly</p>
+                  <ol>
+                    <li>Click "Add New" button - verify form appears</li>
+                    <li>Fill form: Name="Test User", Email="test@test.com", Age=30, Department="QA"</li>
+                    <li>Click "Save" - verify new row appears in table</li>
+                    <li>Click "Edit" button on any row - verify form pre-fills with data</li>
+                    <li>Modify data and save - verify changes reflected in table</li>
+                    <li>Click "Delete" button - verify confirmation dialog appears</li>
+                    <li>Confirm deletion - verify row removed from table</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> All CRUD operations work with proper data persistence</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Data Validation Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">🔍</span>
+              <h4>Data Validation Testing</h4>
+              <span class="category-description">Test form validation and data integrity</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC025: Form Validation and Error Handling</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify form validation prevents invalid data entry</p>
+                  <ol>
+                    <li>Try to save empty form - verify error messages appear</li>
+                    <li>Enter invalid email format - verify email validation error</li>
+                    <li>Enter negative age - verify age validation error</li>
+                    <li>Enter age > 100 - verify maximum age validation</li>
+                    <li>Try duplicate email entry - verify uniqueness validation</li>
+                    <li>Test special characters in name field</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Proper validation prevents invalid data with clear error messages</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Performance and Statistics Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">📈</span>
+              <h4>Statistics and Performance Testing</h4>
+              <span class="category-description">Test calculated values and performance metrics</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC026: Statistics Calculation</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify statistics update correctly with data changes</p>
+                  <ol>
+                    <li>Check initial "Total Rows" count matches visible rows</li>
+                    <li>Check "Average Age" calculation is mathematically correct</li>
+                    <li>Add new record - verify Total Rows increments</li>
+                    <li>Add record with different age - verify Average Age recalculates</li>
+                    <li>Delete record - verify both statistics update</li>
+                    <li>Test with edge cases (age 0, age 100)</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Statistics accurately reflect current table data in real-time</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Automation Testing Scenarios -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">🤖</span>
+              <h4>Automation Testing Scenarios</h4>
+              <span class="category-description">Playwright-specific test cases for table operations</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC027: Table Automation Testing</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Practice automation of table interactions</p>
+                  <div class="code-examples">
+                    <h6>Key Automation Patterns:</h6>
+                    <ul>
+                      <li>Count table rows: <code>await page.locator('table tbody tr').count()</code></li>
+                      <li>Find specific row: <code>await page.locator('tr:has-text("john@example.com")')</code></li>
+                      <li>Click edit button: <code>await page.locator('tr:has-text("John") .edit-btn').click()</code></li>
+                      <li>Verify sort order: <code>await page.locator('table tbody tr:first-child td:first-child').textContent()</code></li>
+                      <li>Fill and submit form: <code>await page.fill('#name', 'Test'); await page.click('#save')</code></li>
+                    </ul>
+                  </div>
+                  <p><strong>Expected Result:</strong> Successful automation of all table CRUD operations</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- File Operations Section -->
+    <div class="tab-content" *ngIf="selectedTab === 'file-operations'">
+      <h2>File Operations Practice</h2>
+      <p>Simple file upload and download operations for automation testing.</p>
+
+      <!-- File Upload Section -->
+      <div class="section-card">
+        <h3>📤 File Upload</h3>
+        
+        <!-- Single File Upload -->
+        <div class="upload-section">
+          <h4>Single File Upload</h4>
+          <div class="file-upload-area" 
+               (dragover)="onDragOver($event)" 
+               (dragleave)="onDragLeave($event)"
+               (drop)="onFileDrop($event, 'single')"
+               [class.drag-over]="isDragOver"
+               data-testid="singleFileUpload">
+            <input 
+              type="file" 
+              #singleFileInput 
+              (change)="onFileSelect($event, 'single')"
+              accept=".txt,.pdf,.jpg,.png,.docx"
+              data-testid="singleFileInput"
+              style="display: none;">
+            
+            <div class="upload-content">
+              <div class="upload-icon">📁</div>
+              <p>Drag & drop file here or click to browse</p>
+              <button 
+                class="btn-primary" 
+                (click)="singleFileInput.click()"
+                data-testid="browseSingleFile">
+                Choose File
+              </button>
+            </div>
+          </div>
+          
+          <div class="file-info" *ngIf="selectedFiles.single" data-testid="singleFileInfo">
+            <div class="file-item">
+              <span class="file-name" [innerHTML]="selectedFiles.single.name"></span>
+              <span class="file-size" [innerHTML]="formatFileSize(selectedFiles.single.size)"></span>
+              <button 
+                class="btn-danger btn-sm" 
+                (click)="removeFile('single')"
+                data-testid="removeSingleFile">
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Multiple File Upload -->
+        <div class="upload-section">
+          <h4>Multiple File Upload</h4>
+          <div class="file-upload-area" 
+               (dragover)="onDragOver($event)" 
+               (dragleave)="onDragLeave($event)"
+               (drop)="onFileDrop($event, 'multiple')"
+               [class.drag-over]="isDragOver"
+               data-testid="multipleFileUpload">
+            <input 
+              type="file" 
+              #multipleFileInput 
+              (change)="onFileSelect($event, 'multiple')"
+              accept=".txt,.pdf,.jpg,.png,.docx"
+              multiple
+              data-testid="multipleFileInput"
+              style="display: none;">
+            
+            <div class="upload-content">
+              <div class="upload-icon">📁</div>
+              <p>Select multiple files for upload</p>
+              <button 
+                class="btn-primary" 
+                (click)="multipleFileInput.click()"
+                data-testid="browseMultipleFiles">
+                Choose Files
+              </button>
+            </div>
+          </div>
+          
+          <div class="file-list" *ngIf="selectedFiles.multiple.length > 0" data-testid="multipleFileList">
+            <h5>Selected Files (<span [innerHTML]="selectedFiles.multiple.length"></span>)</h5>
+            <div class="file-item" 
+                 *ngFor="let file of selectedFiles.multiple; let i = index"
+                 [attr.data-testid]="'multipleFile-' + i">
+              <span class="file-name" [innerHTML]="file.name"></span>
+              <span class="file-size" [innerHTML]="formatFileSize(file.size)"></span>
+              <button 
+                class="btn-danger btn-sm" 
+                (click)="removeFile('multiple', i)"
+                [attr.data-testid]="'removeMultipleFile-' + i">
+                Remove
+              </button>
+            </div>
+            <button 
+              class="btn-secondary" 
+              (click)="clearAllFiles()"
+              data-testid="clearAllFiles">
+              Clear All
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- File Download Section -->
+      <div class="section-card">
+        <h3>📥 File Download</h3>
+        
+        <div class="download-section">
+          <h4>Sample Downloads</h4>
+          <p>Practice downloading different file types</p>
+          <div class="download-buttons">
+            <button 
+              class="btn-primary" 
+              (click)="downloadSampleFile('pdf')"
+              data-testid="downloadSamplePdf">
+              📄 Download PDF
+            </button>
+            <button 
+              class="btn-primary" 
+              (click)="downloadSampleFile('csv')"
+              data-testid="downloadSampleCsv">
+              📊 Download CSV
+            </button>
+            <button 
+              class="btn-primary" 
+              (click)="downloadSampleFile('txt')"
+              data-testid="downloadSampleTxt">
+              📝 Download TXT
+            </button>
+            <button 
+              class="btn-primary" 
+              (click)="downloadSampleFile('json')"
+              data-testid="downloadSampleJson">
+              📋 Download JSON
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Testing Instructions for File Operations -->
+      <div class="testing-instructions-section">
+        <div class="testing-header">
+          <h3>🧪 File Operations - Testing Instructions</h3>
+          <p class="testing-subtitle">Test file upload, download, and file handling operations</p>
+        </div>
+        
+        <div class="testing-categories">
+          <!-- File Upload Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">📤</span>
+              <h4>File Upload Testing</h4>
+              <span class="category-description">Test single and multiple file upload scenarios</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC028: Single File Upload Validation</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify single file upload works with validation</p>
+                  <ol>
+                    <li>Click "Choose File" button - verify file dialog opens</li>
+                    <li>Select valid file (PDF, JPG, PNG) - verify file name displays</li>
+                    <li>Click "Upload" - verify success message appears</li>
+                    <li>Try uploading invalid file type (.exe, .bat) - verify rejection</li>
+                    <li>Try uploading file > 5MB - verify size validation error</li>
+                    <li>Upload without selecting file - verify error message</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Proper validation with clear feedback for all scenarios</p>
+                </div>
+              </div>
+              
+              <div class="test-scenario">
+                <h5>TC029: Multiple File Upload Testing</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify multiple file selection and upload</p>
+                  <ol>
+                    <li>Click "Choose Files" - verify multiple selection is possible</li>
+                    <li>Select 2-3 valid files - verify all file names display</li>
+                    <li>Click "Upload All" - verify all files upload successfully</li>
+                    <li>Test removing individual files before upload</li>
+                    <li>Try uploading mix of valid/invalid files</li>
+                    <li>Test maximum file count limitation</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Multiple files handled correctly with individual validation</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- File Download Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">📥</span>
+              <h4>File Download Testing</h4>
+              <span class="category-description">Test file download functionality and file formats</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC030: Sample File Downloads</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify all sample file downloads work correctly</p>
+                  <ol>
+                    <li>Click "Download PDF" - verify PDF file downloads</li>
+                    <li>Click "Download CSV" - verify CSV file downloads</li>
+                    <li>Click "Download TXT" - verify TXT file downloads</li>
+                    <li>Click "Download JSON" - verify JSON file downloads</li>
+                    <li>Verify downloaded files have correct extensions</li>
+                    <li>Open downloaded files to verify content integrity</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> All file types download correctly with proper content</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- File Type Validation Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">🔍</span>
+              <h4>File Type and Size Validation</h4>
+              <span class="category-description">Test file format restrictions and size limits</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC031: File Validation Edge Cases</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Test boundary conditions and security validations</p>
+                  <ol>
+                    <li>Upload file with no extension - verify handling</li>
+                    <li>Upload file with multiple extensions (.pdf.exe) - verify rejection</li>
+                    <li>Upload empty file (0 bytes) - verify handling</li>
+                    <li>Upload file exactly at size limit - verify acceptance</li>
+                    <li>Upload file 1 byte over limit - verify rejection</li>
+                    <li>Test special characters in filename</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Robust validation handles all edge cases securely</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Automation Testing Scenarios -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">🤖</span>
+              <h4>Automation Testing Scenarios</h4>
+              <span class="category-description">Playwright-specific test cases for file operations</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC032: File Operations Automation</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Practice automation of file upload/download operations</p>
+                  <div class="code-examples">
+                    <h6>Key Automation Patterns:</h6>
+                    <ul>
+                      <li>File upload: <code>await page.setInputFiles('#fileInput', 'path/to/file.pdf')</code></li>
+                      <li>Multiple files: <code>await page.setInputFiles('#multiFileInput', ['file1.jpg', 'file2.png'])</code></li>
+                      <li>Download handling: <code>const download = await page.waitForEvent('download')</code></li>
+                      <li>Verify filename: <code>expect(download.suggestedFilename()).toBe('sample.pdf')</code></li>
+                      <li>Wait for upload: <code>await page.waitForSelector('.upload-success')</code></li>
+                    </ul>
+                  </div>
+                  <p><strong>Expected Result:</strong> Successful automation of all file operations with proper assertions</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- API Practice Tab -->
+    <div class="tab-content" *ngIf="selectedTab === 'api-practice'">
+      <div class="form-section">
+        <h2>RESTful Booker API - Swagger Documentation</h2>
+        <p class="form-description">Complete API testing environment with interactive Swagger-style documentation for CRUD operations.</p>
+        
+        <!-- Swagger-style API Documentation -->
+        <div class="swagger-container">
+          <!-- API Header Info -->
+          <div class="swagger-header">
+            <div class="api-info">
+              <h3 class="api-title">🏨 RESTful Booker API</h3>
+              <p class="api-description">A RESTful web service for managing hotel bookings with authentication.</p>
+              <div class="api-base-info">
+                <div class="base-url-container">
+                  <span class="label">Base URL:</span>
+                  <code class="base-url">https://restful-booker.herokuapp.com</code>
+                </div>
+                <div class="version-info">
+                  <span class="version-badge">Version 1.0</span>
+                  <span class="server-status" [class.online]="apiServerStatus" [innerHTML]="getApiServerStatus()"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Authentication Section -->
+          <div class="swagger-section">
+            <div class="section-header" (click)="toggleSection('auth')">
+              <h4>🔐 Authentication</h4>
+              <span class="toggle-icon" [innerHTML]="getAuthSectionIcon()"></span>
+            </div>
+            
+            <div class="endpoints-container" *ngIf="expandedSections['auth']">
+              <div class="endpoint-item">
+                <div class="endpoint-header" [class.expanded]="expandedEndpoints['auth-post']" (click)="toggleEndpoint('auth-post')">
+                  <div class="method-info">
+                    <span class="http-method post">POST</span>
+                    <span class="endpoint-path">/auth</span>
+                    <span class="endpoint-summary">Create authentication token</span>
+                  </div>
+                  <div class="endpoint-actions">
+                    <span class="expand-icon" [innerHTML]="getAuthPostIcon()"></span>
+                  </div>
+                </div>
+                
+                <div class="endpoint-details" *ngIf="expandedEndpoints['auth-post']">
+                  <div class="endpoint-description">
+                    <p>Creates an authentication token for accessing protected endpoints. Returns a token that can be used in subsequent requests.</p>
+                  </div>
+                  
+                  <div class="request-section">
+                    <h5>Request Body</h5>
+                    <div class="schema-container">
+                      <pre class="schema-code"><code [innerHTML]="getAuthRequestSchema()"></code></pre>
+                    </div>
+                  </div>
+                  
+                  <div class="response-section">
+                    <h5>Responses</h5>
+                    <div class="response-item">
+                      <div class="response-header">
+                        <span class="status-code success">200</span>
+                        <span class="response-description">Authentication successful</span>
+                      </div>
+                      <div class="response-body">
+                        <pre class="response-code"><code [innerHTML]="getAuthResponseSchema()"></code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="try-it-section">
+                    <h5>Try it out</h5>
+                    <form [formGroup]="authForm" class="try-form">
+                      <div class="form-row">
+                        <div class="form-group">
+                          <label>Username</label>
+                          <input type="text" formControlName="username" class="form-input" data-testid="auth-username">
+                        </div>
+                        <div class="form-group">
+                          <label>Password</label>
+                          <input type="password" formControlName="password" class="form-input" data-testid="auth-password">
+                        </div>
+                      </div>
+                      <button type="button" class="execute-btn" (click)="executeAuth()" data-testid="execute-auth">
+                        Execute
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pet Store Style Endpoints -->
+          <!-- Create Booking -->
+          <div class="swagger-section">
+            <div class="section-header" (click)="toggleSection('bookings')">
+              <h4>🏨 Booking Management</h4>
+              <span class="toggle-icon" [innerHTML]="getBookingsSectionIcon()"></span>
+            </div>
+            
+            <div class="endpoints-container" *ngIf="expandedSections['bookings']">
+              <!-- POST Create Booking -->
+              <div class="endpoint-item">
+                <div class="endpoint-header" [class.expanded]="expandedEndpoints['booking-post']" (click)="toggleEndpoint('booking-post')">
+                  <div class="method-info">
+                    <span class="http-method post">POST</span>
+                    <span class="endpoint-path">/booking</span>
+                    <span class="endpoint-summary">Add a new booking to the store</span>
+                  </div>
+                  <div class="endpoint-actions">
+                    <span class="lock-icon">🔓</span>
+                    <span class="expand-icon" [innerHTML]="getBookingPostIcon()"></span>
+                  </div>
+                </div>
+                
+                <div class="endpoint-details" *ngIf="expandedEndpoints['booking-post']">
+                  <div class="endpoint-description">
+                    <p>Creates a new booking in the system. This endpoint does not require authentication.</p>
+                  </div>
+                  
+                  <div class="request-section">
+                    <h5>Request Body</h5>
+                    <div class="schema-container">
+                      <pre class="schema-code"><code [innerHTML]="getBookingRequestSchema()"></code></pre>
+                    </div>
+                  </div>
+                  
+                  <div class="response-section">
+                    <h5>Responses</h5>
+                    <div class="response-item">
+                      <div class="response-header">
+                        <span class="status-code success">200</span>
+                        <span class="response-description">Booking created successfully</span>
+                      </div>
+                      <div class="response-body">
+                        <pre class="response-code"><code [innerHTML]="getBookingResponseSchema()"></code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="try-it-section">
+                    <h5>Try it out</h5>
+                    <form [formGroup]="createBookingForm" class="try-form">
+                      <div class="form-grid">
+                        <div class="form-group">
+                          <label>First Name *</label>
+                          <input type="text" formControlName="firstname" class="form-input" data-testid="create-firstname">
+                        </div>
+                        <div class="form-group">
+                          <label>Last Name *</label>
+                          <input type="text" formControlName="lastname" class="form-input" data-testid="create-lastname">
+                        </div>
+                        <div class="form-group">
+                          <label>Total Price *</label>
+                          <input type="number" formControlName="totalprice" class="form-input" data-testid="create-price">
+                        </div>
+                        <div class="form-group">
+                          <label>Deposit Paid</label>
+                          <select formControlName="depositpaid" class="form-input" data-testid="create-deposit">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label>Check-in Date *</label>
+                          <input type="date" formControlName="checkin" class="form-input" data-testid="create-checkin">
+                        </div>
+                        <div class="form-group">
+                          <label>Check-out Date *</label>
+                          <input type="date" formControlName="checkout" class="form-input" data-testid="create-checkout">
+                        </div>
+                        <div class="form-group full-width">
+                          <label>Additional Needs</label>
+                          <input type="text" formControlName="additionalneeds" class="form-input" data-testid="create-needs">
+                        </div>
+                      </div>
+                      <button type="button" class="execute-btn" (click)="executeCreateBooking()" data-testid="execute-create-booking">
+                        Execute
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <!-- GET All Bookings -->
+              <div class="endpoint-item">
+                <div class="endpoint-header" [class.expanded]="expandedEndpoints['booking-get-all']" (click)="toggleEndpoint('booking-get-all')">
+                  <div class="method-info">
+                    <span class="http-method get">GET</span>
+                    <span class="endpoint-path">/booking</span>
+                    <span class="endpoint-summary">Finds all booking IDs</span>
+                  </div>
+                  <div class="endpoint-actions">
+                    <span class="lock-icon">🔓</span>
+                    <span class="expand-icon" [innerHTML]="getBookingGetAllIcon()"></span>
+                  </div>
+                </div>
+                
+                <div class="endpoint-details" *ngIf="expandedEndpoints['booking-get-all']">
+                  <div class="endpoint-description">
+                    <p>Returns an array of all booking IDs. Supports filtering by firstname, lastname, checkin and checkout dates.</p>
+                  </div>
+                  
+                  <div class="parameters-section">
+                    <h5>Parameters</h5>
+                    <div class="parameter-item">
+                      <span class="param-name">firstname</span>
+                      <span class="param-type">query</span>
+                      <span class="param-description">Filter by guest's first name</span>
+                    </div>
+                    <div class="parameter-item">
+                      <span class="param-name">lastname</span>
+                      <span class="param-type">query</span>
+                      <span class="param-description">Filter by guest's last name</span>
+                    </div>
+                    <div class="parameter-item">
+                      <span class="param-name">checkin</span>
+                      <span class="param-type">query</span>
+                      <span class="param-description">Filter by check-in date (YYYY-MM-DD)</span>
+                    </div>
+                    <div class="parameter-item">
+                      <span class="param-name">checkout</span>
+                      <span class="param-type">query</span>
+                      <span class="param-description">Filter by check-out date (YYYY-MM-DD)</span>
+                    </div>
+                  </div>
+                  
+                  <div class="response-section">
+                    <h5>Responses</h5>
+                    <div class="response-item">
+                      <div class="response-header">
+                        <span class="status-code success">200</span>
+                        <span class="response-description">List of booking IDs</span>
+                      </div>
+                      <div class="response-body">
+                        <pre class="response-code"><code [innerHTML]="getBookingListResponse()"></code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="try-it-section">
+                    <h5>Try it out</h5>
+                    <div class="try-form">
+                      <div class="form-grid">
+                        <div class="form-group">
+                          <label>First Name</label>
+                          <input type="text" [(ngModel)]="filterParams.firstname" class="form-input" data-testid="filter-firstname">
+                        </div>
+                        <div class="form-group">
+                          <label>Last Name</label>
+                          <input type="text" [(ngModel)]="filterParams.lastname" class="form-input" data-testid="filter-lastname">
+                        </div>
+                        <div class="form-group">
+                          <label>Check-in Date</label>
+                          <input type="date" [(ngModel)]="filterParams.checkin" class="form-input" data-testid="filter-checkin">
+                        </div>
+                        <div class="form-group">
+                          <label>Check-out Date</label>
+                          <input type="date" [(ngModel)]="filterParams.checkout" class="form-input" data-testid="filter-checkout">
+                        </div>
+                      </div>
+                      <button type="button" class="execute-btn" (click)="executeGetAllBookings()" data-testid="execute-get-all-bookings">
+                        Execute
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- GET Booking by ID -->
+              <div class="endpoint-item">
+                <div class="endpoint-header" [class.expanded]="expandedEndpoints['booking-get-id']" (click)="toggleEndpoint('booking-get-id')">
+                  <div class="method-info">
+                    <span class="http-method get">GET</span>
+                    <span class="endpoint-path" [innerHTML]="getBookingByIdPath()"></span>
+                    <span class="endpoint-summary">Find booking by ID</span>
+                  </div>
+                  <div class="endpoint-actions">
+                    <span class="lock-icon">🔓</span>
+                    <span class="expand-icon" [innerHTML]="getBookingGetIdIcon()"></span>
+                  </div>
+                </div>
+                
+                <div class="endpoint-details" *ngIf="expandedEndpoints['booking-get-id']">
+                  <div class="endpoint-description">
+                    <p>Returns a single booking by its ID. The booking ID must be a valid integer.</p>
+                  </div>
+                  
+                  <div class="parameters-section">
+                    <h5>Parameters</h5>
+                    <div class="parameter-item required">
+                      <span class="param-name">bookingId</span>
+                      <span class="param-type">path</span>
+                      <span class="param-description">ID of booking to return</span>
+                      <span class="param-required">* required</span>
+                    </div>
+                  </div>
+                  
+                  <div class="response-section">
+                    <h5>Responses</h5>
+                    <div class="response-item">
+                      <div class="response-header">
+                        <span class="status-code success">200</span>
+                        <span class="response-description">Booking details</span>
+                      </div>
+                      <div class="response-body">
+                        <pre class="response-code"><code [innerHTML]="getBookingDetailsSchema()"></code></pre>
+                      </div>
+                    </div>
+                    <div class="response-item">
+                      <div class="response-header">
+                        <span class="status-code error">404</span>
+                        <span class="response-description">Booking not found</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="try-it-section">
+                    <h5>Try it out</h5>
+                    <div class="try-form">
+                      <div class="form-group">
+                        <label>Booking ID *</label>
+                        <input type="number" [(ngModel)]="bookingIdToGet" class="form-input" data-testid="booking-id-input" placeholder="Enter booking ID">
+                      </div>
+                      <button type="button" class="execute-btn" (click)="executeGetBookingById()" data-testid="execute-get-booking-by-id">
+                        Execute
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PUT Update Booking -->
+              <div class="endpoint-item">
+                <div class="endpoint-header" [class.expanded]="expandedEndpoints['booking-put']" (click)="toggleEndpoint('booking-put')">
+                  <div class="method-info">
+                    <span class="http-method put">PUT</span>
+                    <span class="endpoint-path" [innerHTML]="getUpdateBookingPath()"></span>
+                    <span class="endpoint-summary">Update an existing booking</span>
+                  </div>
+                  <div class="endpoint-actions">
+                    <span class="lock-icon">🔒</span>
+                    <span class="expand-icon" [innerHTML]="getBookingPutIcon()"></span>
+                  </div>
+                </div>
+                
+                <div class="endpoint-details" *ngIf="expandedEndpoints['booking-put']">
+                  <div class="endpoint-description">
+                    <p>Updates an existing booking by ID. Requires authentication token in Cookie or Authorization header.</p>
+                  </div>
+                  
+                  <div class="auth-required">
+                    <span class="auth-badge">🔒 Authentication Required</span>
+                    <p>This endpoint requires authentication. Please authenticate first to get a token.</p>
+                  </div>
+                  
+                  <div class="try-it-section">
+                    <h5>Try it out</h5>
+                    <form [formGroup]="updateBookingForm" class="try-form">
+                      <div class="form-group">
+                        <label>Booking ID *</label>
+                        <input type="number" formControlName="bookingId" class="form-input" data-testid="update-booking-id">
+                      </div>
+                      <div class="form-grid">
+                        <div class="form-group">
+                          <label>First Name *</label>
+                          <input type="text" formControlName="firstname" class="form-input" data-testid="update-firstname">
+                        </div>
+                        <div class="form-group">
+                          <label>Last Name *</label>
+                          <input type="text" formControlName="lastname" class="form-input" data-testid="update-lastname">
+                        </div>
+                        <div class="form-group">
+                          <label>Total Price *</label>
+                          <input type="number" formControlName="totalprice" class="form-input" data-testid="update-price">
+                        </div>
+                        <div class="form-group">
+                          <label>Deposit Paid</label>
+                          <select formControlName="depositpaid" class="form-input" data-testid="update-deposit">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label>Check-in Date *</label>
+                          <input type="date" formControlName="checkin" class="form-input" data-testid="update-checkin">
+                        </div>
+                        <div class="form-group">
+                          <label>Check-out Date *</label>
+                          <input type="date" formControlName="checkout" class="form-input" data-testid="update-checkout">
+                        </div>
+                        <div class="form-group full-width">
+                          <label>Additional Needs</label>
+                          <input type="text" formControlName="additionalneeds" class="form-input" data-testid="update-needs">
+                        </div>
+                      </div>
+                      <button type="button" class="execute-btn" (click)="executeUpdateBooking()" data-testid="execute-update-booking">
+                        Execute
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PATCH Partial Update -->
+              <div class="endpoint-item">
+                <div class="endpoint-header" [class.expanded]="expandedEndpoints['booking-patch']" (click)="toggleEndpoint('booking-patch')">
+                  <div class="method-info">
+                    <span class="http-method patch">POST</span>
+                    <span class="endpoint-path" [innerHTML]="getUpdateBookingPath()"></span>
+                    <span class="endpoint-summary">Updates a booking in the store with form data</span>
+                  </div>
+                  <div class="endpoint-actions">
+                    <span class="lock-icon">🔒</span>
+                    <span class="expand-icon" [innerHTML]="getBookingPatchIcon()"></span>
+                  </div>
+                </div>
+                
+                <div class="endpoint-details" *ngIf="expandedEndpoints['booking-patch']">
+                  <div class="endpoint-description">
+                    <p>Partially updates a booking with form data. Only provided fields will be updated.</p>
+                  </div>
+                  
+                  <div class="auth-required">
+                    <span class="auth-badge">🔒 Authentication Required</span>
+                  </div>
+                  
+                  <div class="try-it-section">
+                    <h5>Try it out</h5>
+                    <div class="try-form">
+                      <div class="form-group">
+                        <label>Booking ID *</label>
+                        <input type="number" [(ngModel)]="patchBookingId" class="form-input" data-testid="patch-booking-id">
+                      </div>
+                      <div class="form-group">
+                        <label>Field to Update</label>
+                        <select [(ngModel)]="patchField" class="form-input" data-testid="patch-field">
+                          <option value="firstname">First Name</option>
+                          <option value="lastname">Last Name</option>
+                          <option value="totalprice">Total Price</option>
+                          <option value="depositpaid">Deposit Paid</option>
+                          <option value="additionalneeds">Additional Needs</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label>New Value</label>
+                        <input type="text" [(ngModel)]="patchValue" class="form-input" data-testid="patch-value">
+                      </div>
+                      <button type="button" class="execute-btn" (click)="executePatchBooking()" data-testid="execute-patch-booking">
+                        Execute
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- DELETE Booking -->
+              <div class="endpoint-item">
+                <div class="endpoint-header" [class.expanded]="expandedEndpoints['booking-delete']" (click)="toggleEndpoint('booking-delete')">
+                  <div class="method-info">
+                    <span class="http-method delete">DELETE</span>
+                    <span class="endpoint-path" [innerHTML]="getDeleteBookingPath()"></span>
+                    <span class="endpoint-summary">Deletes a booking</span>
+                  </div>
+                  <div class="endpoint-actions">
+                    <span class="lock-icon">🔒</span>
+                    <span class="expand-icon" [innerHTML]="getBookingDeleteIcon()"></span>
+                  </div>
+                </div>
+                
+                <div class="endpoint-details" *ngIf="expandedEndpoints['booking-delete']">
+                  <div class="endpoint-description">
+                    <p>Deletes a booking by ID. This action cannot be undone.</p>
+                  </div>
+                  
+                  <div class="auth-required">
+                    <span class="auth-badge">🔒 Authentication Required</span>
+                  </div>
+                  
+                  <div class="response-section">
+                    <h5>Responses</h5>
+                    <div class="response-item">
+                      <div class="response-header">
+                        <span class="status-code success">201</span>
+                        <span class="response-description">Booking deleted successfully</span>
+                      </div>
+                    </div>
+                    <div class="response-item">
+                      <div class="response-header">
+                        <span class="status-code error">403</span>
+                        <span class="response-description">Authentication required</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="try-it-section">
+                    <h5>Try it out</h5>
+                    <div class="try-form">
+                      <div class="form-group">
+                        <label>Booking ID *</label>
+                        <input type="number" [(ngModel)]="deleteBookingId" class="form-input" data-testid="delete-booking-id">
+                      </div>
+                      <button type="button" class="execute-btn danger" (click)="executeDeleteBooking()" data-testid="execute-delete-booking">
+                        Execute
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Health Check Section -->
+          <div class="swagger-section">
+            <div class="section-header" (click)="toggleSection('health')">
+              <h4>🏥 Health Check</h4>
+              <span class="toggle-icon" [innerHTML]="getHealthSectionIcon()"></span>
+            </div>
+            
+            <div class="endpoints-container" *ngIf="expandedSections['health']">
+              <div class="endpoint-item">
+                <div class="endpoint-header" [class.expanded]="expandedEndpoints['ping']" (click)="toggleEndpoint('ping')">
+                  <div class="method-info">
+                    <span class="http-method get">GET</span>
+                    <span class="endpoint-path">/ping</span>
+                    <span class="endpoint-summary">Health check endpoint</span>
+                  </div>
+                  <div class="endpoint-actions">
+                    <span class="lock-icon">🔓</span>
+                    <span class="expand-icon" [innerHTML]="getPingIcon()"></span>
+                  </div>
+                </div>
+                
+                <div class="endpoint-details" *ngIf="expandedEndpoints['ping']">
+                  <div class="endpoint-description">
+                    <p>Simple health check to confirm the API is running and accessible.</p>
+                  </div>
+                  
+                  <div class="response-section">
+                    <h5>Responses</h5>
+                    <div class="response-item">
+                      <div class="response-header">
+                        <span class="status-code success">201</span>
+                        <span class="response-description">API is healthy</span>
+                      </div>
+                      <div class="response-body">
+                        <pre class="response-code"><code>Created</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="try-it-section">
+                    <h5>Try it out</h5>
+                    <button type="button" class="execute-btn" (click)="executePing()" data-testid="execute-ping">
+                      Execute
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- API Response Display -->
+          <div class="api-response-section" *ngIf="lastApiResponse">
+            <h4>📊 Response</h4>
+            <div class="response-container">
+              <div class="response-metadata">
+                <div class="response-info">
+                  <span class="method-badge" [class]="lastApiResponse.method" [innerHTML]="lastApiResponse.method"></span>
+                  <span class="url" [innerHTML]="lastApiResponse.url"></span>
+                  <span class="status-badge" [class]="getStatusClass(lastApiResponse.status)" [innerHTML]="lastApiResponse.status"></span>
+                  <span class="timing" [innerHTML]="getApiResponseTiming()"></span>
+                </div>
+              </div>
+              <div class="response-content">
+                <div class="response-headers" *ngIf="lastApiResponse.headers">
+                  <h5>Response Headers</h5>
+                  <pre class="headers-code"><code [innerHTML]="getApiResponseHeaders()"></code></pre>
+                </div>
+                <div class="response-body">
+                  <h5>Response Body</h5>
+                  <pre class="response-code"><code [innerHTML]="getApiResponseBody()"></code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comprehensive Testing Instructions for API Practice -->
+      <div class="testing-instructions" *ngIf="selectedTab === 'api-practice'">
+        <div class="testing-header">
+          <h3><span class="icon">🧪</span>Comprehensive API Testing Instructions</h3>
+          <p>Complete validation scenarios including positive and negative test cases for all endpoints</p>
+        </div>
+        
+        <div class="testing-content">
+          <!-- Authentication Validation -->
+          <div class="test-section">
+            <div class="section-title">
+              <span class="step-number">1</span>
+              <h4>Authentication Endpoint Validation</h4>
+            </div>
+            <div class="test-steps">
+              <div class="test-step">
+                <div class="step-header">
+                  <span class="step-icon">✅</span>
+                  <h5 class="step-title">Positive Tests</h5>
+                </div>
+                <div class="step-description">
+                  <ul>
+                    <li>Use credentials: <code>admin</code> / <code>password123</code></li>
+                    <li>Verify <strong>200 OK</strong> response with valid token</li>
+                    <li>Validate token format and structure</li>
+                  </ul>
+                  <div class="expected-result">
+                    <div class="result-label">Expected Result:</div>
+                    <p class="result-text">Status 200, JSON response with token property</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="test-step">
+                <div class="step-header">
+                  <span class="step-icon">❌</span>
+                  <h5 class="step-title">Negative Validation Tests</h5>
+                </div>
+                <div class="step-description">
+                  <ul>
+                    <li><strong>Empty Username:</strong> Leave username field blank</li>
+                    <li><strong>Empty Password:</strong> Leave password field blank</li>
+                    <li><strong>Short Username:</strong> Use username less than 3 characters (e.g., "ab")</li>
+                    <li><strong>Short Password:</strong> Use password less than 6 characters (e.g., "12345")</li>
+                    <li><strong>Invalid Credentials:</strong> Use wrong username/password combinations</li>
+                  </ul>
+                  <div class="expected-result">
+                    <div class="result-label">Expected Results:</div>
+                    <p class="result-text">Status 400 for validation errors, Status 401 for invalid credentials</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Booking Creation Validation -->
+          <div class="test-section">
+            <div class="section-title">
+              <span class="step-number">2</span>
+              <h4>Create Booking Validation</h4>
+            </div>
+            <div class="test-steps">
+              <div class="test-step">
+                <div class="step-header">
+                  <span class="step-icon">✅</span>
+                  <h5 class="step-title">Positive Tests</h5>
+                </div>
+                <div class="step-description">
+                  <ul>
+                    <li>Complete valid booking data with all required fields</li>
+                    <li>Valid future dates for check-in and check-out</li>
+                    <li>Valid price range (1-10000)</li>
+                  </ul>
+                  <div class="expected-result">
+                    <div class="result-label">Expected Result:</div>
+                    <p class="result-text">Status 200, JSON response with booking ID and complete booking data</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="test-step">
+                <div class="step-header">
+                  <span class="step-icon">❌</span>
+                  <h5 class="step-title">Negative Validation Tests</h5>
+                </div>
+                <div class="step-description">
+                  <ul>
+                    <li><strong>Empty First Name:</strong> Leave firstname field blank</li>
+                    <li><strong>Empty Last Name:</strong> Leave lastname field blank</li>
+                    <li><strong>Invalid Price:</strong> Use 0, negative values, or >10000</li>
+                    <li><strong>Missing Dates:</strong> Leave check-in or check-out blank</li>
+                    <li><strong>Past Check-in Date:</strong> Use yesterday's date</li>
+                    <li><strong>Invalid Date Range:</strong> Check-out before or same as check-in</li>
+                    <li><strong>Excessive Duration:</strong> Booking longer than 365 days</li>
+                  </ul>
+                  <div class="expected-result">
+                    <div class="result-label">Expected Results:</div>
+                    <p class="result-text">Status 400 with specific validation error messages for each scenario</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Get Booking Validation -->
+          <div class="test-section">
+            <div class="section-title">
+              <span class="step-number">3</span>
+              <h4>Get Booking by ID Validation</h4>
+            </div>
+            <div class="test-steps">
+              <div class="test-step">
+                <div class="step-header">
+                  <span class="step-icon">✅</span>
+                  <h5 class="step-title">Positive Tests</h5>
+                </div>
+                <div class="step-description">
+                  <ul>
+                    <li>Use valid booking IDs (1-99998, excluding test IDs)</li>
+                    <li>Verify complete booking details returned</li>
+                  </ul>
+                  <div class="expected-result">
+                    <div class="result-label">Expected Result:</div>
+                    <p class="result-text">Status 200 with complete booking JSON object</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="test-step">
+                <div class="step-header">
+                  <span class="step-icon">❌</span>
+                  <h5 class="step-title">Negative Validation Tests</h5>
+                </div>
+                <div class="step-description">
+                  <ul>
+                    <li><strong>Missing ID:</strong> Leave booking ID field empty</li>
+                    <li><strong>Invalid Format:</strong> Use 0 or negative numbers</li>
+                    <li><strong>Too Large ID:</strong> Use ID >99999</li>
+                    <li><strong>Non-existent Bookings:</strong> Use IDs 999, 777, or 0</li>
+                    <li><strong>Server Error Test:</strong> Use ID 500</li>
+                  </ul>
+                  <div class="expected-result">
+                    <div class="result-label">Expected Results:</div>
+                    <p class="result-text">Status 400 for validation errors, 404 for not found, 500 for server errors</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Update Booking Validation -->
+          <div class="test-section">
+            <div class="section-title">
+              <span class="step-number">4</span>
+              <h4>Update Booking Validation (PUT/PATCH)</h4>
+            </div>
+            <div class="test-steps">
+              <div class="test-step">
+                <div class="step-header">
+                  <span class="step-icon">✅</span>
+                  <h5 class="step-title">Positive Tests</h5>
+                </div>
+                <div class="step-description">
+                  <ul>
+                    <li><strong>Authenticate first</strong> using auth endpoint</li>
+                    <li>Use valid booking ID with complete update data</li>
+                    <li>Test partial updates (PATCH) with valid field names</li>
+                  </ul>
+                  <div class="expected-result">
+                    <div class="result-label">Expected Result:</div>
+                    <p class="result-text">Status 200 with updated booking data</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="test-step">
+                <div class="step-header">
+                  <span class="step-icon">❌</span>
+                  <h5 class="step-title">Negative Validation Tests</h5>
+                </div>
+                <div class="step-description">
+                  <ul>
+                    <li><strong>No Authentication:</strong> Try updating without token</li>
+                    <li><strong>Invalid Booking ID:</strong> Use 0, negative, or ID 999</li>
+                    <li><strong>Empty Required Fields:</strong> Blank firstname/lastname</li>
+                    <li><strong>Invalid Price:</strong> 0, negative, or excessive values</li>
+                    <li><strong>Invalid Dates:</strong> Past dates or wrong date order</li>
+                    <li><strong>Invalid PATCH Fields:</strong> Use non-existent field names</li>
+                    <li><strong>Invalid PATCH Values:</strong> Wrong data types for fields</li>
+                  </ul>
+                  <div class="expected-result">
+                    <div class="result-label">Expected Results:</div>
+                    <p class="result-text">Status 403 for auth errors, 400 for validation errors, 404 for missing bookings</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Delete Booking Validation -->
+          <div class="test-section">
+            <div class="section-title">
+              <span class="step-number">5</span>
+              <h4>Delete Booking Validation</h4>
+            </div>
+            <div class="test-steps">
+              <div class="test-step">
+                <div class="step-header">
+                  <span class="step-icon">✅</span>
+                  <h5 class="step-title">Positive Tests</h5>
+                </div>
+                <div class="step-description">
+                  <ul>
+                    <li><strong>Authenticate first</strong> using auth endpoint</li>
+                    <li>Use valid booking ID for deletion</li>
+                    <li>Verify deletion confirmation</li>
+                  </ul>
+                  <div class="expected-result">
+                    <div class="result-label">Expected Result:</div>
+                    <p class="result-text">Status 201 with "Created" response (API quirk)</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="test-step">
+                <div class="step-header">
+                  <span class="step-icon">❌</span>
+                  <h5 class="step-title">Negative Validation Tests</h5>
+                </div>
+                <div class="step-description">
+                  <ul>
+                    <li><strong>No Authentication:</strong> Try deleting without token</li>
+                    <li><strong>Missing ID:</strong> Leave booking ID field empty</li>
+                    <li><strong>Invalid ID Format:</strong> Use 0 or negative numbers</li>
+                    <li><strong>Non-existent Booking:</strong> Use ID 999</li>
+                    <li><strong>Already Deleted:</strong> Use ID 777 (conflict test)</li>
+                  </ul>
+                  <div class="expected-result">
+                    <div class="result-label">Expected Results:</div>
+                    <p class="result-text">Status 403 for auth errors, 400 for validation, 404 for not found, 409 for conflicts</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Testing Tips -->
+          <div class="testing-tips">
+            <div class="tips-header">
+              <span class="tips-icon">💡</span>
+              <h4>Professional API Testing Tips</h4>
+            </div>
+            <div class="tips-list">
+              <ul>
+                <li><strong>Test systematically:</strong> Start with positive cases, then negative validations</li>
+                <li><strong>Authentication flow:</strong> Always test auth endpoint first for protected operations</li>
+                <li><strong>Response validation:</strong> Check status codes, headers, and response body structure</li>
+                <li><strong>Error message quality:</strong> Verify error messages are clear and helpful</li>
+                <li><strong>Edge cases:</strong> Test boundary values like max/min prices, dates, and ID ranges</li>
+                <li><strong>Data consistency:</strong> Ensure created data matches input and can be retrieved</li>
+                <li><strong>Status code accuracy:</strong> Verify correct HTTP status codes for each scenario</li>
+                <li><strong>Security testing:</strong> Confirm authentication is enforced for protected endpoints</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Testing Instructions for API Practice -->
+      <div class="testing-instructions-section">
+        <div class="testing-header">
+          <h3>🧪 API Practice - Testing Instructions</h3>
+          <p class="testing-subtitle">Test RESTful API operations, authentication, and response validation</p>
+        </div>
+        
+        <div class="testing-categories">
+          <!-- API CRUD Operations Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">🔄</span>
+              <h4>CRUD Operations Testing</h4>
+              <span class="category-description">Test Create, Read, Update, Delete API endpoints</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC033: RESTful CRUD Operations</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify all CRUD operations work correctly</p>
+                  <ol>
+                    <li>Test GET /ping - verify 200 response and "Created by" message</li>
+                    <li>Test POST /booking - create new booking with valid data</li>
+                    <li [innerHTML]="getApiTestDescriptions().getBookingById"></li>
+                    <li [innerHTML]="getApiTestDescriptions().putBookingById"></li>
+                    <li [innerHTML]="getApiTestDescriptions().deleteBookingById"></li>
+                    <li>Test GET /booking - retrieve all bookings with filters</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> All CRUD operations return correct status codes and data</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Authentication Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">🔐</span>
+              <h4>Authentication Testing</h4>
+              <span class="category-description">Test API authentication and authorization</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC034: Token-Based Authentication</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify authentication flow works correctly</p>
+                  <ol>
+                    <li>POST /auth with valid credentials - verify token returned</li>
+                    <li>POST /auth with invalid credentials - verify 401 error</li>
+                    <li>Use valid token for PUT/DELETE operations - verify access granted</li>
+                    <li>Use invalid/expired token - verify 401/403 error</li>
+                    <li>Access protected endpoints without token - verify rejection</li>
+                    <li>Test token format and structure validation</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Proper authentication enforcement with appropriate error codes</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Response Validation Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">📋</span>
+              <h4>Response Validation Testing</h4>
+              <span class="category-description">Test API response format, structure, and data types</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC035: Response Structure and Data Validation</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify API responses have correct structure and data types</p>
+                  <ol>
+                    <li>Verify JSON response format for all endpoints</li>
+                    <li>Check required fields are present in responses</li>
+                    <li>Validate data types (strings, numbers, booleans, dates)</li>
+                    <li>Test response headers (Content-Type, etc.)</li>
+                    <li>Verify booking ID format and uniqueness</li>
+                    <li>Check date format consistency (ISO 8601)</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Consistent response structure with proper data types</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Error Handling Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">⚠️</span>
+              <h4>Error Handling Testing</h4>
+              <span class="category-description">Test API error scenarios and edge cases</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC036: Error Scenarios and Edge Cases</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify proper error handling for invalid requests</p>
+                  <ol>
+                    <li>Send malformed JSON - verify 400 Bad Request</li>
+                    <li>Request non-existent booking ID - verify 404 Not Found</li>
+                    <li>Send incomplete booking data - verify validation errors</li>
+                    <li>Test invalid date formats - verify proper error messages</li>
+                    <li>Send oversized payloads - verify request limits</li>
+                    <li>Test SQL injection attempts - verify security protection</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Appropriate error codes with descriptive error messages</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Automation Testing Scenarios -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">🤖</span>
+              <h4>API Automation Testing</h4>
+              <span class="category-description">Playwright API testing patterns and automation</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC037: API Test Automation</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Practice API automation with Playwright</p>
+                  <div class="code-examples">
+                    <h6>Key Automation Patterns:</h6>
+                    <ul>
+                      <li>API request: <code [innerHTML]="getApiExamples().postBooking"></code></li>
+                      <li>Response validation: <code [innerHTML]="getApiExamples().responseValidation"></code></li>
+                      <li>JSON validation: <code [innerHTML]="getApiExamples().jsonValidation"></code></li>
+                      <li>Authentication: <code [innerHTML]="getApiExamples().authentication"></code></li>
+                      <li>Headers: <code [innerHTML]="getApiExamples().headers"></code></li>
+                    </ul>
+                  </div>
+                  <p><strong>Expected Result:</strong> Comprehensive API test automation coverage</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- UI Elements Tab -->
+    <div class="tab-content" *ngIf="selectedTab === 'ui-elements'">
+      <div class="form-section">
+        <h2>Additional UI Elements Practice</h2>
+        <p class="form-description">Practice with specialized UI elements including sliders, progress bars, carousels, drag & drop, accordions, and more interactive components.</p>
+        
+        <!-- Sliders and Range Inputs -->
+        <div class="ui-group">
+          <h3>🎚️ Sliders & Range Inputs</h3>
+          <div class="element-row">
+            <div class="element-item">
+              <label for="volumeSlider">Volume Control</label>
+              <input 
+                type="range" 
+                id="volumeSlider" 
+                min="0" 
+                max="100" 
+                value="50"
+                class="slider"
+                data-testid="volumeSlider"
+                (input)="onSliderChange('volume', $event)">
+              <span class="slider-value" [innerHTML]="getVolumeValue()"></span>
+            </div>
+            
+            <div class="element-item">
+              <label for="brightnessSlider">Brightness</label>
+              <input 
+                type="range" 
+                id="brightnessSlider" 
+                min="0" 
+                max="100" 
+                value="75"
+                class="slider"
+                data-testid="brightnessSlider"
+                (input)="onSliderChange('brightness', $event)">
+              <span class="slider-value" [innerHTML]="getBrightnessValue()"></span>
+            </div>
+            
+            <div class="element-item">
+              <label for="priceRange">Price Range ($)</label>
+              <input 
+                type="range" 
+                id="priceRange" 
+                min="0" 
+                max="1000" 
+                value="250"
+                step="10"
+                class="slider"
+                data-testid="priceRange"
+                (input)="onSliderChange('price', $event)">
+              <span class="slider-value" [innerHTML]="getPriceValue()"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress Bars -->
+        <div class="ui-group">
+          <h3>📊 Progress Bars</h3>
+          <div class="element-row">
+            <div class="element-item">
+              <label>Download Progress</label>
+              <div class="progress-container">
+                <div class="progress-bar" data-testid="downloadProgress">
+                  <div class="progress-fill" [style.width.%]="progressValues.download"></div>
+                </div>
+                <span class="progress-text" [innerHTML]="getDownloadProgress()"></span>
+              </div>
+              <button class="btn-sm" (click)="simulateProgress('download')" data-testid="startDownload">
+                Start Download
+              </button>
+            </div>
+            
+            <div class="element-item">
+              <label>Upload Progress</label>
+              <div class="progress-container">
+                <div class="progress-bar" data-testid="uploadProgress">
+                  <div class="progress-fill upload" [style.width.%]="progressValues.upload"></div>
+                </div>
+                <span class="progress-text" [innerHTML]="getUploadProgress()"></span>
+              </div>
+              <button class="btn-sm" (click)="simulateProgress('upload')" data-testid="startUpload">
+                Start Upload
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accordions -->
+        <div class="ui-group">
+          <h3>📂 Accordions</h3>
+          <div class="accordion-container">
+            <div class="accordion-item" *ngFor="let item of accordionItems; let i = index">
+              <div 
+                class="accordion-header" 
+                [class.active]="item.isOpen"
+                (click)="toggleAccordion(i)"
+                [attr.data-testid]="'accordion-header-' + i">
+                <span [innerHTML]="item.title"></span>
+                <span class="accordion-icon" [innerHTML]="getAccordionIcon(item.isOpen)"></span>
+              </div>
+              <div 
+                class="accordion-content" 
+                [class.open]="item.isOpen"
+                [attr.data-testid]="'accordion-content-' + i">
+                <p [innerHTML]="item.content"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Drag and Drop -->
+        <div class="ui-group">
+          <h3>🎯 Drag & Drop</h3>
+          <div class="drag-drop-container">
+            <div class="drag-source">
+              <h4>Draggable Items</h4>
+              <div 
+                *ngFor="let item of draggableItems; let i = index"
+                class="draggable-item"
+                [attr.data-testid]="'draggable-' + i"
+                draggable="true"
+                (dragstart)="onDragStart($event, item)"
+                (dragend)="onDragEnd($event)">
+                <span [innerHTML]="item"></span>
+              </div>
+            </div>
+            
+            <div class="drop-zone">
+              <h4>Drop Zone</h4>
+              <div 
+                class="drop-area"
+                data-testid="dropZone"
+                (dragover)="onDragOver($event)"
+                (drop)="onDrop($event)"
+                [class.drag-over]="isDragOver">
+                <div *ngIf="droppedItems.length === 0" class="drop-placeholder">
+                  Drop items here
+                </div>
+                <div 
+                  *ngFor="let item of droppedItems; let i = index" 
+                  class="dropped-item"
+                  [attr.data-testid]="'dropped-' + i">
+                  <span [innerHTML]="item"></span>
+                </div>
+              </div>
+              <button 
+                class="btn-sm reset-btn" 
+                (click)="resetDragDrop()"
+                data-testid="resetDragDrop">
+                Reset
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Image Carousel -->
+        <div class="ui-group">
+          <h3>🖼️ Image Carousel</h3>
+          <div class="carousel-container">
+            <div class="carousel-wrapper">
+              <button 
+                class="carousel-btn prev" 
+                (click)="previousImage()"
+                data-testid="prevImage"
+                [disabled]="currentImageIndex === 0">
+                ‹
+              </button>
+              
+              <div class="carousel-content">
+                <img 
+                  [src]="carouselImages[currentImageIndex].url" 
+                  [alt]="carouselImages[currentImageIndex].alt"
+                  class="carousel-image"
+                  data-testid="carouselImage">
+                <div class="carousel-caption" data-testid="carouselCaption">
+                  <span [innerHTML]="getCarouselCaption()"></span>
+                </div>
+              </div>
+              
+              <button 
+                class="carousel-btn next" 
+                (click)="nextImage()"
+                data-testid="nextImage"
+                [disabled]="currentImageIndex === carouselImages.length - 1">
+                ›
+              </button>
+            </div>
+            
+            <div class="carousel-indicators">
+              <button 
+                *ngFor="let image of carouselImages; let i = index"
+                class="indicator"
+                [class.active]="i === currentImageIndex"
+                (click)="goToImage(i)"
+                [attr.data-testid]="'indicator-' + i">
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Color Picker and Date/Time -->
+        <div class="ui-group">
+          <h3>🎨 Advanced Inputs</h3>
+          <div class="element-row">
+            <div class="element-item">
+              <label for="colorPicker">Color Picker</label>
+              <input 
+                type="color" 
+                id="colorPicker" 
+                value="#3498db"
+                class="color-input"
+                data-testid="colorPicker"
+                (change)="onColorChange($event)">
+              <span class="color-value" [innerHTML]="getSelectedColor()"></span>
+            </div>
+            
+            <div class="element-item">
+              <label for="dateTimePicker">Date & Time</label>
+              <input 
+                type="datetime-local" 
+                id="dateTimePicker"
+                class="datetime-input"
+                data-testid="dateTimePicker"
+                (change)="onDateTimeChange($event)">
+              <span class="datetime-value" [innerHTML]="getSelectedDateTime()"></span>
+            </div>
+            
+            <div class="element-item">
+              <label for="weekPicker">Week Picker</label>
+              <input 
+                type="week" 
+                id="weekPicker"
+                class="week-input"
+                data-testid="weekPicker"
+                (change)="onWeekChange($event)">
+              <span class="week-value" [innerHTML]="getSelectedWeek()"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rating System -->
+        <div class="ui-group">
+          <h3>⭐ Rating System</h3>
+          <div class="rating-container">
+            <label>Rate this practice application:</label>
+            <div class="star-rating">
+              <span 
+                *ngFor="let star of stars; let i = index"
+                class="star"
+                [class.filled]="i < currentRating"
+                [class.hover]="i < hoverRating"
+                (click)="setRating(i + 1)"
+                (mouseenter)="setHoverRating(i + 1)"
+                (mouseleave)="setHoverRating(0)"
+                [attr.data-testid]="'star-' + (i + 1)">
+                ★
+              </span>
+            </div>
+            <span class="rating-text" data-testid="ratingText">
+              <span [innerHTML]="getRatingText()"></span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Loading States -->
+        <div class="ui-group">
+          <h3>⏳ Loading States</h3>
+          <div class="loading-examples">
+            <button 
+              class="btn-primary loading-btn" 
+              [class.loading]="loadingStates.button"
+              (click)="simulateLoading('button')"
+              data-testid="loadingButton">
+              <span *ngIf="!loadingStates.button">Click to Load</span>
+              <span *ngIf="loadingStates.button" class="spinner-small"></span>
+              <span *ngIf="loadingStates.button">Loading...</span>
+            </button>
+            
+            <div class="skeleton-loader" *ngIf="loadingStates.skeleton" data-testid="skeletonLoader">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+              <div class="skeleton-line medium"></div>
+            </div>
+            
+            <button 
+              class="btn-secondary" 
+              (click)="simulateLoading('skeleton')"
+              data-testid="skeletonButton">
+              <span [innerHTML]="getSkeletonButtonText()"></span> Skeleton
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Testing Instructions for UI Elements -->
+      <div class="testing-instructions-section">
+        <div class="testing-header">
+          <h3>🧪 UI Elements - Testing Instructions</h3>
+          <p class="testing-subtitle">Test interactive UI components, animations, and user interface behaviors</p>
+        </div>
+        
+        <div class="testing-categories">
+          <!-- Interactive Elements Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">🎛️</span>
+              <h4>Interactive Elements Testing</h4>
+              <span class="category-description">Test sliders, buttons, inputs, and interactive controls</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC038: Slider and Range Controls</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify slider controls work correctly</p>
+                  <ol>
+                    <li>Move volume slider - verify value updates in real-time</li>
+                    <li>Test slider boundary values (0 and 100)</li>
+                    <li>Test brightness slider with different increments</li>
+                    <li>Verify price range slider handles min/max values</li>
+                    <li>Test keyboard navigation (arrow keys)</li>
+                    <li>Verify slider accessibility (ARIA labels)</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> All sliders respond correctly with proper value feedback</p>
+                </div>
+              </div>
+              
+              <div class="test-scenario">
+                <h5>TC039: Progress Bars and Loading States</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify progress indicators work correctly</p>
+                  <ol>
+                    <li>Click "Start Progress" - verify bar fills gradually</li>
+                    <li>Test circular progress indicator animation</li>
+                    <li>Verify progress percentage displays correctly</li>
+                    <li>Test progress bar completion state</li>
+                    <li>Test loading spinner activation/deactivation</li>
+                    <li>Verify skeleton loading states</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Progress indicators provide clear visual feedback</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Layout and Display Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">📐</span>
+              <h4>Layout and Display Testing</h4>
+              <span class="category-description">Test accordions, carousels, and layout components</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC040: Accordion and Collapsible Content</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify accordion functionality works correctly</p>
+                  <ol>
+                    <li>Click accordion headers - verify content expands/collapses</li>
+                    <li>Test multiple accordion panels simultaneously</li>
+                    <li>Verify smooth expand/collapse animations</li>
+                    <li>Test keyboard navigation (Enter, Space keys)</li>
+                    <li>Verify ARIA attributes for accessibility</li>
+                    <li>Test nested accordion structures</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Accordion provides intuitive content organization</p>
+                </div>
+              </div>
+              
+              <div class="test-scenario">
+                <h5>TC041: Carousel and Image Gallery</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify carousel navigation and display</p>
+                  <ol>
+                    <li>Click next/previous buttons - verify slide transitions</li>
+                    <li>Test dot indicators for direct slide navigation</li>
+                    <li>Verify auto-play functionality if enabled</li>
+                    <li>Test touch/swipe gestures on mobile</li>
+                    <li>Verify image loading and error handling</li>
+                    <li>Test carousel with different content types</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Smooth carousel navigation with responsive design</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Drag & Drop Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">🖱️</span>
+              <h4>Drag & Drop Testing</h4>
+              <span class="category-description">Test drag and drop interactions and behaviors</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC042: Drag and Drop Operations</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify drag and drop functionality works correctly</p>
+                  <ol>
+                    <li>Drag items between lists - verify successful transfer</li>
+                    <li>Test drop zones highlighting during drag</li>
+                    <li>Verify items return to original position on invalid drop</li>
+                    <li>Test sorting within same list via drag & drop</li>
+                    <li>Verify visual feedback during drag operations</li>
+                    <li>Test keyboard alternatives for accessibility</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Intuitive drag and drop with clear visual feedback</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Advanced UI Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">✨</span>
+              <h4>Advanced UI Features Testing</h4>
+              <span class="category-description">Test animations, transitions, and advanced interactions</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC043: Animations and Transitions</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify animations enhance user experience</p>
+                  <ol>
+                    <li>Test fade-in/fade-out animations</li>
+                    <li>Verify slide transitions are smooth</li>
+                    <li>Test hover effects on interactive elements</li>
+                    <li>Verify loading animations don't block interaction</li>
+                    <li>Test animation performance on slower devices</li>
+                    <li>Verify animations respect user's motion preferences</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Smooth animations that enhance usability</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Automation Testing Scenarios -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">🤖</span>
+              <h4>UI Elements Automation Testing</h4>
+              <span class="category-description">Playwright-specific test cases for UI interactions</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC044: UI Elements Automation</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Practice automation of complex UI interactions</p>
+                  <div class="code-examples">
+                    <h6>Key Automation Patterns:</h6>
+                    <ul>
+                      <li>Slider interaction: <code>await page.locator('#volumeSlider').fill('75')</code></li>
+                      <li>Drag and drop: <code>await page.dragAndDrop('#item1', '#dropzone')</code></li>
+                      <li>Wait for animation: <code>await page.waitForFunction(() => element.style.opacity === '1')</code></li>
+                      <li>Accordion expand: <code>await page.locator('.accordion-header').click()</code></li>
+                      <li>Carousel navigation: <code>await page.locator('.carousel-next').click()</code></li>
+                    </ul>
+                  </div>
+                  <p><strong>Expected Result:</strong> Successful automation of all UI element interactions</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Playwright Quiz Tab -->
+    <div class="tab-content" *ngIf="selectedTab === 'playwright-quiz'">
+      <div class="playwright-quiz-container">
+        <div class="quiz-header">
+          <h2>🧠 Practical Playwright Quiz</h2>
+          <p>Test your real-world Playwright automation skills with JavaScript + Copilot + MCP</p>
+          <div class="quiz-stats">
+            <span class="total-questions">15 Questions</span>
+            <span class="difficulty-breakdown">5 Basic • 5 Intermediate • 5 Advanced</span>
+          </div>
+        </div>
+
+        <!-- Quiz Progress -->
+        <div class="quiz-progress" *ngIf="quizStarted">
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="getQuizProgress()"></div>
+          </div>
+          <span class="progress-text">Question {{ currentQuestionIndex + 1 }} of {{ quizQuestions.length }}</span>
+        </div>
+
+        <!-- Quiz Start Screen -->
+        <div class="quiz-start" *ngIf="!quizStarted && !quizCompleted">
+          <div class="quiz-intro">
+            <h3>🎯 Quiz Overview</h3>
+            <ul class="quiz-features">
+              <li>✅ Real-world testing scenarios</li>
+              <li>✅ JavaScript with Playwright Test Runner</li>
+              <li>✅ Copilot & MCP integration tips</li>
+              <li>✅ Practical setup challenges</li>
+              <li>✅ Advanced debugging techniques</li>
+            </ul>
+            <div class="difficulty-levels">
+              <div class="level basic">
+                <h4>🟢 Basic (5 Questions)</h4>
+                <p>Browser launch, locators, clicks, screenshots</p>
+              </div>
+              <div class="level intermediate">
+                <h4>🟡 Intermediate (5 Questions)</h4>
+                <p>API mocking, storage state, fixtures, debugging</p>
+              </div>
+              <div class="level advanced">
+                <h4>🔴 Advanced (5 Questions)</h4>
+                <p>Parallelism, CI/CD, visual regression, MCP integration</p>
+              </div>
+            </div>
+          </div>
+          <button class="start-quiz-btn" (click)="startQuiz()" data-testid="start-quiz">
+            🚀 Start Quiz
+          </button>
+        </div>
+
+        <!-- Quiz Questions -->
+        <div class="quiz-question" *ngIf="quizStarted && !quizCompleted">
+          <div class="question-header">
+            <span class="difficulty-badge" [class]="getCurrentQuestion().difficulty">
+              {{ getCurrentQuestion().difficulty.toUpperCase() }}
+            </span>
+            <h3 class="question-title">{{ getCurrentQuestion().title }}</h3>
+          </div>
+
+          <div class="scenario-box">
+            <h4>📋 Scenario:</h4>
+            <p [innerHTML]="getCurrentQuestion().scenario"></p>
+          </div>
+
+          <div class="question-box">
+            <h4>❓ Question:</h4>
+            <p [innerHTML]="getCurrentQuestion().question"></p>
+          </div>
+
+          <div class="options-container">
+            <div 
+              class="option" 
+              *ngFor="let option of getCurrentQuestion().options; let i = index"
+              [class.selected]="selectedAnswer === option.key"
+              [class.correct]="showAnswer && option.key === getCurrentQuestion().correctAnswer"
+              [class.incorrect]="showAnswer && selectedAnswer === option.key && option.key !== getCurrentQuestion().correctAnswer"
+              (click)="selectAnswer(option.key)"
+              [attr.data-testid]="'option-' + option.key">
+              <span class="option-letter">{{ option.key }}</span>
+              <span class="option-text" [innerHTML]="option.text"></span>
+            </div>
+          </div>
+
+          <div class="question-actions">
+            <button 
+              class="submit-answer-btn" 
+              [disabled]="!selectedAnswer"
+              (click)="submitAnswer()"
+              *ngIf="!showAnswer"
+              data-testid="submit-answer">
+              Submit Answer
+            </button>
+            <button 
+              class="next-question-btn" 
+              (click)="nextQuestion()"
+              *ngIf="showAnswer"
+              data-testid="next-question">
+              {{ isLastQuestion() ? 'Complete Quiz' : 'Next Question' }} →
+            </button>
+          </div>
+
+          <!-- Answer Explanation -->
+          <div class="answer-explanation" *ngIf="showAnswer">
+            <div class="explanation-box correct">
+              <h4>✅ Correct Answer: {{ getCurrentQuestion().correctAnswer }}</h4>
+              <p [innerHTML]="getCurrentQuestion().explanation"></p>
+            </div>
+            <div class="copilot-tip" *ngIf="getCurrentQuestion().copilotTip">
+              <h4>🤖 Copilot/MCP Tip:</h4>
+              <p [innerHTML]="getCurrentQuestion().copilotTip"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quiz Results -->
+        <div class="quiz-results" *ngIf="quizCompleted">
+          <div class="results-header">
+            <h2>🎉 Quiz Complete!</h2>
+            <div class="final-score">
+              <span class="score-number">{{ correctAnswers }}/{{ quizQuestions.length }}</span>
+              <span class="score-percentage">({{ getScorePercentage() }}%)</span>
+            </div>
+          </div>
+
+          <div class="performance-breakdown">
+            <h3>📊 Performance Breakdown</h3>
+            <div class="difficulty-scores">
+              <div class="score-item basic">
+                <span class="label">Basic:</span>
+                <span class="score">{{ getScoreByDifficulty('basic') }}/5</span>
+              </div>
+              <div class="score-item intermediate">
+                <span class="label">Intermediate:</span>
+                <span class="score">{{ getScoreByDifficulty('intermediate') }}/5</span>
+              </div>
+              <div class="score-item advanced">
+                <span class="label">Advanced:</span>
+                <span class="score">{{ getScoreByDifficulty('advanced') }}/5</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-assessment">
+            <h3>🎯 Skill Assessment</h3>
+            <div class="assessment-result" [innerHTML]="getSkillAssessment()"></div>
+          </div>
+
+          <div class="next-steps">
+            <h3>📚 Recommended Next Steps</h3>
+            <div class="recommendations" [innerHTML]="getRecommendations()"></div>
+          </div>
+
+          <div class="quiz-actions">
+            <button class="retake-quiz-btn" (click)="resetQuiz()" data-testid="retake-quiz">
+              🔄 Retake Quiz
+            </button>
+            <button class="review-answers-btn" (click)="reviewAnswers()" data-testid="review-answers">
+              📝 Review Answers
+            </button>
+          </div>
+        </div>
+
+        <!-- Review Mode -->
+        <div class="quiz-review" *ngIf="reviewMode">
+          <div class="review-header">
+            <h2>📝 Answer Review</h2>
+            <button class="close-review-btn" (click)="closeReview()" data-testid="close-review">✕</button>
+          </div>
+          
+          <div class="review-questions">
+            <div 
+              class="review-question" 
+              *ngFor="let question of quizQuestions; let i = index"
+              [class.correct]="userAnswers[i] === question.correctAnswer"
+              [class.incorrect]="userAnswers[i] !== question.correctAnswer">
+              
+              <div class="review-question-header">
+                <span class="question-number">Q{{ i + 1 }}</span>
+                <span class="difficulty-badge" [class]="question.difficulty">{{ question.difficulty }}</span>
+                <h4>{{ question.title }}</h4>
+                <span class="result-icon">
+                  {{ userAnswers[i] === question.correctAnswer ? '✅' : '❌' }}
+                </span>
+              </div>
+              
+              <div class="review-content">
+                <p class="your-answer">
+                  <strong>Your Answer:</strong> {{ userAnswers[i] || 'Not answered' }}
+                </p>
+                <p class="correct-answer">
+                  <strong>Correct Answer:</strong> {{ question.correctAnswer }}
+                </p>
+                <div class="explanation" [innerHTML]="question.explanation"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Testing Instructions for Playwright Quiz -->
+      <div class="testing-instructions-section">
+        <div class="testing-header">
+          <h3>🧪 Playwright Quiz - Testing Instructions</h3>
+          <p class="testing-subtitle">Test quiz functionality, scoring, and interactive assessment features</p>
+        </div>
+        
+        <div class="testing-categories">
+          <!-- Quiz Interaction Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">❓</span>
+              <h4>Quiz Interaction Testing</h4>
+              <span class="category-description">Test question navigation, answer selection, and user interactions</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC045: Question Navigation and Selection</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify quiz navigation and answer selection works correctly</p>
+                  <ol>
+                    <li>Start quiz - verify first question displays</li>
+                    <li>Select answer options - verify selection highlighting</li>
+                    <li>Click "Next Question" - verify progression to next question</li>
+                    <li>Test "Previous Question" navigation</li>
+                    <li>Verify question counter displays correctly (1 of X)</li>
+                    <li>Test direct question navigation if available</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Smooth navigation with clear question progression</p>
+                </div>
+              </div>
+              
+              <div class="test-scenario">
+                <h5>TC046: Answer Validation and Feedback</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify answer validation and immediate feedback</p>
+                  <ol>
+                    <li>Select correct answer - verify positive feedback</li>
+                    <li>Select incorrect answer - verify correction shown</li>
+                    <li>Test multiple choice questions with single selection</li>
+                    <li>Test multiple answer questions if available</li>
+                    <li>Verify explanation text displays after answering</li>
+                    <li>Test time limits if implemented</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Clear feedback with educational explanations</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Scoring and Results Testing -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">🏆</span>
+              <h4>Scoring and Results Testing</h4>
+              <span class="category-description">Test score calculation, results display, and completion handling</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC047: Score Calculation and Results</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify accurate scoring and results presentation</p>
+                  <ol>
+                    <li>Complete entire quiz - verify final score calculation</li>
+                    <li>Verify percentage score matches correct answers</li>
+                    <li>Check results summary shows correct/incorrect breakdown</li>
+                    <li>Test performance rating (Excellent, Good, Needs Improvement)</li>
+                    <li>Verify time taken is tracked and displayed</li>
+                    <li>Test "Retake Quiz" functionality</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Accurate scoring with comprehensive results summary</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Progress and State Management -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">📊</span>
+              <h4>Progress and State Management</h4>
+              <span class="category-description">Test quiz progress tracking and state preservation</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC048: Progress Tracking and State</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify quiz state is properly managed</p>
+                  <ol>
+                    <li>Check progress bar updates with each question</li>
+                    <li>Verify answered questions remain marked</li>
+                    <li>Test quiz pause and resume functionality</li>
+                    <li>Verify browser refresh preserves current state</li>
+                    <li>Test quiz abandonment and restart scenarios</li>
+                    <li>Check timer functionality if implemented</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Robust state management with progress preservation</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Accessibility and Usability -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">♿</span>
+              <h4>Accessibility and Usability Testing</h4>
+              <span class="category-description">Test quiz accessibility and user experience</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC049: Quiz Accessibility</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Verify quiz is accessible to all users</p>
+                  <ol>
+                    <li>Test keyboard navigation through questions</li>
+                    <li>Verify screen reader compatibility</li>
+                    <li>Check color contrast for all text elements</li>
+                    <li>Test font size scaling compatibility</li>
+                    <li>Verify ARIA labels on interactive elements</li>
+                    <li>Test quiz on mobile devices and tablets</li>
+                  </ol>
+                  <p><strong>Expected Result:</strong> Fully accessible quiz experience for all users</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Automation Testing Scenarios -->
+          <div class="test-category">
+            <div class="category-header">
+              <span class="category-icon">🤖</span>
+              <h4>Quiz Automation Testing</h4>
+              <span class="category-description">Playwright-specific test cases for quiz automation</span>
+            </div>
+            <div class="test-scenarios">
+              <div class="test-scenario">
+                <h5>TC050: Quiz Automation Patterns</h5>
+                <div class="test-steps">
+                  <p><strong>Objective:</strong> Practice automation of quiz interactions and validation</p>
+                  <div class="code-examples">
+                    <h6>Key Automation Patterns:</h6>
+                    <ul>
+                      <li>Start quiz: <code>await page.click('[data-testid="startQuiz"]')</code></li>
+                      <li>Select answer: <code>await page.click('[data-testid="answer-option-A"]')</code></li>
+                      <li>Navigate questions: <code>await page.click('[data-testid="nextQuestion"]')</code></li>
+                      <li>Verify score: <code>expect(await page.textContent('.final-score')).toContain('80%')</code></li>
+                      <li>Check progress: <code>await page.waitForSelector('.progress-bar[style*="width: 60%"]')</code></li>
+                    </ul>
+                  </div>
+                  <p><strong>Expected Result:</strong> Complete automation of quiz flow with score validation</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

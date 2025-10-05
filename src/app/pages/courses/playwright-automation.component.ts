@@ -184,4 +184,8 @@ export class PlaywrightAutomationComponent {
   downloadCoursePdf() {
     this.pdfService.downloadCoursePdf('Playwright Automation Testing Training');
   }
+
+  openPracticeApplication() {
+    window.open('/practice-app', '_blank');
+  }
 }

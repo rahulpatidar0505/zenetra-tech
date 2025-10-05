@@ -1,5 +1,22 @@
 import { Injectable } from '@angular/core';
 
+export interface CourseModule {
+  title: string;
+  goal: string;
+  content: string[];
+}
+
+export interface CourseData {
+  title: string;
+  description: string;
+  duration: string;
+  modules: CourseModule[];
+  prerequisites?: string[];
+  certification?: string;
+  careerOutcomes?: string[];
+  supportIncludes?: string[];
+}
+
 @Injectable({
   providedIn: 'root'
 })

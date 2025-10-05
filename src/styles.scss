@@ -7,6 +7,23 @@
 /* Import Inter Google Font - Optimized weights with font-display for faster loading */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+/* Hide header and footer for practice app */
+body.practice-app-active .site-header,
+body.practice-app-active .modern-footer {
+  display: none !important;
+}
+
+/* Ensure full height layout for practice app */
+body.practice-app-active {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body.practice-app-active .main-content {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;

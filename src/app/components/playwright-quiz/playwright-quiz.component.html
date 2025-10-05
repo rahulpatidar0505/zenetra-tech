@@ -1,0 +1,375 @@
+<div class="playwright-quiz-container">
+  <div class="quiz-header">
+    <h2>🎭 Playwright Automation Testing Quiz</h2>
+    <p>Test your knowledge across all 8 modules of Playwright automation testing</p>
+  </div>
+
+  <div class="quiz-progress" *ngIf="!showResults">
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="getOverallProgress()"></div>
+    </div>
+    <span class="progress-text">Progress: {{ getOverallProgress() }}%</span>
+  </div>
+
+  <div class="quiz-modules">
+    <!-- Module 1: Playwright Foundations -->
+    <div class="quiz-module">
+      <div class="module-header" (click)="toggleQuizModule('module1')">
+        <h3>🔰 Module 1: Playwright Foundations</h3>
+        <span class="module-score" *ngIf="showResults">{{ getModuleScorePercentage('module1') }}%</span>
+        <span class="toggle-icon">{{ expandedQuizModules['module1'] ? '▼' : '▶' }}</span>
+      </div>
+      
+      <div class="module-questions" *ngIf="expandedQuizModules['module1']">
+        <div class="question-card" *ngFor="let question of getModuleQuestions('module1'); trackBy: trackByQuestionId">
+          <div class="question-header">
+            <span class="question-number">Q1.{{ question.id.split('_')[1] }}</span>
+            <h4>{{ question.question }}</h4>
+          </div>
+          
+          <div class="question-options">
+            <div class="option" 
+                 *ngFor="let option of ['a', 'b', 'c', 'd']"
+                 [class.selected]="quizAnswers[question.id] === option"
+                 [class.correct]="showResults && isCorrectAnswer(question.id, option)"
+                 [class.incorrect]="showResults && quizAnswers[question.id] === option && !isCorrectAnswer(question.id, option)"
+                 (click)="selectAnswer(question.id, option)">
+              <span class="option-letter">{{ option.toUpperCase() }}</span>
+              <span class="option-text">{{ getOptionText(question, option) }}</span>
+            </div>
+          </div>
+          
+          <div class="answer-explanation" *ngIf="showResults && quizAnswers[question.id]">
+            <div class="explanation-header">
+              <span class="explanation-icon">💡</span>
+              <strong>Explanation:</strong>
+            </div>
+            <p>{{ question.explanation }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 2: JavaScript for Playwright -->
+    <div class="quiz-module">
+      <div class="module-header" (click)="toggleQuizModule('module2')">
+        <h3>📜 Module 2: JavaScript for Playwright</h3>
+        <span class="module-score" *ngIf="showResults">{{ getModuleScorePercentage('module2') }}%</span>
+        <span class="toggle-icon">{{ expandedQuizModules['module2'] ? '▼' : '▶' }}</span>
+      </div>
+      
+      <div class="module-questions" *ngIf="expandedQuizModules['module2']">
+        <div class="question-card" *ngFor="let question of getModuleQuestions('module2'); trackBy: trackByQuestionId">
+          <div class="question-header">
+            <span class="question-number">Q2.{{ question.id.split('_')[1] }}</span>
+            <h4>{{ question.question }}</h4>
+          </div>
+          
+          <div class="question-options">
+            <div class="option" 
+                 *ngFor="let option of ['a', 'b', 'c', 'd']"
+                 [class.selected]="quizAnswers[question.id] === option"
+                 [class.correct]="showResults && isCorrectAnswer(question.id, option)"
+                 [class.incorrect]="showResults && quizAnswers[question.id] === option && !isCorrectAnswer(question.id, option)"
+                 (click)="selectAnswer(question.id, option)">
+              <span class="option-letter">{{ option.toUpperCase() }}</span>
+              <span class="option-text">{{ getOptionText(question, option) }}</span>
+            </div>
+          </div>
+          
+          <div class="answer-explanation" *ngIf="showResults && quizAnswers[question.id]">
+            <div class="explanation-header">
+              <span class="explanation-icon">💡</span>
+              <strong>Explanation:</strong>
+            </div>
+            <p>{{ question.explanation }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 3: Playwright Essentials -->
+    <div class="quiz-module">
+      <div class="module-header" (click)="toggleQuizModule('module3')">
+        <h3>⚡ Module 3: Playwright Essentials</h3>
+        <span class="module-score" *ngIf="showResults">{{ getModuleScorePercentage('module3') }}%</span>
+        <span class="toggle-icon">{{ expandedQuizModules['module3'] ? '▼' : '▶' }}</span>
+      </div>
+      
+      <div class="module-questions" *ngIf="expandedQuizModules['module3']">
+        <div class="question-card" *ngFor="let question of getModuleQuestions('module3'); trackBy: trackByQuestionId">
+          <div class="question-header">
+            <span class="question-number">Q3.{{ question.id.split('_')[1] }}</span>
+            <h4>{{ question.question }}</h4>
+          </div>
+          
+          <div class="question-options">
+            <div class="option" 
+                 *ngFor="let option of ['a', 'b', 'c', 'd']"
+                 [class.selected]="quizAnswers[question.id] === option"
+                 [class.correct]="showResults && isCorrectAnswer(question.id, option)"
+                 [class.incorrect]="showResults && quizAnswers[question.id] === option && !isCorrectAnswer(question.id, option)"
+                 (click)="selectAnswer(question.id, option)">
+              <span class="option-letter">{{ option.toUpperCase() }}</span>
+              <span class="option-text">{{ getOptionText(question, option) }}</span>
+            </div>
+          </div>
+          
+          <div class="answer-explanation" *ngIf="showResults && quizAnswers[question.id]">
+            <div class="explanation-header">
+              <span class="explanation-icon">💡</span>
+              <strong>Explanation:</strong>
+            </div>
+            <p>{{ question.explanation }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 4: Page Object Model & Best Practices -->
+    <div class="quiz-module">
+      <div class="module-header" (click)="toggleQuizModule('module4')">
+        <h3>🏗️ Module 4: Page Object Model & Best Practices</h3>
+        <span class="module-score" *ngIf="showResults">{{ getModuleScorePercentage('module4') }}%</span>
+        <span class="toggle-icon">{{ expandedQuizModules['module4'] ? '▼' : '▶' }}</span>
+      </div>
+      
+      <div class="module-questions" *ngIf="expandedQuizModules['module4']">
+        <div class="question-card" *ngFor="let question of getModuleQuestions('module4'); trackBy: trackByQuestionId">
+          <div class="question-header">
+            <span class="question-number">Q4.{{ question.id.split('_')[1] }}</span>
+            <h4>{{ question.question }}</h4>
+          </div>
+          
+          <div class="question-options">
+            <div class="option" 
+                 *ngFor="let option of ['a', 'b', 'c', 'd']"
+                 [class.selected]="quizAnswers[question.id] === option"
+                 [class.correct]="showResults && isCorrectAnswer(question.id, option)"
+                 [class.incorrect]="showResults && quizAnswers[question.id] === option && !isCorrectAnswer(question.id, option)"
+                 (click)="selectAnswer(question.id, option)">
+              <span class="option-letter">{{ option.toUpperCase() }}</span>
+              <span class="option-text">{{ getOptionText(question, option) }}</span>
+            </div>
+          </div>
+          
+          <div class="answer-explanation" *ngIf="showResults && quizAnswers[question.id]">
+            <div class="explanation-header">
+              <span class="explanation-icon">💡</span>
+              <strong>Explanation:</strong>
+            </div>
+            <p>{{ question.explanation }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 5: API Testing with Playwright -->
+    <div class="quiz-module">
+      <div class="module-header" (click)="toggleQuizModule('module5')">
+        <h3>🌐 Module 5: API Testing with Playwright</h3>
+        <span class="module-score" *ngIf="showResults">{{ getModuleScorePercentage('module5') }}%</span>
+        <span class="toggle-icon">{{ expandedQuizModules['module5'] ? '▼' : '▶' }}</span>
+      </div>
+      
+      <div class="module-questions" *ngIf="expandedQuizModules['module5']">
+        <div class="question-card" *ngFor="let question of getModuleQuestions('module5'); trackBy: trackByQuestionId">
+          <div class="question-header">
+            <span class="question-number">Q5.{{ question.id.split('_')[1] }}</span>
+            <h4>{{ question.question }}</h4>
+          </div>
+          
+          <div class="question-options">
+            <div class="option" 
+                 *ngFor="let option of ['a', 'b', 'c', 'd']"
+                 [class.selected]="quizAnswers[question.id] === option"
+                 [class.correct]="showResults && isCorrectAnswer(question.id, option)"
+                 [class.incorrect]="showResults && quizAnswers[question.id] === option && !isCorrectAnswer(question.id, option)"
+                 (click)="selectAnswer(question.id, option)">
+              <span class="option-letter">{{ option.toUpperCase() }}</span>
+              <span class="option-text">{{ getOptionText(question, option) }}</span>
+            </div>
+          </div>
+          
+          <div class="answer-explanation" *ngIf="showResults && quizAnswers[question.id]">
+            <div class="explanation-header">
+              <span class="explanation-icon">💡</span>
+              <strong>Explanation:</strong>
+            </div>
+            <p>{{ question.explanation }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 6: Advanced Features -->
+    <div class="quiz-module">
+      <div class="module-header" (click)="toggleQuizModule('module6')">
+        <h3>🚀 Module 6: Advanced Features</h3>
+        <span class="module-score" *ngIf="showResults">{{ getModuleScorePercentage('module6') }}%</span>
+        <span class="toggle-icon">{{ expandedQuizModules['module6'] ? '▼' : '▶' }}</span>
+      </div>
+      
+      <div class="module-questions" *ngIf="expandedQuizModules['module6']">
+        <div class="question-card" *ngFor="let question of getModuleQuestions('module6'); trackBy: trackByQuestionId">
+          <div class="question-header">
+            <span class="question-number">Q6.{{ question.id.split('_')[1] }}</span>
+            <h4>{{ question.question }}</h4>
+          </div>
+          
+          <div class="question-options">
+            <div class="option" 
+                 *ngFor="let option of ['a', 'b', 'c', 'd']"
+                 [class.selected]="quizAnswers[question.id] === option"
+                 [class.correct]="showResults && isCorrectAnswer(question.id, option)"
+                 [class.incorrect]="showResults && quizAnswers[question.id] === option && !isCorrectAnswer(question.id, option)"
+                 (click)="selectAnswer(question.id, option)">
+              <span class="option-letter">{{ option.toUpperCase() }}</span>
+              <span class="option-text">{{ getOptionText(question, option) }}</span>
+            </div>
+          </div>
+          
+          <div class="answer-explanation" *ngIf="showResults && quizAnswers[question.id]">
+            <div class="explanation-header">
+              <span class="explanation-icon">💡</span>
+              <strong>Explanation:</strong>
+            </div>
+            <p>{{ question.explanation }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 7: Cross-browser Testing & CI/CD -->
+    <div class="quiz-module">
+      <div class="module-header" (click)="toggleQuizModule('module7')">
+        <h3>🔄 Module 7: Cross-browser Testing & CI/CD</h3>
+        <span class="module-score" *ngIf="showResults">{{ getModuleScorePercentage('module7') }}%</span>
+        <span class="toggle-icon">{{ expandedQuizModules['module7'] ? '▼' : '▶' }}</span>
+      </div>
+      
+      <div class="module-questions" *ngIf="expandedQuizModules['module7']">
+        <div class="question-card" *ngFor="let question of getModuleQuestions('module7'); trackBy: trackByQuestionId">
+          <div class="question-header">
+            <span class="question-number">Q7.{{ question.id.split('_')[1] }}</span>
+            <h4>{{ question.question }}</h4>
+          </div>
+          
+          <div class="question-options">
+            <div class="option" 
+                 *ngFor="let option of ['a', 'b', 'c', 'd']"
+                 [class.selected]="quizAnswers[question.id] === option"
+                 [class.correct]="showResults && isCorrectAnswer(question.id, option)"
+                 [class.incorrect]="showResults && quizAnswers[question.id] === option && !isCorrectAnswer(question.id, option)"
+                 (click)="selectAnswer(question.id, option)">
+              <span class="option-letter">{{ option.toUpperCase() }}</span>
+              <span class="option-text">{{ getOptionText(question, option) }}</span>
+            </div>
+          </div>
+          
+          <div class="answer-explanation" *ngIf="showResults && quizAnswers[question.id]">
+            <div class="explanation-header">
+              <span class="explanation-icon">💡</span>
+              <strong>Explanation:</strong>
+            </div>
+            <p>{{ question.explanation }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 8: Performance & Debugging -->
+    <div class="quiz-module">
+      <div class="module-header" (click)="toggleQuizModule('module8')">
+        <h3>🔧 Module 8: Performance & Debugging</h3>
+        <span class="module-score" *ngIf="showResults">{{ getModuleScorePercentage('module8') }}%</span>
+        <span class="toggle-icon">{{ expandedQuizModules['module8'] ? '▼' : '▶' }}</span>
+      </div>
+      
+      <div class="module-questions" *ngIf="expandedQuizModules['module8']">
+        <div class="question-card" *ngFor="let question of getModuleQuestions('module8'); trackBy: trackByQuestionId">
+          <div class="question-header">
+            <span class="question-number">Q8.{{ question.id.split('_')[1] }}</span>
+            <h4>{{ question.question }}</h4>
+          </div>
+          
+          <div class="question-options">
+            <div class="option" 
+                 *ngFor="let option of ['a', 'b', 'c', 'd']"
+                 [class.selected]="quizAnswers[question.id] === option"
+                 [class.correct]="showResults && isCorrectAnswer(question.id, option)"
+                 [class.incorrect]="showResults && quizAnswers[question.id] === option && !isCorrectAnswer(question.id, option)"
+                 (click)="selectAnswer(question.id, option)">
+              <span class="option-letter">{{ option.toUpperCase() }}</span>
+              <span class="option-text">{{ getOptionText(question, option) }}</span>
+            </div>
+          </div>
+          
+          <div class="answer-explanation" *ngIf="showResults && quizAnswers[question.id]">
+            <div class="explanation-header">
+              <span class="explanation-icon">💡</span>
+              <strong>Explanation:</strong>
+            </div>
+            <p>{{ question.explanation }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quiz-actions">
+    <button 
+      class="btn primary" 
+      *ngIf="!showResults"
+      [disabled]="getAnsweredCount() === 0"
+      (click)="submitQuiz()">
+      Submit Quiz ({{ getAnsweredCount() }}/40 answered)
+    </button>
+    
+    <button 
+      class="btn secondary" 
+      *ngIf="showResults"
+      (click)="resetQuiz()">
+      Reset Quiz
+    </button>
+  </div>
+
+  <div class="quiz-results" *ngIf="showResults">
+    <div class="results-header">
+      <h3>🎯 Quiz Results</h3>
+      <div class="overall-score">
+        <span class="score-label">Overall Score:</span>
+        <span class="score-value">{{ getOverallScore() }}%</span>
+        <span class="score-status" [class]="getScoreStatus()">{{ getScoreMessage() }}</span>
+      </div>
+    </div>
+    
+    <div class="module-scores">
+      <div class="module-score-card" *ngFor="let module of modules">
+        <h4>{{ module.title }}</h4>
+        <div class="score-bar">
+          <div class="score-fill" [style.width.%]="getModuleScorePercentage(module.id)"></div>
+        </div>
+        <span class="score-text">{{ getModuleScorePercentage(module.id) }}%</span>
+      </div>
+    </div>
+    
+    <div class="performance-summary">
+      <h4>📊 Performance Summary</h4>
+      <div class="summary-stats">
+        <div class="stat">
+          <span class="stat-label">Questions Answered:</span>
+          <span class="stat-value">{{ getAnsweredCount() }} / 40</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Correct Answers:</span>
+          <span class="stat-value">{{ getCorrectCount() }} / {{ getAnsweredCount() }}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Completion Time:</span>
+          <span class="stat-value">{{ getCompletionTime() }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,290 @@
+// Practice Section Styles
+.practice-section {
+  background: linear-gradient(135deg, #f6f8ff 0%, #ffffff 100%);
+  padding: 4rem 0;
+  min-height: 50vh;
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  .practice-content {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+    
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #1a1a1a;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+      
+      @media (max-width: 768px) {
+        font-size: 2rem;
+      }
+    }
+    
+    h2 {
+      font-size: 1.5rem;
+      color: #0066cc;
+      font-weight: 500;
+      margin-bottom: 2rem;
+    }
+  }
+  
+  .practice-description {
+    text-align: left;
+    margin-top: 2rem;
+    
+    > p {
+      font-size: 1.1rem;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+  }
+}
+
+// Features Section
+.features {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  margin: 2rem 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  
+  h3 {
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    
+    li {
+      padding: 0.8rem 0;
+      font-size: 1.05rem;
+      color: #555;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      align-items: center;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+      
+      &:hover {
+        color: #0066cc;
+        transform: translateX(5px);
+        transition: all 0.3s ease;
+      }
+    }
+  }
+}
+
+// Practice Tips
+.practice-tips {
+  margin: 2rem 0;
+  
+  h3 {
+    color: #1a1a1a;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-align: center;
+  }
+}
+
+.tip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.tip-card {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 102, 204, 0.15);
+  }
+  
+  .tip-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  h4 {
+    color: #1a1a1a;
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  p {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+}
+
+// Action Buttons
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 3rem 0 2rem 0;
+  flex-wrap: wrap;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-width: 200px;
+  
+  @media (max-width: 600px) {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0066cc, #004499);
+  color: white;
+  
+  &:hover {
+    background: linear-gradient(135deg, #004499, #003366);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
+  }
+}
+
+.btn-secondary {
+  background: #f8f9fa;
+  color: #0066cc;
+  border: 2px solid #0066cc;
+  
+  &:hover {
+    background: #0066cc;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 102, 204, 0.2);
+  }
+}
+
+// Resources Section
+.resources-section {
+  background: #f8f9fa;
+  padding: 4rem 0;
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  h3 {
+    text-align: center;
+    color: #1a1a1a;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+}
+
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.resource-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 102, 204, 0.15);
+  }
+  
+  h4 {
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+  
+  p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+  
+  .resource-btn {
+    background: linear-gradient(135deg, #2af598, #009efd);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: linear-gradient(135deg, #009efd, #2af598);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(42, 245, 152, 0.3);
+    }
+  }
+}
+
+// Mobile Responsive
+@media (max-width: 768px) {
+  .practice-section {
+    padding: 2rem 0;
+  }
+  
+  .tip-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .resource-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+}

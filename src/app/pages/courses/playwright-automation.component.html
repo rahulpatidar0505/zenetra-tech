@@ -247,10 +247,15 @@
 
     <div class="download-section">
       <div class="container">
-        <button class="download-btn" (click)="downloadCoursePdf()">
-          📋 Download Course Details PDF
-        </button>
-        <p class="download-text">Get a detailed PDF of the complete course syllabus and curriculum</p>
+        <div class="action-buttons-container">
+          <button class="download-btn" (click)="downloadCoursePdf()">
+            📋 Download Course Details PDF
+          </button>
+          <button class="practice-btn" (click)="openPracticeApplication()">
+            🎭 Open Practice Application
+          </button>
+        </div>
+        <p class="download-text">Get detailed course materials and practice with our hands-on automation application</p>
       </div>
     </div>
 
@@ -332,15 +337,29 @@
   text-align: center;
 }
 
-.download-btn {
-  background: #013024;
-  color: white;
+.action-buttons-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.download-btn, .practice-btn {
   border: none;
   padding: 1rem 2rem;
   border-radius: 25px;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  min-width: 200px;
+  font-weight: 600;
+}
+
+.download-btn {
+  background: #013024;
+  color: white;
   border: 2px solid #013024;
 
   &:hover {
@@ -348,6 +367,30 @@
     color: #013024;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 255, 185, 0.3);
+  }
+}
+
+.practice-btn {
+  background: linear-gradient(135deg, #0066cc, #004499);
+  color: white;
+  border: 2px solid #0066cc;
+
+  &:hover {
+    background: linear-gradient(135deg, #004499, #003366);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+  }
+}
+
+@media (max-width: 600px) {
+  .action-buttons-container {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .download-btn, .practice-btn {
+    width: 100%;
+    max-width: 300px;
   }
 }
 
