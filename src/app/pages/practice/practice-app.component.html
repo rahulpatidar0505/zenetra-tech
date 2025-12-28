@@ -1389,8 +1389,10 @@
         <div class="toastr-message" [innerHTML]="toastrMessage"></div>
         <button class="toastr-close" (click)="hideToastr()" data-testid="toastrClose">×</button>
       </div>
-      
-      <!-- Testing Instructions for Modal & Overlays -->
+    </div>
+    
+    <!-- Testing Instructions for Modal & Overlays (within modal-overlays tab) -->
+    <div *ngIf="selectedTab === 'modal-overlays'">
       <div class="testing-instructions-section">
         <div class="testing-header">
           <h3>🧪 Modal & Overlays - Testing Instructions</h3>

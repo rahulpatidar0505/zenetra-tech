@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  
+  <!-- Homepage -->
+  <url>
+    <loc>https://zenetratechnologies.com/</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://zenetratechnologies.com/assets/images/zenetra-logo.ico</image:loc>
+      <image:title>Zenetra Technologies Logo</image:title>
+      <image:caption>Professional IT Training and Development Services</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Courses Page -->
+  <url>
+    <loc>https://zenetratechnologies.com/courses</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://zenetratechnologies.com/assets/images/Java.jpg</image:loc>
+      <image:title>Java Development Training</image:title>
+      <image:caption>Comprehensive Java development training program</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://zenetratechnologies.com/assets/images/Playwright.jpg</image:loc>
+      <image:title>Playwright Automation Testing</image:title>
+      <image:caption>Modern automation testing with Playwright framework</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://zenetratechnologies.com/assets/images/Security.jpg</image:loc>
+      <image:title>Security Testing Training</image:title>
+      <image:caption>Comprehensive security testing and ethical hacking training</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Services Page -->
+  <url>
+    <loc>https://zenetratechnologies.com/services</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://zenetratechnologies.com/assets/images/our-services.jpg</image:loc>
+      <image:title>Our Professional Services</image:title>
+      <image:caption>Complete range of IT training and development services</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Gallery Page -->
+  <url>
+    <loc>https://zenetratechnologies.com/gallery</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- Blog Page -->
+  <url>
+    <loc>https://zenetratechnologies.com/blog</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://zenetratechnologies.com/assets/images/blog.jpg</image:loc>
+      <image:title>Tech Blog</image:title>
+      <image:caption>Latest insights and tutorials in software development</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Contact Page -->
+  <url>
+    <loc>https://zenetratechnologies.com/contact-us</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://zenetratechnologies.com/assets/images/contact-us.jpg</image:loc>
+      <image:title>Contact Zenetra Technologies</image:title>
+      <image:caption>Get in touch with our expert training team</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Admissions Page -->
+  <url>
+    <loc>https://zenetratechnologies.com/admissions</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+</urlset>

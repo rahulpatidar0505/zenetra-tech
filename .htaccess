@@ -3,7 +3,7 @@ RewriteEngine On
 # Handle Angular routing - redirect all requests to index.html
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^.*$ /index.html [L]
+RewriteRule ^.*$ /practice-app/index.html [L]
 
 # Security headers
 Header always set X-Frame-Options DENY
