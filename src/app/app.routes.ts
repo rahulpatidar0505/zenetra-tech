@@ -21,6 +21,42 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/practice/practice-app.component').then(m => m.PracticeAppComponent),
     title: 'Playwright Practice Application - Standalone Testing Environment'
   },
+  // Banking Practice Application Routes
+  {
+    path: 'practice-app/banking',
+    loadComponent: () => import('./pages/practice/banking/banking-home.component').then(m => m.BankingHomeComponent),
+    title: 'ZenetraBank - Practice Banking Application'
+  },
+  {
+    path: 'practice-app/banking/register',
+    loadComponent: () => import('./pages/practice/banking/banking-register.component').then(m => m.BankingRegisterComponent),
+    title: 'Account Registration - ZenetraBank'
+  },
+  {
+    path: 'practice-app/banking/login',
+    loadComponent: () => import('./pages/practice/banking/banking-login.component').then(m => m.BankingLoginComponent),
+    title: 'Login - ZenetraBank'
+  },
+  {
+    path: 'practice-app/banking/dashboard',
+    loadComponent: () => import('./pages/practice/banking/banking-dashboard.component').then(m => m.BankingDashboardComponent),
+    title: 'Dashboard - ZenetraBank'
+  },
+  {
+    path: 'practice-app/banking/account-setup',
+    loadComponent: () => import('./pages/practice/banking/banking-account-setup.component').then(m => m.BankingAccountSetupComponent),
+    title: 'Account Setup - ZenetraBank'
+  },
+  {
+    path: 'practice-app/banking/transfer',
+    loadComponent: () => import('./pages/practice/banking/banking-transfer.component').then(m => m.BankingTransferComponent),
+    title: 'Fund Transfer - ZenetraBank'
+  },
+  {
+    path: 'practice-app/banking/profile',
+    loadComponent: () => import('./pages/practice/banking/banking-profile.component').then(m => m.BankingProfileComponent),
+    title: 'Profile Settings - ZenetraBank'
+  },
   { 
     path: 'courses/java-development', 
     loadComponent: () => import('./pages/courses/java-development.component').then(m => m.JavaDevelopmentComponent)
