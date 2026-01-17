@@ -1,6 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 // Custom Validators
 export class CustomValidators {
@@ -179,9 +181,10 @@ export class CustomValidators {
   templateUrl: './practice-app.component.html',
   styleUrls: ['./practice-app.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule]
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, HttpClientModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class PracticeAppComponent implements OnInit, OnDestroy {
+export class PracticeAppComponent implements OnInit, OnDestroy, AfterViewInit {
   
   // Form Groups
   gridForm!: FormGroup;
@@ -208,6 +211,7 @@ export class PracticeAppComponent implements OnInit, OnDestroy {
   showTooltip = false;
   toastrMessage = '';
   toastrType = 'success'; // success, error, warning, info
+  alertResult = ''; // Store alert interaction results
   
   // Table states
   tableData: any[] = [];
@@ -270,6 +274,41 @@ export class PracticeAppComponent implements OnInit, OnDestroy {
   
   draggableItems = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
   droppedItems: string[] = [];
+  
+  // Authentication properties for Playwright session storage testing
+  authUsers = [
+    { 
+      id: 'admin', 
+      username: 'admin', 
+      password: 'admin123', 
+      role: 'admin', 
+      name: 'Admin User',
+      permissions: ['read', 'write', 'delete', 'manage-users'] 
+    },
+    { 
+      id: 'manager', 
+      username: 'manager', 
+      password: 'manager123', 
+      role: 'manager', 
+      name: 'Manager User',
+      permissions: ['read', 'write', 'manage-content'] 
+    },
+    { 
+      id: 'user', 
+      username: 'user', 
+      password: 'user123', 
+      role: 'user', 
+      name: 'Regular User',
+      permissions: ['read'] 
+    }
+  ];
+  
+  currentUser: any = null;
+  authenticationStatus = '';
+  sessionData: any = {};
+  isAuthenticated = false;
+  loginForm!: FormGroup;
+  protectedActionResult = '';
   
   carouselImages = [
     { url: '/assets/images/automation-testing.gif', alt: 'Automation Testing', caption: 'Automation Testing' },
@@ -336,9 +375,31 @@ export class PracticeAppComponent implements OnInit, OnDestroy {
   };
   
   isDragOver = false;
-
+  
+  // Network Internals properties
+  networkDemoType: 'rest' | 'graphql' | 'websocket' | 'sse' | 'fetch-variations' | 'cors' | 'performance' | '' = '';
+  networkResponse: any = null;
+  networkLoading = false;
+  networkTiming: number = 0;
+  demonstrationText = '';
+  requestHeaders: any = {};
+  responseHeaders: any = {};
+  requestPayload: any = null;
+  statusCode: number = 0;
+  networkError: string = '';
+  networkSteps: string[] = [];
+  currentStepIndex: number = 0;
+  showNetworkTabs = false;
+  
+  // iFrame properties
+  frameLoading = false;
+  frameLoaded = false;
+  frameUrl: SafeResourceUrl | string = '';
+  
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private http: HttpClient,
+    private sanitizer: DomSanitizer
   ) {
     this.initializeForms();
   }
@@ -732,7 +793,11 @@ export class PracticeAppComponent implements OnInit, OnDestroy {
       'smart-table': '📋',
       'file-operations': '📁',
       'api-practice': '🔗',
+      'network-internals': '🌐',
+      'frames': '🖼️',
       'ui-elements': '🎨',
+      'shadow-dom': '👤',
+      'authentication': '🔐',
       'playwright-quiz': '🧠'
     };
     return icons[tab] || '📄';
@@ -746,7 +811,11 @@ export class PracticeAppComponent implements OnInit, OnDestroy {
       'smart-table': 'Smart Table',
       'file-operations': 'File Ops',
       'api-practice': 'API Testing',
+      'network-internals': 'Network Internals',
+      'frames': 'Frames',
       'ui-elements': 'UI Elements',
+      'shadow-dom': 'Shadow DOM',
+      'authentication': 'Authentication',
       'playwright-quiz': 'Quiz'
     };
     return names[tab] || tab;
@@ -863,6 +932,15 @@ export class PracticeAppComponent implements OnInit, OnDestroy {
       username: ['admin', Validators.required],
       password: ['password123', Validators.required]
     });
+    
+    // Login Form for session storage testing
+    this.loginForm = this.formBuilder.group({
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required]]
+    });
+    
+    // Check for existing session on init
+    this.checkExistingSession();
   }
   
   setActiveTab(tabName: string) {
@@ -874,6 +952,13 @@ export class PracticeAppComponent implements OnInit, OnDestroy {
     // Mark as completed after some interactions (simulating engagement)
     if (this.moduleInteractions[tabName] >= 3) {
       this.completedModules.add(tabName);
+    }
+    
+    // Initialize Shadow DOM when that tab is selected
+    if (tabName === 'shadow-dom') {
+      setTimeout(() => {
+        this.initializeSimpleShadowDOM();
+      }, 100);
     }
   }
 
@@ -1091,6 +1176,63 @@ export class PracticeAppComponent implements OnInit, OnDestroy {
   
   showInfoToastr() {
     this.showToastrNotification('info', 'Info: Here is some useful information.');
+  }
+  
+  // New Tab Handling Methods
+  openNewTab() {
+    // Opens the same practice app in a new tab
+    const newTab = window.open('/practice-app', '_blank');
+    if (newTab) {
+      this.showToastrNotification('success', 'New tab opened! Use Playwright to handle multiple tabs.');
+    } else {
+      this.showToastrNotification('error', 'Popup blocked! Please allow popups for this site.');
+    }
+  }
+  
+  openNewWindow() {
+    // Opens a new window with specific dimensions
+    const newWindow = window.open('/practice-app', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+    if (newWindow) {
+      this.showToastrNotification('success', 'New window opened! Practice window handling in Playwright.');
+    } else {
+      this.showToastrNotification('error', 'Popup blocked! Please allow popups for this site.');
+    }
+  }
+  
+  openExternalLink() {
+    // Opens an external website in a new tab
+    const externalTab = window.open('https://playwright.dev/', '_blank');
+    if (externalTab) {
+      this.showToastrNotification('info', 'External site opened! Practice cross-origin navigation.');
+    } else {
+      this.showToastrNotification('error', 'Popup blocked! Please allow popups for this site.');
+    }
+  }
+  
+  // JavaScript Alert Methods
+  showSimpleAlert() {
+    alert('This is a simple JavaScript alert! Playwright can handle this with page.on("dialog") listeners.');
+    this.alertResult = 'Simple alert was shown';
+    this.showToastrNotification('info', 'Simple alert triggered!');
+  }
+  
+  showConfirmAlert() {
+    const result = confirm('Do you want to continue? Click OK or Cancel to test Playwright dialog handling.');
+    this.alertResult = result ? 'User clicked OK' : 'User clicked Cancel';
+    this.showToastrNotification('success', `Confirm result: ${this.alertResult}`);
+  }
+  
+  showPromptAlert() {
+    const userInput = prompt('Please enter your test data:', 'Default text for automation');
+    this.alertResult = userInput !== null ? `User entered: "${userInput}"` : 'User cancelled the prompt';
+    this.showToastrNotification('info', 'Prompt dialog completed!');
+  }
+  
+  showHiddenAlert() {
+    // This alert is triggered by a nearly invisible button for teaching purposes
+    alert('Congratulations! You found the hidden alert button. This tests your element location skills!');
+    this.alertResult = 'Hidden alert was triggered - well done!';
+    this.showToastrNotification('success', 'Hidden element successfully located and clicked!');
   }
   
   // Table Management Methods
@@ -2522,6 +2664,329 @@ export class PracticeAppComponent implements OnInit, OnDestroy {
     this.executePing();
   }
 
+  // Network Internals Demonstration Methods
+  
+  demonstrateRestAPI() {
+    this.networkDemoType = 'rest';
+    this.resetNetworkDemo();
+    this.networkLoading = true;
+    
+    const startTime = performance.now();
+    
+    this.demonstrationText = 'Making a RESTful API call to JSONPlaceholder...';
+    this.networkSteps = [
+      '🌐 DNS Lookup: Resolving jsonplaceholder.typicode.com',
+      '🤝 TCP Connection: Establishing connection on port 443',
+      '🔐 SSL/TLS Handshake: Securing the connection',
+      '📤 HTTP Request: Sending GET request with headers',
+      '⏳ Server Processing: Waiting for server response',
+      '📥 HTTP Response: Receiving data from server',
+      '✅ Connection Complete: Request finished successfully'
+    ];
+    
+    this.animateNetworkSteps();
+    
+    // Simulate real network request
+    this.http.get('https://jsonplaceholder.typicode.com/posts/1').subscribe({
+      next: (response: any) => {
+        const endTime = performance.now();
+        this.networkTiming = Math.round(endTime - startTime);
+        this.networkResponse = response;
+        this.statusCode = 200;
+        this.requestHeaders = {
+          'Accept': 'application/json',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          'Accept-Language': 'en-US,en;q=0.9',
+          'Accept-Encoding': 'gzip, deflate, br',
+          'Connection': 'keep-alive'
+        };
+        this.responseHeaders = {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'max-age=43200',
+          'Server': 'cloudflare',
+          'Content-Length': '292'
+        };
+        this.networkLoading = false;
+        this.demonstrationText = `✅ REST API call completed in ${this.networkTiming}ms`;
+        this.showNetworkTabs = true;
+      },
+      error: (error) => {
+        this.networkLoading = false;
+        this.networkError = error.message;
+        this.demonstrationText = '❌ Network request failed';
+      }
+    });
+  }
+  
+  demonstrateGraphQL() {
+    this.networkDemoType = 'graphql';
+    this.resetNetworkDemo();
+    this.networkLoading = true;
+    
+    const startTime = performance.now();
+    
+    this.demonstrationText = 'Making a GraphQL query to SpaceX API...';
+    this.networkSteps = [
+      '🌐 DNS Lookup: Resolving api.spacex.land',
+      '🤝 TCP Connection: Establishing connection',
+      '🔐 SSL/TLS Handshake: Securing the connection',
+      '📤 GraphQL Query: Sending POST request with query',
+      '🔍 Server Processing: Parsing and executing GraphQL query',
+      '📥 GraphQL Response: Receiving structured data',
+      '✅ Query Complete: GraphQL request finished'
+    ];
+    
+    this.animateNetworkSteps();
+    
+    const graphqlQuery = {
+      query: `
+        query GetCompanyInfo {
+          company {
+            name
+            founder
+            founded
+            employees
+            headquarters {
+              address
+              city
+              state
+            }
+          }
+        }
+      `
+    };
+    
+    this.requestPayload = graphqlQuery;
+    
+    this.http.post('https://api.spacex.land/graphql/', graphqlQuery).subscribe({
+      next: (response: any) => {
+        const endTime = performance.now();
+        this.networkTiming = Math.round(endTime - startTime);
+        this.networkResponse = response.data;
+        this.statusCode = 200;
+        this.requestHeaders = {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        };
+        this.responseHeaders = {
+          'Content-Type': 'application/json',
+          'Server': 'nginx',
+          'Access-Control-Allow-Origin': '*'
+        };
+        this.networkLoading = false;
+        this.demonstrationText = `✅ GraphQL query completed in ${this.networkTiming}ms`;
+        this.showNetworkTabs = true;
+      },
+      error: (error) => {
+        this.networkLoading = false;
+        this.networkError = error.message;
+        this.demonstrationText = '❌ GraphQL request failed';
+      }
+    });
+  }
+  
+  demonstrateFetchVariations() {
+    this.networkDemoType = 'fetch-variations';
+    this.resetNetworkDemo();
+    this.networkLoading = true;
+    
+    this.demonstrationText = 'Demonstrating different HTTP methods and request types...';
+    this.networkSteps = [
+      '📤 GET Request: Fetching data (no body)',
+      '📤 POST Request: Sending JSON data',
+      '📤 PUT Request: Updating resource',
+      '📤 DELETE Request: Removing resource',
+      '📤 PATCH Request: Partial update',
+      '📤 HEAD Request: Headers only (no body)',
+      '✅ All Methods: Demonstrated successfully'
+    ];
+    
+    this.animateNetworkSteps();
+    
+    const demoAPIs = [
+      { method: 'GET', url: 'https://httpbin.org/get' },
+      { method: 'POST', url: 'https://httpbin.org/post', data: { message: 'Hello World', timestamp: Date.now() } },
+      { method: 'PUT', url: 'https://httpbin.org/put', data: { id: 1, updated: true } },
+      { method: 'DELETE', url: 'https://httpbin.org/delete' }
+    ];
+    
+    // Demonstrate multiple request types
+    Promise.all([
+      this.http.get(demoAPIs[0].url).toPromise(),
+      this.http.post(demoAPIs[1].url, demoAPIs[1].data).toPromise()
+    ]).then(responses => {
+      this.networkResponse = {
+        get: responses[0],
+        post: responses[1]
+      };
+      this.statusCode = 200;
+      this.networkLoading = false;
+      this.demonstrationText = '✅ Multiple HTTP methods demonstrated successfully';
+      this.showNetworkTabs = true;
+    }).catch(error => {
+      this.networkError = error.message;
+      this.networkLoading = false;
+      this.demonstrationText = '❌ Request demonstration failed';
+    });
+  }
+  
+  demonstrateCORS() {
+    this.networkDemoType = 'cors';
+    this.resetNetworkDemo();
+    this.networkLoading = true;
+    
+    this.demonstrationText = 'Demonstrating CORS (Cross-Origin Resource Sharing)...';
+    this.networkSteps = [
+      '🌐 Same-Origin Request: Making request to same domain',
+      '🔒 Preflight Check: Browser checking CORS policy',
+      '🤝 CORS Headers: Server responding with allowed origins',
+      '📤 Actual Request: Sending the real request',
+      '✅ CORS Success: Request allowed by CORS policy',
+      '⚠️ Alternative: Demonstrating potential CORS issues',
+      '✅ Complete: CORS demonstration finished'
+    ];
+    
+    this.animateNetworkSteps();
+    
+    // Use CORS-enabled API
+    this.http.get('https://api.github.com/users/octocat').subscribe({
+      next: (response: any) => {
+        this.networkResponse = response;
+        this.statusCode = 200;
+        this.requestHeaders = {
+          'Origin': window.location.origin,
+          'Accept': 'application/json'
+        };
+        this.responseHeaders = {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+        };
+        this.networkLoading = false;
+        this.demonstrationText = '✅ CORS request completed successfully';
+        this.showNetworkTabs = true;
+      },
+      error: (error) => {
+        this.networkError = error.message;
+        this.networkLoading = false;
+        this.demonstrationText = '❌ CORS request failed';
+      }
+    });
+  }
+  
+  demonstratePerformance() {
+    this.networkDemoType = 'performance';
+    this.resetNetworkDemo();
+    this.networkLoading = true;
+    
+    this.demonstrationText = 'Analyzing network performance metrics...';
+    this.networkSteps = [
+      '⏱️ Navigation Timing: Measuring page load phases',
+      '🌐 DNS Resolution Time: Domain name lookup',
+      '🤝 Connection Time: TCP handshake duration',
+      '🔐 SSL Time: TLS negotiation duration',
+      '📤 Request Time: Time to send request',
+      '📥 Response Time: Time to receive response',
+      '📊 Performance Analysis: Complete timing breakdown'
+    ];
+    
+    this.animateNetworkSteps();
+    
+    // Get performance timing data
+    const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+    const resources = performance.getEntriesByType('resource').slice(0, 5);
+    
+    setTimeout(() => {
+      this.networkResponse = {
+        navigation: {
+          domainLookupStart: navigation.domainLookupStart,
+          domainLookupEnd: navigation.domainLookupEnd,
+          connectStart: navigation.connectStart,
+          connectEnd: navigation.connectEnd,
+          secureConnectionStart: navigation.secureConnectionStart,
+          requestStart: navigation.requestStart,
+          responseStart: navigation.responseStart,
+          responseEnd: navigation.responseEnd,
+          domComplete: navigation.domComplete,
+          loadEventEnd: navigation.loadEventEnd
+        },
+        resources: resources.map(resource => ({
+          name: resource.name,
+          duration: Math.round(resource.duration),
+          startTime: Math.round(resource.startTime),
+          transferSize: (resource as any).transferSize || 'N/A'
+        })),
+        metrics: {
+          dnsLookupTime: Math.round(navigation.domainLookupEnd - navigation.domainLookupStart),
+          tcpConnectionTime: Math.round(navigation.connectEnd - navigation.connectStart),
+          tlsTime: navigation.secureConnectionStart ? Math.round(navigation.connectEnd - navigation.secureConnectionStart) : 0,
+          requestTime: Math.round(navigation.responseStart - navigation.requestStart),
+          responseTime: Math.round(navigation.responseEnd - navigation.responseStart),
+          totalTime: Math.round(navigation.loadEventEnd - navigation.fetchStart)
+        }
+      };
+      
+      this.networkLoading = false;
+      this.demonstrationText = '✅ Performance analysis completed';
+      this.showNetworkTabs = true;
+    }, 1500);
+  }
+  
+  private resetNetworkDemo() {
+    this.networkResponse = null;
+    this.networkError = '';
+    this.statusCode = 0;
+    this.requestHeaders = {};
+    this.responseHeaders = {};
+    this.requestPayload = null;
+    this.networkSteps = [];
+    this.currentStepIndex = 0;
+    this.showNetworkTabs = false;
+  }
+  
+  private animateNetworkSteps() {
+    this.currentStepIndex = 0;
+    const stepInterval = setInterval(() => {
+      if (this.currentStepIndex < this.networkSteps.length - 1) {
+        this.currentStepIndex++;
+      } else {
+        clearInterval(stepInterval);
+      }
+    }, 300);
+  }
+
+  ngAfterViewInit() {
+    // Add click handlers for network tabs
+    setTimeout(() => {
+      const tabButtons = document.querySelectorAll('.response-tabs .tab-btn');
+      const tabPanels = document.querySelectorAll('.response-tabs .tab-panel');
+      
+      tabButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          const target = e.target as HTMLElement;
+          const tabId = target.getAttribute('data-tab');
+          
+          // Remove active class from all buttons and panels
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          tabPanels.forEach(panel => panel.classList.remove('active'));
+          
+          // Add active class to clicked button and corresponding panel
+          target.classList.add('active');
+          const targetPanel = document.querySelector(`.tab-panel[data-panel="${tabId}"]`);
+          if (targetPanel) {
+            targetPanel.classList.add('active');
+          }
+        });
+      });
+      
+      // UI elements are now initialized
+    }, 100);
+  }
+
+
+
   getStatusClass(statusCode: number): string {
     if (statusCode >= 200 && statusCode < 300) return 'success';
     if (statusCode >= 400 && statusCode < 500) return 'client-error';
@@ -2980,5 +3445,1047 @@ export class PracticeAppComponent implements OnInit, OnDestroy {
 
   closeReview() {
     this.reviewMode = false;
+  }
+
+  // Shadow DOM Methods for Practice Examples
+
+  initializeShadowDOMComponents() {
+    this.createShadowButton();
+    this.createShadowForm();
+    this.createNestedShadowDOM();
+    this.createCustomCounterElement();
+    this.createDynamicShadowDOM();
+  }
+
+  createShadowButton() {
+    const host = document.getElementById('shadow-button-host');
+    if (!host) return;
+
+    const shadowRoot = host.attachShadow({ mode: 'open' });
+    
+    shadowRoot.innerHTML = `
+      <style>
+        .shadow-button {
+          background: linear-gradient(45deg, #007bff, #0056b3);
+          color: white;
+          border: none;
+          padding: 12px 24px;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 16px;
+          font-weight: bold;
+          transition: all 0.3s ease;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .shadow-button:hover {
+          background: linear-gradient(45deg, #0056b3, #004085);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .shadow-button.clicked {
+          background: linear-gradient(45deg, #28a745, #1e7e34);
+        }
+      </style>
+      <button class="shadow-button" data-testid="shadow-button">
+        Click Me (Shadow DOM)
+      </button>
+    `;
+
+    const button = shadowRoot.querySelector('.shadow-button') as HTMLButtonElement;
+    button.addEventListener('click', () => {
+      button.classList.add('clicked');
+      button.textContent = 'Clicked! (Shadow DOM)';
+      const resultElement = document.getElementById('shadow-button-result')?.querySelector('.status-text');
+      if (resultElement) {
+        resultElement.textContent = 'Button clicked successfully!';
+        resultElement.className = 'status-text status-success';
+      }
+    });
+  }
+
+  createShadowForm() {
+    const host = document.getElementById('shadow-form-host');
+    if (!host) return;
+
+    const shadowRoot = host.attachShadow({ mode: 'open' });
+    
+    shadowRoot.innerHTML = `
+      <style>
+        .shadow-form {
+          background: #f8f9fa;
+          padding: 20px;
+          border-radius: 8px;
+          border: 1px solid #dee2e6;
+          max-width: 400px;
+        }
+        .form-group {
+          margin-bottom: 15px;
+        }
+        .form-label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: bold;
+          color: #495057;
+        }
+        .form-input {
+          width: 100%;
+          padding: 8px 12px;
+          border: 1px solid #ced4da;
+          border-radius: 4px;
+          font-size: 14px;
+        }
+        .form-input:focus {
+          outline: none;
+          border-color: #007bff;
+          box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+        }
+        .form-button {
+          background: #007bff;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 14px;
+        }
+        .form-button:hover {
+          background: #0056b3;
+        }
+        .error {
+          color: #dc3545;
+          font-size: 12px;
+          margin-top: 5px;
+        }
+        .success {
+          color: #28a745;
+          margin-top: 10px;
+        }
+      </style>
+      <form class="shadow-form" data-testid="shadow-form">
+        <div class="form-group">
+          <label class="form-label" for="shadow-name">Name</label>
+          <input type="text" class="form-input" name="name" id="shadow-name" data-testid="shadow-name-input" required>
+          <div class="error" id="name-error"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="shadow-email">Email</label>
+          <input type="email" class="form-input" name="email" id="shadow-email" data-testid="shadow-email-input" required>
+          <div class="error" id="email-error"></div>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="form-button" data-testid="shadow-submit-button">Submit</button>
+        </div>
+        <div id="form-success" class="success" style="display: none;"></div>
+      </form>
+    `;
+
+    const form = shadowRoot.querySelector('.shadow-form') as HTMLFormElement;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const nameInput = shadowRoot.querySelector('#shadow-name') as HTMLInputElement;
+      const emailInput = shadowRoot.querySelector('#shadow-email') as HTMLInputElement;
+      const nameError = shadowRoot.querySelector('#name-error') as HTMLElement;
+      const emailError = shadowRoot.querySelector('#email-error') as HTMLElement;
+      const successDiv = shadowRoot.querySelector('#form-success') as HTMLElement;
+      
+      // Clear previous errors
+      nameError.textContent = '';
+      emailError.textContent = '';
+      successDiv.style.display = 'none';
+      
+      let isValid = true;
+      
+      if (!nameInput.value.trim()) {
+        nameError.textContent = 'Name is required';
+        isValid = false;
+      }
+      
+      if (!emailInput.value.trim()) {
+        emailError.textContent = 'Email is required';
+        isValid = false;
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+        emailError.textContent = 'Please enter a valid email';
+        isValid = false;
+      }
+      
+      if (isValid) {
+        successDiv.textContent = `Form submitted successfully! Name: ${nameInput.value}, Email: ${emailInput.value}`;
+        successDiv.style.display = 'block';
+        
+        const resultElement = document.getElementById('shadow-form-result')?.querySelector('.status-text');
+        if (resultElement) {
+          resultElement.textContent = `Submitted: ${nameInput.value} (${emailInput.value})`;
+          resultElement.className = 'status-text status-success';
+        }
+      }
+    });
+  }
+
+  createNestedShadowDOM() {
+    const host = document.getElementById('nested-shadow-host');
+    if (!host) return;
+
+    const shadowRoot = host.attachShadow({ mode: 'open' });
+    
+    shadowRoot.innerHTML = `
+      <style>
+        .parent-container {
+          background: #e3f2fd;
+          padding: 20px;
+          border-radius: 8px;
+          border: 2px solid #2196f3;
+        }
+        .parent-title {
+          color: #1976d2;
+          font-weight: bold;
+          margin-bottom: 15px;
+        }
+      </style>
+      <div class="parent-container">
+        <div class="parent-title">Parent Shadow DOM Component</div>
+        <div id="child-host" class="child-component" data-testid="child-component"></div>
+      </div>
+    `;
+
+    const childHost = shadowRoot.getElementById('child-host');
+    if (childHost) {
+      const childShadow = childHost.attachShadow({ mode: 'open' });
+      
+      childShadow.innerHTML = `
+        <style>
+          .child-container {
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 6px;
+            border: 2px solid #ff9800;
+          }
+          .child-button {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+          }
+          .child-button:hover {
+            background: #f57c00;
+          }
+          .child-button.active {
+            background: #4caf50;
+          }
+        </style>
+        <div class="child-container">
+          <div style="color: #e65100; font-weight: bold; margin-bottom: 10px;">Child Shadow DOM Component</div>
+          <button class="child-button" data-testid="nested-child-button">Nested Shadow Button</button>
+        </div>
+      `;
+
+      const childButton = childShadow.querySelector('.child-button') as HTMLButtonElement;
+      childButton.addEventListener('click', () => {
+        childButton.classList.add('active');
+        childButton.textContent = 'Nested Button Clicked!';
+        
+        const resultElement = document.getElementById('nested-shadow-result')?.querySelector('.status-text');
+        if (resultElement) {
+          resultElement.textContent = 'Nested shadow DOM interaction successful!';
+          resultElement.className = 'status-text status-success';
+        }
+      });
+    }
+  }
+
+  createCustomCounterElement() {
+    if (!customElements.get('custom-counter')) {
+      class CustomCounter extends HTMLElement {
+        private count: number = 0;
+        private countDisplay: HTMLElement | null = null;
+        private customShadowRoot: ShadowRoot;
+
+        constructor() {
+          super();
+          this.customShadowRoot = this.attachShadow({ mode: 'open' });
+          this.count = parseInt(this.getAttribute('initial-count') || '0');
+        }
+
+        connectedCallback() {
+          this.render();
+          this.setupEventListeners();
+        }
+
+        render() {
+          this.customShadowRoot.innerHTML = `
+            <style>
+              .counter-container {
+                background: #f3e5f5;
+                padding: 20px;
+                border-radius: 8px;
+                border: 2px solid #9c27b0;
+                text-align: center;
+                max-width: 300px;
+              }
+              .counter-title {
+                color: #7b1fa2;
+                font-weight: bold;
+                margin-bottom: 15px;
+              }
+              .counter-display {
+                font-size: 24px;
+                font-weight: bold;
+                color: #4a148c;
+                margin: 15px 0;
+                padding: 10px;
+                background: white;
+                border-radius: 4px;
+              }
+              .counter-button {
+                background: #9c27b0;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                margin: 0 5px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 14px;
+              }
+              .counter-button:hover {
+                background: #7b1fa2;
+              }
+              .counter-button.reset {
+                background: #f44336;
+              }
+              .counter-button.reset:hover {
+                background: #d32f2f;
+              }
+            </style>
+            <div class="counter-container">
+              <div class="counter-title">Custom Counter Element</div>
+              <div class="counter-display" data-testid="counter-display">${this.count}</div>
+              <div>
+                <button class="counter-button increment" data-testid="increment-button">+</button>
+                <button class="counter-button decrement" data-testid="decrement-button">-</button>
+                <button class="counter-button reset" data-testid="reset-button">Reset</button>
+              </div>
+            </div>
+          `;
+
+          this.countDisplay = this.customShadowRoot.querySelector('.counter-display');
+        }
+
+        setupEventListeners() {
+          const incrementBtn = this.customShadowRoot.querySelector('.increment') as HTMLButtonElement;
+          const decrementBtn = this.customShadowRoot.querySelector('.decrement') as HTMLButtonElement;
+          const resetBtn = this.customShadowRoot.querySelector('.reset') as HTMLButtonElement;
+
+          incrementBtn.addEventListener('click', () => {
+            this.count++;
+            this.updateDisplay();
+          });
+
+          decrementBtn.addEventListener('click', () => {
+            this.count--;
+            this.updateDisplay();
+          });
+
+          resetBtn.addEventListener('click', () => {
+            this.count = 0;
+            this.updateDisplay();
+          });
+        }
+
+        updateDisplay() {
+          if (this.countDisplay) {
+            this.countDisplay.textContent = this.count.toString();
+          }
+          
+          const resultElement = document.getElementById('custom-element-result')?.querySelector('.status-text');
+          if (resultElement) {
+            resultElement.textContent = this.count.toString();
+            resultElement.className = 'status-text status-info';
+          }
+        }
+      }
+
+      customElements.define('custom-counter', CustomCounter);
+    }
+  }
+
+  createDynamicShadowDOM() {
+    const host = document.getElementById('dynamic-shadow-host');
+    if (!host) return;
+
+    const shadowRoot = host.attachShadow({ mode: 'open' });
+    
+    shadowRoot.innerHTML = `
+      <style>
+        .dynamic-container {
+          background: #e8f5e8;
+          padding: 20px;
+          border-radius: 8px;
+          border: 2px solid #4caf50;
+        }
+        .dynamic-title {
+          color: #2e7d32;
+          font-weight: bold;
+          margin-bottom: 15px;
+        }
+        .load-button {
+          background: #4caf50;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 4px;
+          cursor: pointer;
+          margin-bottom: 15px;
+        }
+        .load-button:hover {
+          background: #388e3c;
+        }
+        .load-button:disabled {
+          background: #c8e6c9;
+          cursor: not-allowed;
+        }
+        .dynamic-content {
+          min-height: 100px;
+        }
+        .loading {
+          color: #666;
+          font-style: italic;
+        }
+        .dynamic-item {
+          background: white;
+          padding: 10px;
+          margin: 5px 0;
+          border-radius: 4px;
+          border-left: 4px solid #4caf50;
+        }
+        .loaded-content {
+          animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      </style>
+      <div class="dynamic-container">
+        <div class="dynamic-title">Dynamic Shadow DOM Content</div>
+        <button class="load-button" data-testid="load-content-button">Load Dynamic Content</button>
+        <div class="dynamic-content" id="dynamic-content">
+          <div class="loading">Click the button to load content...</div>
+        </div>
+      </div>
+    `;
+
+    const loadButton = shadowRoot.querySelector('.load-button') as HTMLButtonElement;
+    const contentDiv = shadowRoot.querySelector('#dynamic-content') as HTMLElement;
+    
+    loadButton.addEventListener('click', () => {
+      loadButton.disabled = true;
+      loadButton.textContent = 'Loading...';
+      contentDiv.innerHTML = '<div class="loading">Loading dynamic content...</div>';
+      
+      setTimeout(() => {
+        const items = [
+          'Dynamic Item 1: User Profile Data',
+          'Dynamic Item 2: Recent Activities',
+          'Dynamic Item 3: Notification Settings',
+          'Dynamic Item 4: Security Preferences'
+        ];
+        
+        contentDiv.innerHTML = '<div class="loaded-content">' + 
+          items.map(item => `<div class="dynamic-item" data-testid="dynamic-item">${item}</div>`).join('') +
+          '</div>';
+        
+        loadButton.disabled = false;
+        loadButton.textContent = 'Reload Content';
+        
+        const resultElement = document.getElementById('dynamic-shadow-result')?.querySelector('.status-text');
+        if (resultElement) {
+          resultElement.textContent = `Loaded ${items.length} items successfully`;
+          resultElement.className = 'status-text status-success';
+        }
+      }, 2000);
+    });
+  }
+
+  // Simple Shadow DOM method for basic testing
+  initializeSimpleShadowDOM() {
+    const shadowHost = document.getElementById('shadow-button-host');
+    if (!shadowHost) {
+      console.log('Shadow host element not found');
+      return;
+    }
+
+    // Check if shadow root already exists
+    if (shadowHost.shadowRoot) {
+      return;
+    }
+
+    const shadow = shadowHost.attachShadow({ mode: 'open' });
+    shadow.innerHTML = `
+      <style>
+        button {
+          background: #3498db;
+          color: white;
+          border: none;
+          padding: 12px 24px;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 16px;
+          font-weight: 500;
+          transition: all 0.3s ease;
+        }
+        button:hover {
+          background: #2980b9;
+          transform: translateY(-1px);
+        }
+        button.clicked {
+          background: #27ae60;
+        }
+      </style>
+      <button data-testid="shadow-button">Click Me</button>
+    `;
+
+    const button = shadow.querySelector('button');
+    if (button) {
+      button.addEventListener('click', () => {
+        button.textContent = 'Clicked!';
+        button.classList.add('clicked');
+        const resultSpan = document.querySelector('#shadow-button-result');
+        if (resultSpan) {
+          resultSpan.textContent = 'Button clicked successfully!';
+        }
+      });
+    }
+  }
+
+  // Authentication Methods for Playwright Session Storage Testing
+  
+  checkExistingSession() {
+    try {
+      const sessionData = localStorage.getItem('authSession');
+      const localStorageData = localStorage.getItem('userPreferences');
+      
+      if (sessionData) {
+        const parsed = JSON.parse(sessionData);
+        this.currentUser = parsed;
+        this.isAuthenticated = true;
+        this.authenticationStatus = `Welcome back, ${parsed.name}! Session restored from localStorage.`;
+      }
+      
+      // Also check sessionStorage
+      const sessionStorageData = sessionStorage.getItem('tempAuthData');
+      if (sessionStorageData) {
+        const tempData = JSON.parse(sessionStorageData);
+        this.sessionData = tempData;
+      }
+    } catch (error) {
+      console.log('No existing session found');
+      this.authenticationStatus = 'No existing session found.';
+    }
+  }
+  
+  login() {
+    if (this.loginForm.invalid) {
+      this.authenticationStatus = 'Please fill in all required fields.';
+      return;
+    }
+    
+    const { username, password } = this.loginForm.value;
+    const user = this.authUsers.find(u => u.username === username && u.password === password);
+    
+    if (user) {
+      this.currentUser = user;
+      this.isAuthenticated = true;
+      
+      // Save to localStorage for persistent session
+      localStorage.setItem('authSession', JSON.stringify({
+        id: user.id,
+        username: user.username,
+        role: user.role,
+        name: user.name,
+        permissions: user.permissions,
+        loginTime: new Date().toISOString(),
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
+      }));
+      
+      // Save user preferences to localStorage
+      localStorage.setItem('userPreferences', JSON.stringify({
+        theme: 'default',
+        language: 'en',
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        lastLogin: new Date().toISOString()
+      }));
+      
+      // Save temporary session data to sessionStorage
+      sessionStorage.setItem('tempAuthData', JSON.stringify({
+        sessionId: 'session_' + Math.random().toString(36).substr(2, 9),
+        browserSession: true,
+        loginMethod: 'form',
+        ipAddress: '192.168.1.100', // Mock IP
+        userAgent: navigator.userAgent.substring(0, 50) + '...'
+      }));
+      
+      this.authenticationStatus = `Successfully logged in as ${user.name} (${user.role}). Session data saved to both localStorage and sessionStorage.`;
+      
+      // Mark authentication module as interacted
+      this.moduleInteractions['authentication'] = (this.moduleInteractions['authentication'] || 0) + 1;
+      if (this.moduleInteractions['authentication'] >= 2) {
+        this.completedModules.add('authentication');
+      }
+      
+    } else {
+      this.authenticationStatus = 'Invalid credentials. Try admin/admin123, manager/manager123, or user/user123';
+    }
+  }
+  
+  logout() {
+    // Clear all authentication data
+    localStorage.removeItem('authSession');
+    localStorage.removeItem('userPreferences');
+    sessionStorage.removeItem('tempAuthData');
+    
+    this.currentUser = null;
+    this.isAuthenticated = false;
+    this.sessionData = {};
+    this.authenticationStatus = 'Logged out successfully. All session data cleared.';
+    this.loginForm.reset();
+  }
+  
+  performProtectedAction() {
+    if (this.isAuthenticated && this.currentUser) {
+      const actions = {
+        'admin': 'Admin action: Full system access granted',
+        'manager': 'Manager action: Content management access granted', 
+        'user': 'User action: Read-only access confirmed'
+      };
+      
+      this.protectedActionResult = actions[this.currentUser.role as keyof typeof actions] || 'Action completed';
+      
+      // Auto-clear after 3 seconds
+      setTimeout(() => {
+        this.protectedActionResult = '';
+      }, 3000);
+    }
+  }
+  
+  refreshPage() {
+    window.location.reload();
+  }
+  
+  quickLogin(userType: 'admin' | 'manager' | 'user') {
+    const user = this.authUsers.find(u => u.role === userType);
+    if (user) {
+      this.loginForm.patchValue({
+        username: user.username,
+        password: user.password
+      });
+      this.login();
+    }
+  }
+  
+  saveToSessionStorage() {
+    const customData = {
+      customKey1: 'Custom Value for Testing',
+      customKey2: Math.random().toString(36),
+      timestamp: new Date().toISOString(),
+      complexObject: {
+        nested: {
+          data: 'This is nested data',
+          array: [1, 2, 3, 'test']
+        }
+      }
+    };
+    
+    sessionStorage.setItem('customTestData', JSON.stringify(customData));
+    sessionStorage.setItem('simpleKey', 'Simple string value');
+    sessionStorage.setItem('numberKey', '42');
+    
+    this.authenticationStatus = 'Custom data saved to sessionStorage for testing purposes.';
+  }
+  
+  saveToLocalStorage() {
+    const persistentData = {
+      userId: this.currentUser?.id || 'anonymous',
+      settings: {
+        theme: 'dark',
+        notifications: true,
+        autoSave: true
+      },
+      history: [
+        'action1_' + Date.now(),
+        'action2_' + Date.now(),
+        'action3_' + Date.now()
+      ]
+    };
+    
+    localStorage.setItem('appSettings', JSON.stringify(persistentData));
+    localStorage.setItem('lastVisit', new Date().toISOString());
+    localStorage.setItem('visitCount', (parseInt(localStorage.getItem('visitCount') || '0') + 1).toString());
+    
+    this.authenticationStatus = 'Custom data saved to localStorage for testing purposes.';
+  }
+  
+  clearStorageData(storageType: 'localStorage' | 'sessionStorage' | 'both') {
+    if (storageType === 'localStorage' || storageType === 'both') {
+      localStorage.clear();
+    }
+    if (storageType === 'sessionStorage' || storageType === 'both') {
+      sessionStorage.clear();
+    }
+    
+    if (storageType === 'both') {
+      this.currentUser = null;
+      this.isAuthenticated = false;
+      this.sessionData = {};
+      this.loginForm.reset();
+    }
+    
+    this.authenticationStatus = `${storageType} cleared successfully.`;
+  }
+  
+  getStorageInfo() {
+    const localStorageKeys = Object.keys(localStorage);
+    const sessionStorageKeys = Object.keys(sessionStorage);
+    
+    return {
+      localStorage: {
+        keys: localStorageKeys,
+        count: localStorageKeys.length,
+        data: localStorageKeys.reduce((acc: any, key) => {
+          try {
+            acc[key] = JSON.parse(localStorage.getItem(key) || '');
+          } catch {
+            acc[key] = localStorage.getItem(key);
+          }
+          return acc;
+        }, {})
+      },
+      sessionStorage: {
+        keys: sessionStorageKeys,
+        count: sessionStorageKeys.length,
+        data: sessionStorageKeys.reduce((acc: any, key) => {
+          try {
+            acc[key] = JSON.parse(sessionStorage.getItem(key) || '');
+          } catch {
+            acc[key] = sessionStorage.getItem(key);
+          }
+          return acc;
+        }, {})
+      }
+    };
+  }
+
+  // iFrame methods
+  loadSimpleFrame(): void {
+    this.frameLoading = true;
+    // Create a comprehensive simple form for Playwright practice
+    const frameContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Playwright Practice Form</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+          * { box-sizing: border-box; }
+          body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            padding: 2rem; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+          }
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+          }
+          h1 { 
+            text-align: center; 
+            color: #4a5568; 
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+          }
+          .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+          }
+          .form-group { 
+            margin-bottom: 1.5rem; 
+          }
+          label { 
+            display: block; 
+            margin-bottom: 0.5rem; 
+            font-weight: 600; 
+            color: #2d3748;
+          }
+          input, textarea, select { 
+            width: 100%; 
+            padding: 0.75rem 1rem; 
+            border: 2px solid #e2e8f0; 
+            border-radius: 6px; 
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+          }
+          input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+          }
+          .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+          }
+          .checkbox-group input {
+            width: auto;
+          }
+          .radio-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+          }
+          .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+          }
+          .radio-item input {
+            width: auto;
+          }
+          .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+          }
+          button { 
+            background: #4299e1; 
+            color: white; 
+            padding: 0.75rem 2rem; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+          }
+          button:hover { 
+            background: #3182ce; 
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+          }
+          button:active {
+            transform: translateY(0);
+          }
+          .btn-clear {
+            background: #e53e3e;
+          }
+          .btn-clear:hover {
+            background: #c53030;
+          }
+          .success-message { 
+            background: #c6f6d5; 
+            color: #22543d; 
+            padding: 1rem; 
+            border-radius: 6px; 
+            margin-top: 1rem; 
+            display: none;
+            border: 2px solid #9ae6b4;
+            text-align: center;
+            font-weight: 600;
+          }
+          .form-info {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+          }
+          .form-info h3 {
+            margin: 0 0 0.5rem 0;
+            color: #2b6cb0;
+          }
+          .form-info ul {
+            margin: 0;
+            padding-left: 1.2rem;
+            color: #2c5282;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>🎭 Playwright Practice Form</h1>
+          <p class="subtitle">Simple form for iframe automation testing</p>
+          
+          <div class="form-info">
+            <h3>📋 Form Elements to Practice:</h3>
+            <ul>
+              <li>Text inputs with various types</li>
+              <li>Dropdown selection</li>
+              <li>Checkboxes and radio buttons</li>
+              <li>Textarea for messages</li>
+              <li>Form submission and validation</li>
+            </ul>
+          </div>
+
+          <form id="practiceForm">
+            <div class="form-group">
+              <label for="name">Full Name *</label>
+              <input type="text" id="name" data-testid="frame-name-input" 
+                     placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" data-testid="frame-email-input" 
+                     placeholder="Enter your email address" required>
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" data-testid="frame-phone-input" 
+                     placeholder="Enter your phone number">
+            </div>
+
+            <div class="form-group">
+              <label for="country">Country</label>
+              <select id="country" data-testid="frame-country-select">
+                <option value="">Select your country</option>
+                <option value="us">United States</option>
+                <option value="uk">United Kingdom</option>
+                <option value="ca">Canada</option>
+                <option value="au">Australia</option>
+                <option value="in">India</option>
+                <option value="de">Germany</option>
+                <option value="fr">France</option>
+                <option value="jp">Japan</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Experience Level</label>
+              <div class="radio-group">
+                <div class="radio-item">
+                  <input type="radio" id="beginner" name="experience" value="beginner" data-testid="experience-beginner">
+                  <label for="beginner">Beginner</label>
+                </div>
+                <div class="radio-item">
+                  <input type="radio" id="intermediate" name="experience" value="intermediate" data-testid="experience-intermediate">
+                  <label for="intermediate">Intermediate</label>
+                </div>
+                <div class="radio-item">
+                  <input type="radio" id="advanced" name="experience" value="advanced" data-testid="experience-advanced">
+                  <label for="advanced">Advanced</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" data-testid="frame-message-textarea" rows="4" 
+                        placeholder="Tell us about your testing experience or ask any questions..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <div class="checkbox-group">
+                <input type="checkbox" id="newsletter" data-testid="frame-newsletter-checkbox">
+                <label for="newsletter">Subscribe to newsletter for testing tips</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="checkbox-group">
+                <input type="checkbox" id="terms" data-testid="frame-terms-checkbox">
+                <label for="terms">I agree to the terms and conditions *</label>
+              </div>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" data-testid="frame-submit-btn" onclick="submitForm()">
+                ✅ Submit Form
+              </button>
+              <button type="button" class="btn-clear" data-testid="frame-clear-btn" onclick="clearForm()">
+                🧹 Clear Form
+              </button>
+            </div>
+
+            <div class="success-message" data-testid="success-message" id="successMsg">
+              <h3>🎉 Form Submitted Successfully!</h3>
+              <p>Thank you for practicing with Playwright automation. All form data has been captured.</p>
+            </div>
+          </form>
+        </div>
+
+        <script>
+          function submitForm() {
+            const form = document.getElementById('practiceForm');
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const terms = document.getElementById('terms').checked;
+            
+            // Simple validation
+            if (!name.trim()) {
+              alert('Please enter your name');
+              document.getElementById('name').focus();
+              return;
+            }
+            
+            if (!email.trim()) {
+              alert('Please enter your email');
+              document.getElementById('email').focus();
+              return;
+            }
+            
+            if (!terms) {
+              alert('Please agree to terms and conditions');
+              document.getElementById('terms').focus();
+              return;
+            }
+            
+            // Show success message
+            document.getElementById('successMsg').style.display = 'block';
+            
+            // Scroll to success message
+            document.getElementById('successMsg').scrollIntoView({ behavior: 'smooth' });
+          }
+          
+          function clearForm() {
+            document.getElementById('practiceForm').reset();
+            document.getElementById('successMsg').style.display = 'none';
+          }
+          
+          // Add some interactivity for better practice
+          document.addEventListener('DOMContentLoaded', function() {
+            // Auto-hide success message after 5 seconds
+            let successTimeout;
+            
+            document.getElementById('practiceForm').addEventListener('input', function() {
+              if (successTimeout) {
+                clearTimeout(successTimeout);
+              }
+              document.getElementById('successMsg').style.display = 'none';
+            });
+          });
+        </script>
+      </body>
+      </html>
+    `;
+
+    const blob = new Blob([frameContent], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    this.frameUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    
+    setTimeout(() => {
+      this.frameLoading = false;
+      this.frameLoaded = true;
+    }, 1000);
   }
 }

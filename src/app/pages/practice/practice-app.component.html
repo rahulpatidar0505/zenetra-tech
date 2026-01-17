@@ -5,7 +5,7 @@
       <h1>🎭 Playwright Practice Application</h1>
       <p class="subtitle">Professional automation testing environment for hands-on practice</p>
       <div class="header-stats">
-        <span class="stat-item">8 Practice Modules</span>
+        <span class="stat-item">10 Practice Modules</span>
         <span class="stat-item">Real-world Scenarios</span>
         <span class="stat-item">Industry Standards</span>
       </div>
@@ -41,7 +41,7 @@
       </div>
       <div class="progress-modules">
         <div class="module-progress" 
-             *ngFor="let tab of ['using-the-grid', 'combined-forms', 'modal-overlays', 'smart-table', 'file-operations', 'api-practice', 'ui-elements', 'playwright-quiz']"
+             *ngFor="let tab of ['using-the-grid', 'combined-forms', 'modal-overlays', 'frames', 'smart-table', 'file-operations', 'api-practice', 'network-internals', 'ui-elements', 'shadow-dom', 'authentication', 'playwright-quiz']"
              [class.completed]="completedModules.has(tab)"
              [class.active]="selectedTab === tab"
              (click)="setActiveTab(tab)">
@@ -52,9 +52,9 @@
       </div>
       <div class="progress-summary" *ngIf="completedModules.size > 0">
         <div class="summary-stats">
-          <span class="completed-count"><span [innerHTML]="completedModules.size"></span>/8 Modules Completed</span>
+          <span class="completed-count"><span [innerHTML]="completedModules.size"></span>/11 Modules Completed</span>
           <div class="progress-bar">
-            <div class="progress-fill" [style.width.%]="(completedModules.size / 8) * 100"></div>
+            <div class="progress-fill" [style.width.%]="(completedModules.size / 11) * 100"></div>
           </div>
         </div>
       </div>
@@ -1322,6 +1322,46 @@
             </div>
           </div>
           
+          <!-- New Tab Handling Section -->
+          <div class="modal-group">
+            <h3>🆕 New Tab Handling</h3>
+            <p>Practice handling new tabs and windows in Playwright automation.</p>
+            <div class="modal-actions">
+              <button class="btn-primary" (click)="openNewTab()" data-testid="openNewTab">
+                Open New Tab
+              </button>
+              <button class="btn-secondary" (click)="openNewWindow()" data-testid="openNewWindow">
+                Open New Window
+              </button>
+              <button class="btn-info" (click)="openExternalLink()" data-testid="openExternalLink">
+                Open External Site
+              </button>
+            </div>
+          </div>
+          
+          <!-- JavaScript Alerts Section -->
+          <div class="modal-group alert-section">
+            <h3>⚠️ JavaScript Alerts</h3>
+            <p>Test different JavaScript alert types that are challenging to locate (for teaching purposes).</p>
+            <div class="modal-actions alert-actions">
+              <button class="btn-warning" (click)="showSimpleAlert()" data-testid="simpleAlert">
+                Simple Alert
+              </button>
+              <button class="btn-info" (click)="showConfirmAlert()" data-testid="confirmAlert">
+                Confirm Dialog
+              </button>
+              <button class="btn-primary" (click)="showPromptAlert()" data-testid="promptAlert">
+                Prompt Dialog
+              </button>
+              <button class="btn-danger" (click)="showHiddenAlert()" style="opacity: 0.1; position: absolute; z-index: -1;" data-testid="hiddenAlert">
+                Hidden Alert (Hard to Locate)
+              </button>
+            </div>
+            <div class="alert-result" *ngIf="alertResult" data-testid="alertResult">
+              <strong>Alert Result:</strong> <span [textContent]="alertResult"></span>
+            </div>
+          </div>
+          
         </div>
       </div>
     </div>
@@ -1519,6 +1559,208 @@
                   <p><strong>Expected Result:</strong> Successful automation of all modal and overlay interactions</p>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Frames Tab -->
+    <div class="tab-content" *ngIf="selectedTab === 'frames'">
+      <div class="form-section">
+        <h2>🖼️ iFrame Handling - UI Automation Practice</h2>
+        <p class="form-description">Practice iframe automation with Playwright. Learn to interact with elements inside frames using modern frame locators.</p>
+        
+        <!-- Simple Frame Demo -->
+        <div class="simple-frame-demo">
+          <h3>📺 Practice iFrame</h3>
+          <p>A comprehensive iframe for automation practice with form elements and buttons</p>
+          
+          <div class="frame-container">
+            <button class="btn btn-primary load-frame-btn" 
+                    (click)="loadSimpleFrame()" 
+                    [disabled]="frameLoading"
+                    data-testid="load-practice-frame">
+              <span *ngIf="!frameLoading">🚀 Load Practice Frame</span>
+              <span *ngIf="frameLoading">⏳ Loading...</span>
+            </button>
+            
+            <div class="frame-wrapper" *ngIf="frameLoaded">
+              <iframe id="practice-frame" 
+                      name="practice-frame"
+                      [src]="frameUrl" 
+                      data-testid="practice-iframe"
+                      class="practice-iframe"
+                      title="Playwright Practice Form">
+              </iframe>
+            </div>
+          </div>
+        </div>
+
+        <!-- Playwright Code Examples -->
+        <div class="automation-examples" *ngIf="frameLoaded">
+          <h3>🎭 Playwright Code Examples</h3>
+          <p class="examples-description">Ready-to-use code snippets for iframe automation testing</p>
+          
+          <div class="examples-grid">
+            <div class="code-example">
+              <div class="example-header">
+                <h4>🎯 Basic Frame Handling</h4>
+                <span class="difficulty-badge easy">Easy</span>
+              </div>
+              <div class="example-content">
+                <pre><code>// Method 1: Using frameLocator() - Modern Approach
+const frame = page.frameLocator('iframe[data-testid="practice-iframe"]');
+
+// Fill basic form fields
+await frame.locator('[data-testid="frame-name-input"]')
+  .fill('John Doe');
+await frame.locator('[data-testid="frame-email-input"]')
+  .fill('john@example.com');
+
+// Method 2: Using frame by name - Alternative
+const namedFrame = page.frame('practice-frame');
+await namedFrame.locator('[data-testid="frame-submit-btn"]')
+  .click();</code></pre>
+              </div>
+            </div>
+            
+            <div class="code-example">
+              <div class="example-header">
+                <h4>📝 Complete Form Interaction</h4>
+                <span class="difficulty-badge medium">Medium</span>
+              </div>
+              <div class="example-content">
+                <pre><code>// Complete iframe form automation
+const frameLocator = page.frameLocator('iframe[name="practice-frame"]');
+
+// Fill all form fields
+await frameLocator.locator('[data-testid="frame-name-input"]')
+  .fill('John Doe');
+await frameLocator.locator('[data-testid="frame-email-input"]')
+  .fill('john@example.com');
+await frameLocator.locator('[data-testid="frame-phone-input"]')
+  .fill('123-456-7890');
+
+// Select dropdown option
+await frameLocator.locator('[data-testid="frame-country-select"]')
+  .selectOption('us');
+
+// Fill textarea
+await frameLocator.locator('[data-testid="frame-message-textarea"]')
+  .fill('Test automation message');
+
+// Handle radio buttons
+await frameLocator.locator('[data-testid="experience-intermediate"]')
+  .check();
+
+// Handle checkboxes
+await frameLocator.locator('[data-testid="frame-newsletter-checkbox"]')
+  .check();
+await frameLocator.locator('[data-testid="frame-terms-checkbox"]')
+  .check();
+
+// Submit form and verify success
+await frameLocator.locator('[data-testid="frame-submit-btn"]')
+  .click();
+await expect(frameLocator.locator('[data-testid="success-message"]'))
+  .toBeVisible();</code></pre>
+              </div>
+            </div>
+            
+            <div class="code-example">
+              <div class="example-header">
+                <h4>🚀 Advanced Frame Operations</h4>
+                <span class="difficulty-badge advanced">Advanced</span>
+              </div>
+              <div class="example-content">
+                <pre><code>// Wait for iframe to fully load
+await page.waitForLoadState('networkidle');
+
+// Check if frame exists before interaction
+const frameExists = await page.locator('iframe[name="practice-frame"]')
+  .count() > 0;
+
+if (frameExists) {{ '{' }}
+  // Get frame reference and wait for content
+  const frame = page.frame('practice-frame');
+  if (frame) {{ '{' }}
+    await frame.waitForLoadState();
+    
+    // Wait for specific elements to be ready
+    await frame.waitForSelector('[data-testid="frame-name-input"]');
+    
+    // Perform actions
+    await frame.locator('[data-testid="frame-submit-btn"]').click();
+  {{ '}' }}
+{{ '}' }}
+
+// Handle multiple frames scenario
+const frames = page.frames();
+const targetFrame = frames.find(f => f.name() === 'practice-frame');
+
+// Frame-specific error handling
+try {{ '{' }}
+  await frameLocator.locator('[data-testid="frame-submit-btn"]')
+    .click({{ '{' }} timeout: 5000 {{ '}' }});
+{{ '}' }} catch (error) {{ '{' }}
+  console.log('Frame interaction failed:', error.message);
+{{ '}' }}</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pro Tips Section -->
+          <div class="pro-tips">
+            <h4>💡 Pro Tips for iframe Testing</h4>
+            <div class="tips-grid">
+              <div class="tip-card">
+                <div class="tip-icon">🎯</div>
+                <div class="tip-content">
+                  <h5>Use frameLocator()</h5>
+                  <p>Modern Playwright method - no context switching needed</p>
+                </div>
+              </div>
+              <div class="tip-card">
+                <div class="tip-icon">⏱️</div>
+                <div class="tip-content">
+                  <h5>Wait for Load</h5>
+                  <p>Always wait for iframe content to load before interactions</p>
+                </div>
+              </div>
+              <div class="tip-card">
+                <div class="tip-icon">🏷️</div>
+                <div class="tip-content">
+                  <h5>Use data-testid</h5>
+                  <p>Reliable selectors for consistent test automation</p>
+                </div>
+              </div>
+              <div class="tip-card">
+                <div class="tip-icon">🔄</div>
+                <div class="tip-content">
+                  <h5>Handle Errors</h5>
+                  <p>Add try-catch blocks for robust frame interactions</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testing Guidelines -->
+        <div class="testing-guidelines">
+          <h3>📋 Playwright Frame Testing Best Practices</h3>
+          <div class="guidelines-grid">
+            <div class="guideline-item">
+              <h4>🎯 Use frameLocator()</h4>
+              <p>Modern Playwright approach - no need to switch contexts</p>
+            </div>
+            <div class="guideline-item">
+              <h4>⚠️ Wait for Load</h4>
+              <p>Always wait for iframe content to load before interaction</p>
+            </div>
+            <div class="guideline-item">
+              <h4>🏷️ Reliable Selectors</h4>
+              <p>Use data-testid attributes for stable frame identification</p>
             </div>
           </div>
         </div>
@@ -3187,6 +3429,357 @@
       </div>
     </div>
 
+    <!-- Network Internals Tab -->
+    <div class="tab-content" *ngIf="selectedTab === 'network-internals'">
+      <div class="form-section">
+        <h2>🌐 Network Internals - Behind the Scenes</h2>
+        <p class="form-description">Explore how network calls work behind the scenes. Watch real API calls in the browser's Network tab and understand the complete request-response cycle.</p>
+        
+        <!-- Network Demonstration Cards -->
+        <div class="network-demo-grid">
+          
+          <!-- REST API Demo -->
+          <div class="demo-card">
+            <div class="demo-header">
+              <h3>🔗 REST API Call</h3>
+              <p>Traditional RESTful web service request</p>
+            </div>
+            <div class="demo-content">
+              <div class="demo-description">
+                <p>Makes a GET request to JSONPlaceholder API. Open your browser's <strong>Network tab (F12)</strong> to see:</p>
+                <ul>
+                  <li>HTTP request headers</li>
+                  <li>Response status codes</li>
+                  <li>Response timing</li>
+                  <li>Payload size</li>
+                </ul>
+              </div>
+              <button class="demo-btn" 
+                      (click)="demonstrateRestAPI()" 
+                      [disabled]="networkLoading && networkDemoType === 'rest'"
+                      data-testid="rest-demo">
+                <span [textContent]="networkLoading && networkDemoType === 'rest' ? 'Loading...' : 'Demonstrate REST API'"></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- GraphQL Demo -->
+          <div class="demo-card">
+            <div class="demo-header">
+              <h3>📊 GraphQL Query</h3>
+              <p>Modern query language for APIs</p>
+            </div>
+            <div class="demo-content">
+              <div class="demo-description">
+                <p>Sends a GraphQL query to SpaceX API. Observe in Network tab:</p>
+                <ul>
+                  <li>POST method with query payload</li>
+                  <li>Structured query in request body</li>
+                  <li>Precise data retrieval</li>
+                  <li>Single endpoint usage</li>
+                </ul>
+              </div>
+              <button class="demo-btn" 
+                      (click)="demonstrateGraphQL()" 
+                      [disabled]="networkLoading && networkDemoType === 'graphql'"
+                      data-testid="graphql-demo">
+                <span [textContent]="networkLoading && networkDemoType === 'graphql' ? 'Loading...' : 'Demonstrate GraphQL'"></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- HTTP Methods Demo -->
+          <div class="demo-card">
+            <div class="demo-header">
+              <h3>📤 HTTP Methods</h3>
+              <p>Different request types demonstration</p>
+            </div>
+            <div class="demo-content">
+              <div class="demo-description">
+                <p>Shows various HTTP methods in action. Check Network tab for:</p>
+                <ul>
+                  <li>GET, POST, PUT, DELETE methods</li>
+                  <li>Request payloads for each type</li>
+                  <li>Response differences</li>
+                  <li>Status code variations</li>
+                </ul>
+              </div>
+              <button class="demo-btn" 
+                      (click)="demonstrateFetchVariations()" 
+                      [disabled]="networkLoading && networkDemoType === 'fetch-variations'"
+                      data-testid="http-methods-demo">
+                <span [textContent]="networkLoading && networkDemoType === 'fetch-variations' ? 'Loading...' : 'Demonstrate HTTP Methods'"></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- CORS Demo -->
+          <div class="demo-card">
+            <div class="demo-header">
+              <h3>🔒 CORS Headers</h3>
+              <p>Cross-Origin Resource Sharing</p>
+            </div>
+            <div class="demo-content">
+              <div class="demo-description">
+                <p>Demonstrates CORS mechanism. Monitor in Network tab:</p>
+                <ul>
+                  <li>Preflight OPTIONS requests</li>
+                  <li>CORS response headers</li>
+                  <li>Origin validation</li>
+                  <li>Access control headers</li>
+                </ul>
+              </div>
+              <button class="demo-btn" 
+                      (click)="demonstrateCORS()" 
+                      [disabled]="networkLoading && networkDemoType === 'cors'"
+                      data-testid="cors-demo">
+                <span [textContent]="networkLoading && networkDemoType === 'cors' ? 'Loading...' : 'Demonstrate CORS'"></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Performance Analysis Demo -->
+          <div class="demo-card">
+            <div class="demo-header">
+              <h3>⚡ Performance Metrics</h3>
+              <p>Network timing analysis</p>
+            </div>
+            <div class="demo-content">
+              <div class="demo-description">
+                <p>Analyzes network performance. View timing details:</p>
+                <ul>
+                  <li>DNS lookup duration</li>
+                  <li>Connection establishment time</li>
+                  <li>SSL handshake timing</li>
+                  <li>Request/response phases</li>
+                </ul>
+              </div>
+              <button class="demo-btn" 
+                      (click)="demonstratePerformance()" 
+                      [disabled]="networkLoading && networkDemoType === 'performance'"
+                      data-testid="performance-demo">
+                <span [textContent]="networkLoading && networkDemoType === 'performance' ? 'Loading...' : 'Analyze Performance'"></span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Live Network Steps -->
+        <div class="network-steps-container" *ngIf="networkSteps.length > 0">
+          <h3>🔄 Live Network Process</h3>
+          <div class="steps-list">
+            <div class="step-item" 
+                 *ngFor="let step of networkSteps; let i = index"
+                 [class.active]="i === currentStepIndex"
+                 [class.completed]="i < currentStepIndex">
+              <span class="step-number" [textContent]="i + 1"></span>
+              <span class="step-text" [textContent]="step"></span>
+              <span class="step-status">
+                <span *ngIf="i < currentStepIndex">✅</span>
+                <span *ngIf="i === currentStepIndex" class="spinner-small">⏳</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Network Response Details -->
+        <div class="network-response-container" *ngIf="showNetworkTabs">
+          <h3>📋 Network Call Details</h3>
+          
+          <div class="response-tabs">
+            <div class="tab-headers">
+              <button class="tab-btn active" data-tab="summary">Summary</button>
+              <button class="tab-btn" data-tab="headers">Headers</button>
+              <button class="tab-btn" data-tab="payload">Payload</button>
+              <button class="tab-btn" data-tab="response">Response</button>
+            </div>
+            
+            <div class="tab-content-area">
+              
+              <!-- Summary Tab -->
+              <div class="tab-panel active" data-panel="summary">
+                <div class="summary-grid">
+                  <div class="summary-item">
+                    <span class="label">Status Code:</span>
+                    <span class="value status" [class]="getStatusClass(statusCode)" [textContent]="statusCode"></span>
+                  </div>
+                  <div class="summary-item">
+                    <span class="label">Response Time:</span>
+                    <span class="value" [innerHTML]="networkTiming + 'ms'"></span>
+                  </div>
+                  <div class="summary-item">
+                    <span class="label">Demo Type:</span>
+                    <span class="value" [textContent]="networkDemoType | titlecase"></span>
+                  </div>
+                  <div class="summary-item">
+                    <span class="label">Method:</span>
+                    <span class="value" [textContent]="networkDemoType === 'graphql' ? 'POST' : 'GET'"></span>
+                  </div>
+                </div>
+                <div class="demonstration-status">
+                  <p [innerHTML]="demonstrationText"></p>
+                </div>
+              </div>
+
+              <!-- Headers Tab -->
+              <div class="tab-panel" data-panel="headers">
+                <div class="headers-section">
+                  <h4>Request Headers</h4>
+                  <div class="headers-list">
+                    <div class="header-item" *ngFor="let header of requestHeaders | keyvalue">
+                      <span class="header-name" [innerHTML]="header.key + ':'"></span>
+                      <span class="header-value" [textContent]="header.value"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="headers-section" *ngIf="responseHeaders && (responseHeaders | keyvalue).length > 0">
+                  <h4>Response Headers</h4>
+                  <div class="headers-list">
+                    <div class="header-item" *ngFor="let header of responseHeaders | keyvalue">
+                      <span class="header-name" [innerHTML]="header.key + ':'"></span>
+                      <span class="header-value" [textContent]="header.value"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Payload Tab -->
+              <div class="tab-panel" data-panel="payload">
+                <div *ngIf="requestPayload; else noPayload">
+                  <h4>Request Payload</h4>
+                  <pre class="payload-code"><code [textContent]="requestPayload | json"></code></pre>
+                </div>
+                <ng-template #noPayload>
+                  <p>No request payload for this demo.</p>
+                </ng-template>
+              </div>
+
+              <!-- Response Tab -->
+              <div class="tab-panel" data-panel="response">
+                <div *ngIf="networkResponse; else noResponse">
+                  <h4>Response Data</h4>
+                  <pre class="response-code"><code [textContent]="networkResponse | json"></code></pre>
+                </div>
+                <ng-template #noResponse>
+                  <p>No response data available.</p>
+                </ng-template>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Network Error Display -->
+        <div class="network-error" *ngIf="networkError">
+          <h3>❌ Network Error</h3>
+          <p [textContent]="networkError"></p>
+        </div>
+
+        <!-- Instructions for Using Network Tab -->
+        <div class="network-instructions">
+          <h3>🎯 How to Use Browser Network Tab</h3>
+          <div class="instructions-grid">
+            <div class="instruction-card">
+              <h4>Step 1: Open DevTools</h4>
+              <p>Press <kbd>F12</kbd> or <kbd>Ctrl+Shift+I</kbd> to open developer tools</p>
+            </div>
+            <div class="instruction-card">
+              <h4>Step 2: Go to Network Tab</h4>
+              <p>Click on the <strong>"Network"</strong> tab in the developer tools panel</p>
+            </div>
+            <div class="instruction-card">
+              <h4>Step 3: Clear Previous Entries</h4>
+              <p>Click the <strong>clear button (🚫)</strong> to remove old network requests</p>
+            </div>
+            <div class="instruction-card">
+              <h4>Step 4: Execute Demo</h4>
+              <p>Click any demo button above and watch the network requests appear in real-time</p>
+            </div>
+            <div class="instruction-card">
+              <h4>Step 5: Inspect Details</h4>
+              <p>Click on any request to see headers, timing, response, and more details</p>
+            </div>
+            <div class="instruction-card">
+              <h4>Step 6: Analyze Timing</h4>
+              <p>Check the <strong>"Timing"</strong> tab to see DNS, connect, send, and receive phases</p>
+            </div>
+          </div>
+          
+          <div class="network-tips">
+            <h4>🔍 What to Look For</h4>
+            <ul>
+              <li><strong>Request Method:</strong> GET, POST, PUT, DELETE, OPTIONS</li>
+              <li><strong>Status Codes:</strong> 200 (OK), 404 (Not Found), 500 (Server Error)</li>
+              <li><strong>Response Size:</strong> Amount of data transferred</li>
+              <li><strong>Time:</strong> How long the request took</li>
+              <li><strong>Headers:</strong> Metadata sent with request/response</li>
+              <li><strong>Preview/Response:</strong> Actual data returned</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- UI Elements Tab -->
+    <div class="tab-content" *ngIf="selectedTab === 'ui-elements'">
+      <div class="form-section">
+        <h2>Additional UI Elements Practice</h2>
+        <p class="form-description">Practice with specialized UI elements including sliders, progress bars, carousels, drag & drop, accordions, and more interactive components.</p>
+        
+        <!-- Sliders and Range Inputs -->
+        <div class="ui-group">
+          <h3>🎚️ Sliders & Range Inputs</h3>
+          <div class="element-row">
+            <h3>📺 Practice iFrame</h3>
+            <p>A simple iframe for automation practice with form elements and buttons</p>
+            <button class="load-frame-btn" 
+                    (click)="loadSimpleFrame()" 
+                    [disabled]="frameLoading"
+                    data-testid="load-frame-button">
+              <span *ngIf="frameLoading">Loading...</span>
+              <span *ngIf="!frameLoading">Load Practice Frame</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Best Practices -->
+        <div class="frame-best-practices" *ngIf="frameLoaded">
+          <h3>🎯 iFrame Automation Best Practices</h3>
+          <div class="practices-grid">
+            <div class="practice-card">
+              <h4>🎯 Frame Identification</h4>
+              <ul>
+                <li>Use <code>id</code> or <code>name</code> attributes for reliable frame identification</li>
+                <li>Wait for frame to load before interacting with elements</li>
+                <li>Use <code>data-testid</code> for consistent element identification</li>
+              </ul>
+            </div>
+            
+            <div class="practice-card">
+              <h4>🔄 Context Switching</h4>
+              <ul>
+                <li><strong>Playwright:</strong> Use <code>frameLocator()</code> - no need to switch contexts</li>
+                <li><strong>Selenium:</strong> Use <code>switchTo().frame()</code> and remember to switch back</li>
+                <li>Always return to <code>defaultContent()</code> after frame operations in Selenium</li>
+              </ul>
+            </div>
+            
+            <div class="practice-card">
+              <h4>⚡ Performance Tips</h4>
+              <ul>
+                <li>Cache frame locators for repeated use</li>
+                <li>Minimize context switches in Selenium</li>
+                <li>Use explicit waits for frame loading</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
     <!-- UI Elements Tab -->
     <div class="tab-content" *ngIf="selectedTab === 'ui-elements'">
       <div class="form-section">
@@ -3656,6 +4249,288 @@
       </div>
     </div>
 
+    <!-- Shadow DOM Tab -->
+    <div class="tab-content" *ngIf="selectedTab === 'shadow-dom'">
+      <div class="shadow-dom-container">
+        <div class="section-header">
+          <h2>🏠 Shadow DOM Testing</h2>
+          <p>Learn how to test Shadow DOM elements with Playwright</p>
+        </div>
+
+        <!-- Simple Shadow DOM Example -->
+        <div class="practice-section">
+          <h3>Shadow DOM Button Test</h3>
+          <p class="section-desc">Practice testing elements inside Shadow DOM</p>
+
+          <div class="shadow-example-card">
+            <div class="example-content">
+              <div class="shadow-host-container">
+                <div id="shadow-button-host" data-testid="shadow-button-container">
+                  <!-- Shadow DOM will be attached here -->
+                </div>
+              </div>
+              <div class="result-display" id="shadow-button-result">
+                <strong>Button Status:</strong> <span class="status-text">Not clicked</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Playwright Testing Commands -->
+        <div class="practice-section">
+          <h3>Playwright Commands</h3>
+          <p class="section-desc">Essential commands for Shadow DOM testing</p>
+          
+          <div class="commands-reference">
+            <div class="command-item">
+              <h4>Basic Shadow DOM Selector</h4>
+              <div class="code-example">
+                <pre><code>// Click button inside shadow DOM
+await page.locator('#shadow-button-host').locator('button').click();</code></pre>
+              </div>
+            </div>
+            
+            <div class="command-item">
+              <h4>Alternative Piercing Syntax</h4>
+              <div class="code-example">
+                <pre><code>// Using piercing selector
+await page.locator('[data-testid="shadow-button-container"] >>> button').click();</code></pre>
+              </div>
+            </div>
+            
+            <div class="command-item">
+              <h4>Verify Shadow DOM Content</h4>
+              <div class="code-example">
+                <pre><code>// Check text inside shadow DOM
+await expect(page.locator('#shadow-button-host').locator('button')).toHaveText('Click Me');</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Authentication Tab -->
+    <div class="tab-content" *ngIf="selectedTab === 'authentication'">
+      <div class="auth-container">
+        <div class="auth-header">
+          <h2>🔐 Authentication & Session Storage Testing</h2>
+          <p class="auth-description">
+            Learn Playwright authentication patterns using localStorage and sessionStorage for session management.
+            Practice the session storage approach from <a href="https://playwright.dev/docs/auth#session-storage" target="_blank">Playwright Docs</a>.
+          </p>
+        </div>
+        </div>
+
+        <!-- Authentication Status -->
+        <div class="auth-status" *ngIf="authenticationStatus">
+          <div class="status-message" 
+               [class.auth-success]="isAuthenticated" 
+               [class.auth-error]="!isAuthenticated && authenticationStatus.includes('Invalid')"
+               data-testid="auth-status-message">
+            <span class="status-icon" [textContent]="isAuthenticated ? '✅' : '❌'"></span>
+            <span class="status-text" [textContent]="authenticationStatus"></span>
+          </div>
+        </div>
+
+        <!-- Current Session Info -->
+        <div class="session-info" *ngIf="isAuthenticated" data-testid="session-info">
+          <h3>Current Session</h3>
+          <div class="user-details">
+            <div class="detail-item">
+              <span class="label">User:</span>
+              <span class="value" data-testid="current-user-name" [textContent]="currentUser?.name"></span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Role:</span>
+              <span class="value" data-testid="current-user-role" [textContent]="currentUser?.role"></span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Permissions:</span>
+              <span class="value" data-testid="current-user-permissions" [textContent]="currentUser?.permissions?.join(', ')"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="auth-sections">
+          <!-- Login Section -->
+          <div class="auth-section">
+            <h3>1. Login Form (Session Storage)</h3>
+            <p class="section-description">
+              Test login functionality that saves authentication state to localStorage and sessionStorage.
+            </p>
+            
+            <div class="login-container" *ngIf="!isAuthenticated">
+              <form [formGroup]="loginForm" (ngSubmit)="login()" class="login-form">
+                <div class="form-group">
+                  <label for="auth-username">Username:</label>
+                  <input 
+                    type="text" 
+                    id="auth-username" 
+                    formControlName="username"
+                    data-testid="auth-username-input"
+                    placeholder="Enter username"
+                    class="form-control">
+                </div>
+                
+                <div class="form-group">
+                  <label for="auth-password">Password:</label>
+                  <input 
+                    type="password" 
+                    id="auth-password" 
+                    formControlName="password"
+                    data-testid="auth-password-input"
+                    placeholder="Enter password"
+                    class="form-control">
+                </div>
+                
+                <button 
+                  type="submit" 
+                  class="btn btn-primary"
+                  data-testid="login-submit-button"
+                  [disabled]="loginForm.invalid">
+                  Login
+                </button>
+              </form>
+              
+              <div class="test-credentials">
+                <h4>Test Credentials:</h4>
+                <div class="credential-set">
+                  <strong>Admin User:</strong>
+                  <button class="btn btn-secondary btn-sm" 
+                          (click)="quickLogin('admin')"
+                          data-testid="quick-login-admin">
+                    admin / admin123
+                  </button>
+                </div>
+                <div class="credential-set">
+                  <strong>Manager User:</strong>
+                  <button class="btn btn-secondary btn-sm" 
+                          (click)="quickLogin('manager')"
+                          data-testid="quick-login-manager">
+                    manager / manager123
+                  </button>
+                </div>
+                <div class="credential-set">
+                  <strong>Regular User:</strong>
+                  <button class="btn btn-secondary btn-sm" 
+                          (click)="quickLogin('user')"
+                          data-testid="quick-login-user">
+                    user / user123
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="authenticated-actions" *ngIf="isAuthenticated">
+              <button 
+                class="btn btn-danger" 
+                (click)="logout()"
+                data-testid="logout-button">
+                Logout
+              </button>
+            </div>
+          </div>
+
+          <!-- Basic Test Scenarios -->
+          <div class="auth-section" *ngIf="isAuthenticated">
+            <h3>2. Basic Test Scenarios</h3>
+            <p class="section-description">
+              Practice common test scenarios with authenticated state that students can automate with Playwright.
+            </p>
+            
+            <div class="test-scenarios">
+              <div class="scenario-item">
+                <h4>Scenario 1: Verify User Access</h4>
+                <div class="scenario-content">
+                  <p>Test that authenticated users can access protected content:</p>
+                  <div class="protected-content" data-testid="protected-content">
+                    <div class="content-header">
+                      <span class="lock-icon">🔒</span>
+                      <span>Protected Content Area</span>
+                    </div>
+                    <p>This content is only visible to authenticated users with role: <strong data-testid="user-role-display" [textContent]="currentUser?.role"></strong></p>
+                    <button class="btn btn-primary" data-testid="protected-action-button" (click)="performProtectedAction()">
+                      Perform Protected Action
+                    </button>
+                    <div class="action-result" data-testid="action-result" *ngIf="protectedActionResult">
+                      <span [textContent]="protectedActionResult"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="scenario-item">
+                <h4>Scenario 2: Role-Based Access</h4>
+                <div class="scenario-content">
+                  <p>Test different permissions based on user roles:</p>
+                  <div class="permissions-demo">
+                    <div class="permission-check" *ngFor="let permission of ['read', 'write', 'delete', 'manage-users']">
+                      <span class="permission-name" [innerHTML]="permission + ':'"></span>
+                      <span class="permission-status" 
+                            [class.allowed]="currentUser?.permissions?.includes(permission)"
+                            [class.denied]="!currentUser?.permissions?.includes(permission)"
+                            [attr.data-testid]="'permission-' + permission">
+                        <span [textContent]="currentUser?.permissions?.includes(permission) ? '✅ Allowed' : '❌ Denied'"></span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="scenario-item">
+                <h4>Scenario 3: Session Persistence</h4>
+                <div class="scenario-content">
+                  <p>Test that session persists across page refreshes:</p>
+                  <button class="btn btn-outline-primary" data-testid="refresh-page-button" (click)="refreshPage()">
+                    Refresh Page (Test Session)
+                  </button>
+                  <p class="test-note">Note: After refresh, user should remain logged in due to localStorage session.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Playwright Testing Patterns -->
+          <div class="auth-section">
+            <h3>3. Playwright Testing Patterns</h3>
+            <p class="section-description">
+              Essential patterns for handling authentication in Playwright tests using session storage.
+            </p>
+            
+            <div class="testing-patterns">
+              <div class="pattern-item" data-testid="auth-pattern-1">
+                <h4>Pattern 1: Save Authentication State</h4>
+                <div class="code-example">
+                  <pre><code>// Login and save state
+await page.fill('[data-testid="auth-username-input"]', 'admin');
+await page.fill('[data-testid="auth-password-input"]', 'admin123');
+await page.click('[data-testid="login-submit-button"]');
+
+// Save authentication state
+await page.context().storageState(&#123; path: 'auth.json' &#125;);</code></pre>
+                </div>
+              </div>
+              
+              <div class="pattern-item" data-testid="auth-pattern-2">
+                <h4>Pattern 2: Reuse Saved State</h4>
+                <div class="code-example">
+                  <pre><code>// Create context with saved state
+const context = await browser.newContext(&#123; 
+  storageState: 'auth.json' 
+&#125;);
+const page = await context.newPage();
+
+// User is already logged in
+await expect(page.locator('[data-testid="current-user-name"]')).toBeVisible();</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Playwright Quiz Tab -->
     <div class="tab-content" *ngIf="selectedTab === 'playwright-quiz'">
       <div class="playwright-quiz-container">
@@ -3673,7 +4548,7 @@
           <div class="progress-bar">
             <div class="progress-fill" [style.width.%]="getQuizProgress()"></div>
           </div>
-          <span class="progress-text">Question {{ currentQuestionIndex + 1 }} of {{ quizQuestions.length }}</span>
+          <span class="progress-text">Question <span [textContent]="currentQuestionIndex + 1"></span> of <span [textContent]="quizQuestions.length"></span></span>
         </div>
 
         <!-- Quiz Start Screen -->
@@ -3711,9 +4586,9 @@
         <div class="quiz-question" *ngIf="quizStarted && !quizCompleted">
           <div class="question-header">
             <span class="difficulty-badge" [class]="getCurrentQuestion().difficulty">
-              {{ getCurrentQuestion().difficulty.toUpperCase() }}
+              <span [textContent]="getCurrentQuestion().difficulty.toUpperCase()"></span>
             </span>
-            <h3 class="question-title">{{ getCurrentQuestion().title }}</h3>
+            <h3 class="question-title" [textContent]="getCurrentQuestion().title"></h3>
           </div>
 
           <div class="scenario-box">
@@ -3735,7 +4610,7 @@
               [class.incorrect]="showAnswer && selectedAnswer === option.key && option.key !== getCurrentQuestion().correctAnswer"
               (click)="selectAnswer(option.key)"
               [attr.data-testid]="'option-' + option.key">
-              <span class="option-letter">{{ option.key }}</span>
+              <span class="option-letter" [textContent]="option.key"></span>
               <span class="option-text" [innerHTML]="option.text"></span>
             </div>
           </div>
@@ -3754,14 +4629,14 @@
               (click)="nextQuestion()"
               *ngIf="showAnswer"
               data-testid="next-question">
-              {{ isLastQuestion() ? 'Complete Quiz' : 'Next Question' }} →
+              <span [textContent]="isLastQuestion() ? 'Complete Quiz' : 'Next Question'"></span> →
             </button>
           </div>
 
           <!-- Answer Explanation -->
           <div class="answer-explanation" *ngIf="showAnswer">
             <div class="explanation-box correct">
-              <h4>✅ Correct Answer: {{ getCurrentQuestion().correctAnswer }}</h4>
+              <h4>✅ Correct Answer: <span [textContent]="getCurrentQuestion().correctAnswer"></span></h4>
               <p [innerHTML]="getCurrentQuestion().explanation"></p>
             </div>
             <div class="copilot-tip" *ngIf="getCurrentQuestion().copilotTip">
@@ -3776,8 +4651,8 @@
           <div class="results-header">
             <h2>🎉 Quiz Complete!</h2>
             <div class="final-score">
-              <span class="score-number">{{ correctAnswers }}/{{ quizQuestions.length }}</span>
-              <span class="score-percentage">({{ getScorePercentage() }}%)</span>
+              <span class="score-number"><span [textContent]="correctAnswers"></span>/<span [textContent]="quizQuestions.length"></span></span>
+              <span class="score-percentage">(<span [textContent]="getScorePercentage()"></span>%)</span>
             </div>
           </div>
 
@@ -3786,15 +4661,15 @@
             <div class="difficulty-scores">
               <div class="score-item basic">
                 <span class="label">Basic:</span>
-                <span class="score">{{ getScoreByDifficulty('basic') }}/5</span>
+                <span class="score"><span [textContent]="getScoreByDifficulty('basic')"></span>/5</span>
               </div>
               <div class="score-item intermediate">
                 <span class="label">Intermediate:</span>
-                <span class="score">{{ getScoreByDifficulty('intermediate') }}/5</span>
+                <span class="score"><span [textContent]="getScoreByDifficulty('intermediate')"></span>/5</span>
               </div>
               <div class="score-item advanced">
                 <span class="label">Advanced:</span>
-                <span class="score">{{ getScoreByDifficulty('advanced') }}/5</span>
+                <span class="score"><span [textContent]="getScoreByDifficulty('advanced')"></span>/5</span>
               </div>
             </div>
           </div>
@@ -3834,20 +4709,20 @@
               [class.incorrect]="userAnswers[i] !== question.correctAnswer">
               
               <div class="review-question-header">
-                <span class="question-number">Q{{ i + 1 }}</span>
-                <span class="difficulty-badge" [class]="question.difficulty">{{ question.difficulty }}</span>
-                <h4>{{ question.title }}</h4>
+                <span class="question-number">Q<span [textContent]="i + 1"></span></span>
+                <span class="difficulty-badge" [class]="question.difficulty" [textContent]="question.difficulty"></span>
+                <h4 [textContent]="question.title"></h4>
                 <span class="result-icon">
-                  {{ userAnswers[i] === question.correctAnswer ? '✅' : '❌' }}
+                  <span [textContent]="userAnswers[i] === question.correctAnswer ? '✅' : '❌'"></span>
                 </span>
               </div>
               
               <div class="review-content">
                 <p class="your-answer">
-                  <strong>Your Answer:</strong> {{ userAnswers[i] || 'Not answered' }}
+                  <strong>Your Answer:</strong> <span [textContent]="userAnswers[i] || 'Not answered'"></span>
                 </p>
                 <p class="correct-answer">
-                  <strong>Correct Answer:</strong> {{ question.correctAnswer }}
+                  <strong>Correct Answer:</strong> <span [textContent]="question.correctAnswer"></span>
                 </p>
                 <div class="explanation" [innerHTML]="question.explanation"></div>
               </div>
@@ -4014,6 +4889,3 @@
         </div>
       </div>
     </div>
-
-  </div>
-</div>
