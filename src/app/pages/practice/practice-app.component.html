@@ -4314,121 +4314,167 @@ await expect(page.locator('#shadow-button-host').locator('button')).toHaveText('
     <div class="tab-content" *ngIf="selectedTab === 'authentication'">
       <div class="auth-container">
         <div class="auth-header">
-          <h2>🔐 Authentication & Session Storage Testing</h2>
-          <p class="auth-description">
-            Learn Playwright authentication patterns using localStorage and sessionStorage for session management.
-            Practice the session storage approach from <a href="https://playwright.dev/docs/auth#session-storage" target="_blank">Playwright Docs</a>.
-          </p>
-        </div>
-        </div>
-
-        <!-- Authentication Status -->
-        <div class="auth-status" *ngIf="authenticationStatus">
-          <div class="status-message" 
-               [class.auth-success]="isAuthenticated" 
-               [class.auth-error]="!isAuthenticated && authenticationStatus.includes('Invalid')"
-               data-testid="auth-status-message">
-            <span class="status-icon" [textContent]="isAuthenticated ? '✅' : '❌'"></span>
-            <span class="status-text" [textContent]="authenticationStatus"></span>
+          <div class="header-content">
+            <h2>🔐 Authentication & Session Storage Testing</h2>
+            <p class="auth-description">
+              Learn Playwright authentication patterns using localStorage and sessionStorage for session management.
+              Practice the session storage approach from <a href="https://playwright.dev/docs/auth#session-storage" target="_blank" class="docs-link">Playwright Docs</a>.
+            </p>
           </div>
-        </div>
+          
+          <!-- Status Dashboard -->
+          <div class="status-dashboard">
+            <!-- Authentication Status -->
+            <div class="auth-status" *ngIf="authenticationStatus">
+              <div class="status-message" 
+                   [class.auth-success]="isAuthenticated" 
+                   [class.auth-error]="!isAuthenticated && authenticationStatus.includes('Invalid')"
+                   data-testid="auth-status-message">
+                <span class="status-icon" [textContent]="isAuthenticated ? '✅' : '❌'"></span>
+                <span class="status-text" [textContent]="authenticationStatus"></span>
+              </div>
+            </div>
 
-        <!-- Current Session Info -->
-        <div class="session-info" *ngIf="isAuthenticated" data-testid="session-info">
-          <h3>Current Session</h3>
-          <div class="user-details">
-            <div class="detail-item">
-              <span class="label">User:</span>
-              <span class="value" data-testid="current-user-name" [textContent]="currentUser?.name"></span>
-            </div>
-            <div class="detail-item">
-              <span class="label">Role:</span>
-              <span class="value" data-testid="current-user-role" [textContent]="currentUser?.role"></span>
-            </div>
-            <div class="detail-item">
-              <span class="label">Permissions:</span>
-              <span class="value" data-testid="current-user-permissions" [textContent]="currentUser?.permissions?.join(', ')"></span>
+            <!-- Current Session Info -->
+            <div class="session-info" *ngIf="isAuthenticated" data-testid="session-info">
+              <div class="session-header">
+                <h4>🔓 Active Session</h4>
+              </div>
+              <div class="user-details">
+                <div class="detail-item">
+                  <span class="label">👤 User:</span>
+                  <span class="value" data-testid="current-user-name" [textContent]="currentUser?.name"></span>
+                </div>
+                <div class="detail-item">
+                  <span class="label">🏷️ Role:</span>
+                  <span class="value role-badge" [attr.data-role]="currentUser?.role" data-testid="current-user-role" [textContent]="currentUser?.role"></span>
+                </div>
+                <div class="detail-item">
+                  <span class="label">🔑 Permissions:</span>
+                  <span class="value" data-testid="current-user-permissions" [textContent]="currentUser?.permissions?.join(', ')"></span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <div class="auth-sections">
           <!-- Login Section -->
-          <div class="auth-section">
-            <h3>1. Login Form (Session Storage)</h3>
-            <p class="section-description">
-              Test login functionality that saves authentication state to localStorage and sessionStorage.
-            </p>
+          <div class="auth-section login-section">
+            <div class="section-header">
+              <h3>1️⃣ Login Form (Session Storage)</h3>
+              <p class="section-description">
+                Test login functionality that saves authentication state to localStorage and sessionStorage.
+              </p>
+            </div>
             
-            <div class="login-container" *ngIf="!isAuthenticated">
-              <form [formGroup]="loginForm" (ngSubmit)="login()" class="login-form">
-                <div class="form-group">
-                  <label for="auth-username">Username:</label>
-                  <input 
-                    type="text" 
-                    id="auth-username" 
-                    formControlName="username"
-                    data-testid="auth-username-input"
-                    placeholder="Enter username"
-                    class="form-control">
+            <div class="section-content">
+              <!-- Login Form -->
+              <div class="login-container" *ngIf="!isAuthenticated">
+                <div class="login-card">
+                  <form [formGroup]="loginForm" (ngSubmit)="login()" class="login-form">
+                    <div class="form-group">
+                      <label for="auth-username" class="form-label">👤 Username:</label>
+                      <input 
+                        type="text" 
+                        id="auth-username" 
+                        formControlName="username"
+                        data-testid="auth-username-input"
+                        placeholder="Enter username"
+                        class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="auth-password" class="form-label">🔒 Password:</label>
+                      <input 
+                        type="password" 
+                        id="auth-password" 
+                        formControlName="password"
+                        data-testid="auth-password-input"
+                        placeholder="Enter password"
+                        class="form-control">
+                    </div>
+                    
+                    <button 
+                      type="submit" 
+                      class="btn btn-primary btn-login"
+                      data-testid="login-submit-button"
+                      [disabled]="loginForm.invalid">
+                      <span *ngIf="!loginForm.pending">🚀 Login</span>
+                      <span *ngIf="loginForm.pending">🔄 Logging in...</span>
+                    </button>
+                  </form>
                 </div>
                 
-                <div class="form-group">
-                  <label for="auth-password">Password:</label>
-                  <input 
-                    type="password" 
-                    id="auth-password" 
-                    formControlName="password"
-                    data-testid="auth-password-input"
-                    placeholder="Enter password"
-                    class="form-control">
+                <!-- Test Credentials Panel -->
+                <div class="test-credentials">
+                  <div class="credentials-header">
+                    <h4>🧪 Test Credentials</h4>
+                    <p>Click any credential set to auto-fill and test:</p>
+                  </div>
+                  
+                  <div class="credentials-grid">
+                    <div class="credential-card admin">
+                      <div class="role-header">
+                        <span class="role-icon">👑</span>
+                        <strong>Admin User</strong>
+                      </div>
+                      <div class="credential-details">
+                        <code>admin / admin123</code>
+                      </div>
+                      <button class="btn btn-credential" 
+                              (click)="quickLogin('admin')"
+                              data-testid="quick-login-admin">
+                        Use Admin Credentials
+                      </button>
+                    </div>
+                    
+                    <div class="credential-card manager">
+                      <div class="role-header">
+                        <span class="role-icon">⚡</span>
+                        <strong>Manager User</strong>
+                      </div>
+                      <div class="credential-details">
+                        <code>manager / manager123</code>
+                      </div>
+                      <button class="btn btn-credential" 
+                              (click)="quickLogin('manager')"
+                              data-testid="quick-login-manager">
+                        Use Manager Credentials
+                      </button>
+                    </div>
+                    
+                    <div class="credential-card user">
+                      <div class="role-header">
+                        <span class="role-icon">👤</span>
+                        <strong>Regular User</strong>
+                      </div>
+                      <div class="credential-details">
+                        <code>user / user123</code>
+                      </div>
+                      <button class="btn btn-credential" 
+                              (click)="quickLogin('user')"
+                              data-testid="quick-login-user">
+                        Use User Credentials
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                
-                <button 
-                  type="submit" 
-                  class="btn btn-primary"
-                  data-testid="login-submit-button"
-                  [disabled]="loginForm.invalid">
-                  Login
-                </button>
-              </form>
+              </div>
               
-              <div class="test-credentials">
-                <h4>Test Credentials:</h4>
-                <div class="credential-set">
-                  <strong>Admin User:</strong>
-                  <button class="btn btn-secondary btn-sm" 
-                          (click)="quickLogin('admin')"
-                          data-testid="quick-login-admin">
-                    admin / admin123
-                  </button>
-                </div>
-                <div class="credential-set">
-                  <strong>Manager User:</strong>
-                  <button class="btn btn-secondary btn-sm" 
-                          (click)="quickLogin('manager')"
-                          data-testid="quick-login-manager">
-                    manager / manager123
-                  </button>
-                </div>
-                <div class="credential-set">
-                  <strong>Regular User:</strong>
-                  <button class="btn btn-secondary btn-sm" 
-                          (click)="quickLogin('user')"
-                          data-testid="quick-login-user">
-                    user / user123
+              <!-- Authenticated Actions -->
+              <div class="authenticated-actions" *ngIf="isAuthenticated">
+                <div class="action-card">
+                  <h4>🔓 You are logged in!</h4>
+                  <p>Session data has been saved to localStorage and sessionStorage.</p>
+                  <button 
+                    class="btn btn-danger btn-logout" 
+                    (click)="logout()"
+                    data-testid="logout-button">
+                    🚪 Logout & Clear Session
                   </button>
                 </div>
               </div>
-            </div>
-            
-            <div class="authenticated-actions" *ngIf="isAuthenticated">
-              <button 
-                class="btn btn-danger" 
-                (click)="logout()"
-                data-testid="logout-button">
-                Logout
-              </button>
             </div>
           </div>
 
@@ -4492,37 +4538,186 @@ await expect(page.locator('#shadow-button-host').locator('button')).toHaveText('
           </div>
 
           <!-- Playwright Testing Patterns -->
-          <div class="auth-section">
-            <h3>3. Playwright Testing Patterns</h3>
-            <p class="section-description">
-              Essential patterns for handling authentication in Playwright tests using session storage.
-            </p>
+          <div class="auth-section patterns-section">
+            <div class="section-header">
+              <h3>3️⃣ Playwright Testing Patterns</h3>
+              <p class="section-description">
+                Essential patterns for handling authentication in Playwright tests using session storage.
+              </p>
+            </div>
             
-            <div class="testing-patterns">
-              <div class="pattern-item" data-testid="auth-pattern-1">
-                <h4>Pattern 1: Save Authentication State</h4>
-                <div class="code-example">
-                  <pre><code>// Login and save state
+            <div class="patterns-container">
+              <div class="pattern-grid">
+                <div class="pattern-card" data-testid="auth-pattern-1">
+                  <div class="pattern-header">
+                    <div class="pattern-icon">💾</div>
+                    <h4>Pattern 1: Save Authentication State</h4>
+                    <span class="pattern-badge save">Save State</span>
+                  </div>
+                  <div class="pattern-description">
+                    <p>Login once and save the authenticated state for reuse across multiple tests.</p>
+                  </div>
+                  <div class="code-example">
+                    <div class="code-header">
+                      <span class="code-title">Save State Example</span>
+                      <div class="code-actions">
+                        <span class="language-tag">Playwright</span>
+                      </div>
+                    </div>
+                    <pre><code>// Login and save authentication state
 await page.fill('[data-testid="auth-username-input"]', 'admin');
 await page.fill('[data-testid="auth-password-input"]', 'admin123');
 await page.click('[data-testid="login-submit-button"]');
 
-// Save authentication state
-await page.context().storageState(&#123; path: 'auth.json' &#125;);</code></pre>
+// Wait for successful login
+await expect(page.locator('[data-testid="current-user-name"]'))
+  .toBeVisible();
+
+// Save the authenticated state to file
+await page.context().storageState(&#123; 
+  path: './auth-state.json' 
+&#125;);
+
+// State includes localStorage, sessionStorage, and cookies
+console.log('✅ Authentication state saved successfully!');</code></pre>
+                  </div>
                 </div>
-              </div>
-              
-              <div class="pattern-item" data-testid="auth-pattern-2">
-                <h4>Pattern 2: Reuse Saved State</h4>
-                <div class="code-example">
-                  <pre><code>// Create context with saved state
+                
+                <div class="pattern-card" data-testid="auth-pattern-2">
+                  <div class="pattern-header">
+                    <div class="pattern-icon">🔄</div>
+                    <h4>Pattern 2: Reuse Saved State</h4>
+                    <span class="pattern-badge reuse">Reuse State</span>
+                  </div>
+                  <div class="pattern-description">
+                    <p>Create new browser contexts with previously saved authentication state.</p>
+                  </div>
+                  <div class="code-example">
+                    <div class="code-header">
+                      <span class="code-title">Reuse State Example</span>
+                      <div class="code-actions">
+                        <span class="language-tag">Playwright</span>
+                      </div>
+                    </div>
+                    <pre><code>// Create new context with saved authentication state
 const context = await browser.newContext(&#123; 
-  storageState: 'auth.json' 
+  storageState: './auth-state.json' 
 &#125;);
 const page = await context.newPage();
 
-// User is already logged in
-await expect(page.locator('[data-testid="current-user-name"]')).toBeVisible();</code></pre>
+// Navigate to protected page - user is already logged in!
+await page.goto('/protected-dashboard');
+
+// Verify authentication state is active
+await expect(page.locator('[data-testid="current-user-name"]'))
+  .toHaveText('Admin User');
+await expect(page.locator('[data-testid="current-user-role"]'))
+  .toHaveText('admin');
+
+// No login required - ready to test protected features!
+await page.click('[data-testid="protected-action-button"]');</code></pre>
+                  </div>
+                </div>
+                
+                <div class="pattern-card full-width" data-testid="auth-pattern-3">
+                  <div class="pattern-header">
+                    <div class="pattern-icon">🏗️</div>
+                    <h4>Pattern 3: Complete Setup in playwright.config.ts</h4>
+                    <span class="pattern-badge config">Configuration</span>
+                  </div>
+                  <div class="pattern-description">
+                    <p>Set up global authentication in Playwright configuration for all tests.</p>
+                  </div>
+                  <div class="code-example">
+                    <div class="code-header">
+                      <span class="code-title">Global Setup Configuration</span>
+                      <div class="code-actions">
+                        <span class="language-tag">Config</span>
+                      </div>
+                    </div>
+                    <pre><code>// playwright.config.ts
+import &#123; defineConfig &#125; from '@playwright/test';
+
+export default defineConfig(&#123;
+  // Global setup file
+  globalSetup: require.resolve('./global-setup'),
+  
+  // Use saved authentication state for all tests
+  use: &#123;
+    storageState: './auth-state.json'
+  &#125;,
+  
+  projects: [
+    &#123;
+      name: 'setup',
+      testMatch: /.*\.setup\.ts/,
+    &#125;,
+    &#123;
+      name: 'authenticated-tests',
+      dependencies: ['setup'],
+      use: &#123; storageState: './auth-state.json' &#125;,
+    &#125;,
+  ],
+&#125;);
+
+// global-setup.ts
+async function globalSetup() &#123;
+  const &#123; chromium &#125; = require('@playwright/test');
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
+  
+  // Perform login
+  await page.goto('/practice-app');
+  await page.click('[data-testid="authentication"]');
+  await page.fill('[data-testid="auth-username-input"]', 'admin');
+  await page.fill('[data-testid="auth-password-input"]', 'admin123');
+  await page.click('[data-testid="login-submit-button"]');
+  
+  // Save authenticated state
+  await page.context().storageState(&#123; 
+    path: './auth-state.json' 
+  &#125;);
+  
+  await browser.close();
+&#125;
+
+module.exports = globalSetup;</code></pre>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Best Practices -->
+              <div class="best-practices">
+                <h4>🎯 Authentication Best Practices</h4>
+                <div class="practices-grid">
+                  <div class="practice-tip">
+                    <div class="tip-icon">⚡</div>
+                    <div class="tip-content">
+                      <h5>Performance</h5>
+                      <p>Save authentication state once and reuse across all tests to avoid repeated logins</p>
+                    </div>
+                  </div>
+                  <div class="practice-tip">
+                    <div class="tip-icon">🔒</div>
+                    <div class="tip-content">
+                      <h5>Security</h5>
+                      <p>Use different auth states for different user roles and permission levels</p>
+                    </div>
+                  </div>
+                  <div class="practice-tip">
+                    <div class="tip-icon">🏗️</div>
+                    <div class="tip-content">
+                      <h5>Setup</h5>
+                      <p>Configure global setup to handle authentication before running test suites</p>
+                    </div>
+                  </div>
+                  <div class="practice-tip">
+                    <div class="tip-icon">🧪</div>
+                    <div class="tip-content">
+                      <h5>Testing</h5>
+                      <p>Test both authenticated and unauthenticated scenarios for complete coverage</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
