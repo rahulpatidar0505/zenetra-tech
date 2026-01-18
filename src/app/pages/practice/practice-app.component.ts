@@ -395,6 +395,24 @@ export class PracticeAppComponent implements OnInit, OnDestroy, AfterViewInit {
   frameLoading = false;
   frameLoaded = false;
   frameUrl: SafeResourceUrl | string = '';
+
+  // Auto Waiting properties
+  slowLoadingInProgress = false;
+  slowLoadingResult = '';
+  showDynamicElement = false;
+  inputEnabled = false;
+  animationScale = 'scale(1)';
+  showLoadingSpinner = false;
+  showAnimationResult = false;
+  showFormSuccess = false;
+
+  // Practice form data
+  practiceFormData = {
+    name: '',
+    email: '',
+    experience: '',
+    newsletter: false
+  };
   
   constructor(
     private formBuilder: FormBuilder,
@@ -798,6 +816,7 @@ export class PracticeAppComponent implements OnInit, OnDestroy, AfterViewInit {
       'ui-elements': '🎨',
       'shadow-dom': '👤',
       'authentication': '🔐',
+      'auto-waiting': '⏱️',
       'playwright-quiz': '🧠'
     };
     return icons[tab] || '📄';
@@ -816,6 +835,7 @@ export class PracticeAppComponent implements OnInit, OnDestroy, AfterViewInit {
       'ui-elements': 'UI Elements',
       'shadow-dom': 'Shadow DOM',
       'authentication': 'Authentication',
+      'auto-waiting': 'Auto Waiting',
       'playwright-quiz': 'Quiz'
     };
     return names[tab] || tab;
@@ -2955,6 +2975,66 @@ export class PracticeAppComponent implements OnInit, OnDestroy, AfterViewInit {
         clearInterval(stepInterval);
       }
     }, 300);
+  }
+
+  // Auto Waiting Demo Methods
+  simulateSlowLoadingDemo() {
+    this.slowLoadingInProgress = true;
+    this.slowLoadingResult = '';
+    setTimeout(() => {
+      this.slowLoadingInProgress = false;
+      this.slowLoadingResult = '✅ Process completed! Playwright would wait for this result.';
+    }, 3000);
+  }
+
+  toggleDynamicElementDemo() {
+    this.showDynamicElement = !this.showDynamicElement;
+  }
+
+  enableFormInputDemo() {
+    this.inputEnabled = true;
+  }
+
+  triggerAnimationDemo() {
+    this.showLoadingSpinner = true;
+    this.showAnimationResult = false;
+    
+    // Simulate animation
+    this.animationScale = 'scale(0.8)';
+    
+    setTimeout(() => {
+      this.animationScale = 'scale(1.2)';
+      setTimeout(() => {
+        this.animationScale = 'scale(1)';
+        this.showLoadingSpinner = false;
+        this.showAnimationResult = true;
+        
+        // Hide result after 3 seconds
+        setTimeout(() => {
+          this.showAnimationResult = false;
+        }, 3000);
+      }, 1000);
+    }, 1500);
+  }
+
+  submitPracticeFormDemo() {
+    if (this.practiceFormData.name && this.practiceFormData.email) {
+      this.showFormSuccess = true;
+      
+      // Hide success message after 5 seconds
+      setTimeout(() => {
+        this.showFormSuccess = false;
+        // Reset form
+        this.practiceFormData = {
+          name: '',
+          email: '',
+          experience: '',
+          newsletter: false
+        };
+      }, 5000);
+    } else {
+      alert('Please fill in at least name and email to test the form submission!');
+    }
   }
 
   ngAfterViewInit() {

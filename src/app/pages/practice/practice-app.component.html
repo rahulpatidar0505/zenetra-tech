@@ -41,7 +41,7 @@
       </div>
       <div class="progress-modules">
         <div class="module-progress" 
-             *ngFor="let tab of ['using-the-grid', 'combined-forms', 'modal-overlays', 'frames', 'smart-table', 'file-operations', 'api-practice', 'network-internals', 'ui-elements', 'shadow-dom', 'authentication', 'playwright-quiz']"
+             *ngFor="let tab of ['using-the-grid', 'combined-forms', 'modal-overlays', 'frames', 'smart-table', 'file-operations', 'api-practice', 'network-internals', 'ui-elements', 'shadow-dom', 'authentication', 'auto-waiting', 'playwright-quiz']"
              [class.completed]="completedModules.has(tab)"
              [class.active]="selectedTab === tab"
              (click)="setActiveTab(tab)">
@@ -52,9 +52,9 @@
       </div>
       <div class="progress-summary" *ngIf="completedModules.size > 0">
         <div class="summary-stats">
-          <span class="completed-count"><span [innerHTML]="completedModules.size"></span>/11 Modules Completed</span>
+          <span class="completed-count"><span [innerHTML]="completedModules.size"></span>/12 Modules Completed</span>
           <div class="progress-bar">
-            <div class="progress-fill" [style.width.%]="(completedModules.size / 11) * 100"></div>
+            <div class="progress-fill" [style.width.%]="(completedModules.size / 12) * 100"></div>
           </div>
         </div>
       </div>
@@ -3463,30 +3463,6 @@ try {{ '{' }}
             </div>
           </div>
 
-          <!-- GraphQL Demo -->
-          <div class="demo-card">
-            <div class="demo-header">
-              <h3>📊 GraphQL Query</h3>
-              <p>Modern query language for APIs</p>
-            </div>
-            <div class="demo-content">
-              <div class="demo-description">
-                <p>Sends a GraphQL query to SpaceX API. Observe in Network tab:</p>
-                <ul>
-                  <li>POST method with query payload</li>
-                  <li>Structured query in request body</li>
-                  <li>Precise data retrieval</li>
-                  <li>Single endpoint usage</li>
-                </ul>
-              </div>
-              <button class="demo-btn" 
-                      (click)="demonstrateGraphQL()" 
-                      [disabled]="networkLoading && networkDemoType === 'graphql'"
-                      data-testid="graphql-demo">
-                <span [textContent]="networkLoading && networkDemoType === 'graphql' ? 'Loading...' : 'Demonstrate GraphQL'"></span>
-              </button>
-            </div>
-          </div>
 
           <!-- HTTP Methods Demo -->
           <div class="demo-card">
@@ -3513,55 +3489,7 @@ try {{ '{' }}
             </div>
           </div>
 
-          <!-- CORS Demo -->
-          <div class="demo-card">
-            <div class="demo-header">
-              <h3>🔒 CORS Headers</h3>
-              <p>Cross-Origin Resource Sharing</p>
-            </div>
-            <div class="demo-content">
-              <div class="demo-description">
-                <p>Demonstrates CORS mechanism. Monitor in Network tab:</p>
-                <ul>
-                  <li>Preflight OPTIONS requests</li>
-                  <li>CORS response headers</li>
-                  <li>Origin validation</li>
-                  <li>Access control headers</li>
-                </ul>
-              </div>
-              <button class="demo-btn" 
-                      (click)="demonstrateCORS()" 
-                      [disabled]="networkLoading && networkDemoType === 'cors'"
-                      data-testid="cors-demo">
-                <span [textContent]="networkLoading && networkDemoType === 'cors' ? 'Loading...' : 'Demonstrate CORS'"></span>
-              </button>
-            </div>
-          </div>
 
-          <!-- Performance Analysis Demo -->
-          <div class="demo-card">
-            <div class="demo-header">
-              <h3>⚡ Performance Metrics</h3>
-              <p>Network timing analysis</p>
-            </div>
-            <div class="demo-content">
-              <div class="demo-description">
-                <p>Analyzes network performance. View timing details:</p>
-                <ul>
-                  <li>DNS lookup duration</li>
-                  <li>Connection establishment time</li>
-                  <li>SSL handshake timing</li>
-                  <li>Request/response phases</li>
-                </ul>
-              </div>
-              <button class="demo-btn" 
-                      (click)="demonstratePerformance()" 
-                      [disabled]="networkLoading && networkDemoType === 'performance'"
-                      data-testid="performance-demo">
-                <span [textContent]="networkLoading && networkDemoType === 'performance' ? 'Loading...' : 'Analyze Performance'"></span>
-              </button>
-            </div>
-          </div>
 
         </div>
 
@@ -3722,63 +3650,7 @@ try {{ '{' }}
       </div>
     </div>
 
-    <!-- UI Elements Tab -->
-    <div class="tab-content" *ngIf="selectedTab === 'ui-elements'">
-      <div class="form-section">
-        <h2>Additional UI Elements Practice</h2>
-        <p class="form-description">Practice with specialized UI elements including sliders, progress bars, carousels, drag & drop, accordions, and more interactive components.</p>
-        
-        <!-- Sliders and Range Inputs -->
-        <div class="ui-group">
-          <h3>🎚️ Sliders & Range Inputs</h3>
-          <div class="element-row">
-            <h3>📺 Practice iFrame</h3>
-            <p>A simple iframe for automation practice with form elements and buttons</p>
-            <button class="load-frame-btn" 
-                    (click)="loadSimpleFrame()" 
-                    [disabled]="frameLoading"
-                    data-testid="load-frame-button">
-              <span *ngIf="frameLoading">Loading...</span>
-              <span *ngIf="!frameLoading">Load Practice Frame</span>
-            </button>
-          </div>
-        </div>
 
-        <!-- Best Practices -->
-        <div class="frame-best-practices" *ngIf="frameLoaded">
-          <h3>🎯 iFrame Automation Best Practices</h3>
-          <div class="practices-grid">
-            <div class="practice-card">
-              <h4>🎯 Frame Identification</h4>
-              <ul>
-                <li>Use <code>id</code> or <code>name</code> attributes for reliable frame identification</li>
-                <li>Wait for frame to load before interacting with elements</li>
-                <li>Use <code>data-testid</code> for consistent element identification</li>
-              </ul>
-            </div>
-            
-            <div class="practice-card">
-              <h4>🔄 Context Switching</h4>
-              <ul>
-                <li><strong>Playwright:</strong> Use <code>frameLocator()</code> - no need to switch contexts</li>
-                <li><strong>Selenium:</strong> Use <code>switchTo().frame()</code> and remember to switch back</li>
-                <li>Always return to <code>defaultContent()</code> after frame operations in Selenium</li>
-              </ul>
-            </div>
-            
-            <div class="practice-card">
-              <h4>⚡ Performance Tips</h4>
-              <ul>
-                <li>Cache frame locators for repeated use</li>
-                <li>Minimize context switches in Selenium</li>
-                <li>Use explicit waits for frame loading</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
 
     <!-- UI Elements Tab -->
     <div class="tab-content" *ngIf="selectedTab === 'ui-elements'">
@@ -4723,6 +4595,312 @@ module.exports = globalSetup;</code></pre>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Auto Waiting Tab -->
+    <div class="tab-content" *ngIf="selectedTab === 'auto-waiting'">
+      <div class="form-section">
+        <h2>⏱️ Auto Waiting - Playwright's Smart Feature</h2>
+        <p class="form-description">Learn how Playwright automatically waits for elements, making your tests more reliable without explicit waits.</p>
+        
+        <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3>🤔 What is Auto Waiting?</h3>
+          <p>Playwright automatically waits for elements to be ready before interacting with them. This makes your tests more reliable without manual waits.</p>
+          
+          <h4>Key Benefits:</h4>
+          <ul>
+            <li>✅ No need for sleep() or manual delays</li>
+            <li>✅ Automatic element readiness checks</li>
+            <li>✅ More stable and reliable tests</li>
+            <li>✅ Handles timing issues automatically</li>
+          </ul>
+        </div>
+
+        <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3>📝 Code Example</h3>
+          <pre style="background: #333; color: #fff; padding: 15px; border-radius: 4px;"><code>// ✅ Playwright automatically waits
+await page.click('#submit-button');
+await page.fill('#username', 'john');
+const text = await page.textContent('h1');
+
+// ❌ Other tools need manual waits  
+await driver.sleep(2000);
+await driver.findElement(By.id('submit-button')).click();</code></pre>
+        </div>
+
+        <div style="background: #e8f5e8; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3>💡 Best Practices</h3>
+          <ul>
+            <li><strong>Trust auto-waiting:</strong> Don't add unnecessary sleep() calls</li>
+            <li><strong>Use good selectors:</strong> data-testid attributes work best</li>
+            <li><strong>Increase timeouts if needed:</strong> For slow operations</li>
+            <li><strong>Debug with explicit waits:</strong> Use waitForSelector() for troubleshooting</li>
+          </ul>
+        </div>
+
+        <div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3>🎯 Try It Yourself</h3>
+          <p>Auto-waiting works for all these Playwright actions:</p>
+          <ul>
+            <li><code>page.click()</code> - Waits for element to be clickable</li>
+            <li><code>page.fill()</code> - Waits for input to be editable</li>
+            <li><code>page.textContent()</code> - Waits for element to be visible</li>
+            <li><code>page.hover()</code> - Waits for element to be stable</li>
+          </ul>
+        </div>
+
+        <!-- Interactive Demo Section -->
+        <div style="background: #ffffff; border: 2px solid #013024; border-radius: 12px; padding: 25px; margin: 30px 0;">
+          <h3>🧪 Interactive Auto-Waiting Demo</h3>
+          <p style="color: #666; margin-bottom: 25px;">Click the buttons below to see how Playwright would handle timing automatically. Each demonstrates a different waiting scenario.</p>
+          
+          <!-- Demo Buttons -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+            
+            <!-- Slow Loading Demo -->
+            <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; text-align: center;">
+              <h4>⏰ Slow Loading Button</h4>
+              <p style="font-size: 14px; color: #666;">Simulates waiting for element to be clickable</p>
+              <button id="slow-loading-btn" 
+                      (click)="simulateSlowLoadingDemo()"
+                      [disabled]="slowLoadingInProgress"
+                      style="background: #013024; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 600;"
+                      data-testid="slow-loading-button">
+                {{slowLoadingInProgress ? '⏳ Processing...' : '🚀 Start Slow Process'}}
+              </button>
+              <div style="margin-top: 10px; font-weight: 600; color: #013024; min-height: 20px;">
+                {{slowLoadingResult}}
+              </div>
+            </div>
+
+            <!-- Dynamic Content Demo -->
+            <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; text-align: center;">
+              <h4>🎭 Dynamic Content</h4>
+              <p style="font-size: 14px; color: #666;">Simulates waiting for element to appear</p>
+              <button (click)="toggleDynamicElementDemo()"
+                      style="background: #059669; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 600;"
+                      data-testid="dynamic-content-button">
+                {{showDynamicElement ? '🙈 Hide Element' : '✨ Show Hidden Element'}}
+              </button>
+              <div *ngIf="showDynamicElement"
+                   style="margin-top: 15px; background: #d5f4e6; padding: 12px; border-radius: 6px; color: #2d8a54; font-weight: 600;"
+                   data-testid="dynamic-element">
+                🎉 I appeared! Playwright would wait for me automatically.
+              </div>
+            </div>
+
+            <!-- Form Input Demo -->
+            <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; text-align: center;">
+              <h4>📝 Form Input Demo</h4>
+              <p style="font-size: 14px; color: #666;">Simulates waiting for input to be ready</p>
+              <input type="text" 
+                     placeholder="{{inputEnabled ? 'Now I\'m ready for input!' : 'Type here...'}}"
+                     [disabled]="!inputEnabled"
+                     data-testid="auto-wait-input"
+                     style="width: 80%; padding: 8px; border: 2px solid {{inputEnabled ? '#013024' : '#ccc'}}; border-radius: 4px; margin: 8px 0;">
+              <br>
+              <button (click)="enableFormInputDemo()"
+                      style="background: #6366f1; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 12px;"
+                      data-testid="enable-input-button">
+                🔓 Enable Input
+              </button>
+            </div>
+          </div>
+
+          <!-- Animation Demo -->
+          <div style="border: 2px dashed #013024; border-radius: 8px; padding: 20px; margin: 20px 0; text-align: center;">
+            <h4>🎨 Animation & Loading Demo</h4>
+            <p style="color: #666;">Playwright waits for animations to complete and elements to be stable</p>
+            
+            <button (click)="triggerAnimationDemo()"
+                    [style.transform]="animationScale"
+                    style="background: #dc2626; color: white; border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px; transition: all 0.3s ease;"
+                    data-testid="animation-button">
+              🎯 Trigger Animation
+            </button>
+            
+            <!-- Loading Spinner -->
+            <div *ngIf="showLoadingSpinner"
+                 style="margin: 20px 0;"
+                 data-testid="loading-spinner">
+              <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #013024; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+              <p style="color: #666; margin-top: 10px;">Loading... Playwright would wait for this to finish!</p>
+            </div>
+            
+            <!-- Success Message -->
+            <div *ngIf="showAnimationResult"
+                 style="background: #d5f4e6; color: #2d8a54; padding: 15px; border-radius: 6px; margin-top: 15px; font-weight: 600;"
+                 data-testid="animation-result">
+              ✅ Animation completed! Element is now stable and ready for interaction.
+            </div>
+          </div>
+
+          <!-- Live Test Form -->
+          <div style="background: #f8fafc; border-radius: 8px; padding: 20px; margin-top: 25px;">
+            <h4>📋 Practice Form - Test Auto-Waiting</h4>
+            <p style="color: #666; margin-bottom: 15px;">A simple form to practice Playwright automation. All elements have proper data-testid attributes.</p>
+            
+            <form #practiceForm="ngForm" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: end;">
+              <div>
+                <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #013024;">Name:</label>
+                <input type="text" 
+                       [(ngModel)]="practiceFormData.name"
+                       name="name"
+                       data-testid="practice-name"
+                       placeholder="Enter your name"
+                       style="width: 100%; padding: 8px; border: 2px solid #e2e8f0; border-radius: 4px;">
+              </div>
+              
+              <div>
+                <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #013024;">Email:</label>
+                <input type="email" 
+                       [(ngModel)]="practiceFormData.email"
+                       name="email"
+                       data-testid="practice-email"
+                       placeholder="Enter your email"
+                       style="width: 100%; padding: 8px; border: 2px solid #e2e8f0; border-radius: 4px;">
+              </div>
+              
+              <div style="grid-column: 1 / -1;">
+                <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #013024;">Experience Level:</label>
+                <select [(ngModel)]="practiceFormData.experience"
+                        name="experience"
+                        data-testid="practice-experience"
+                        style="width: 100%; padding: 8px; border: 2px solid #e2e8f0; border-radius: 4px;">
+                  <option value="">Select experience level</option>
+                  <option value="beginner">Beginner</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="advanced">Advanced</option>
+                </select>
+              </div>
+              
+              <div style="grid-column: 1 / -1; display: flex; gap: 10px; align-items: center;">
+                <input type="checkbox" 
+                       [(ngModel)]="practiceFormData.newsletter"
+                       name="newsletter"
+                       id="practice-newsletter" 
+                       data-testid="practice-newsletter">
+                <label for="practice-newsletter" style="margin: 0; color: #666;">Subscribe to testing tips newsletter</label>
+              </div>
+              
+              <button type="button" 
+                      (click)="submitPracticeFormDemo()"
+                      data-testid="practice-submit"
+                      style="grid-column: 1 / -1; background: #013024; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 16px;">
+                🚀 Submit Form
+              </button>
+            </form>
+            
+            <div *ngIf="showFormSuccess"
+                 style="background: #d5f4e6; color: #2d8a54; padding: 15px; border-radius: 6px; margin-top: 15px; font-weight: 600;"
+                 data-testid="form-success">
+              ✅ Form submitted successfully! In Playwright, you'd wait for this confirmation automatically.
+              <br><small>Data: {{practiceFormData | json}}</small>
+            </div>
+          </div>
+
+          <!-- Code Examples for Each Demo -->
+          <div style="background: #1e293b; color: #e2e8f0; padding: 20px; border-radius: 8px; margin-top: 25px; font-family: monospace;">
+            <h4 style="color: #ffffff; margin-top: 0;">🎭 Playwright Code for These Demos:</h4>
+            <pre style="margin: 0; font-size: 14px; line-height: 1.5;"><code>// ✅ Playwright automatically waits for each of these:
+
+// Wait for button to be clickable
+await page.click('[data-testid="slow-loading-button"]');
+
+// Wait for element to appear in DOM
+await expect(page.locator('[data-testid="dynamic-element"]')).toBeVisible();
+
+// Wait for input to be enabled and editable
+await page.fill('[data-testid="auto-wait-input"]', 'test text');
+
+// Wait for animation to complete
+await page.click('[data-testid="animation-button"]');
+await expect(page.locator('[data-testid="animation-result"]')).toBeVisible();
+
+// Wait for form elements to be ready
+await page.fill('[data-testid="practice-name"]', 'John Doe');
+await page.selectOption('[data-testid="practice-experience"]', 'intermediate');
+await page.check('[data-testid="practice-newsletter"]');
+await page.click('[data-testid="practice-submit"]');</code></pre>
+          </div>
+        </div>
+
+        <style>
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        </style>
+
+        <script>
+          // Demo Functions
+          function simulateSlowLoading() {
+            const button = document.getElementById('slow-loading-btn');
+            const result = document.getElementById('slow-result');
+            
+            button.disabled = true;
+            button.textContent = '⏳ Processing...';
+            result.textContent = 'Loading... (Playwright waits automatically)';
+            
+            setTimeout(() => {
+              button.disabled = false;
+              button.textContent = '🚀 Start Slow Process';
+              result.textContent = '✅ Process completed!';
+            }, 3000);
+          }
+
+          function showDynamicElement() {
+            const element = document.getElementById('dynamic-element');
+            const button = document.getElementById('dynamic-content-btn');
+            
+            if (element.style.display === 'none') {
+              element.style.display = 'block';
+              button.textContent = '🙈 Hide Element';
+            } else {
+              element.style.display = 'none';
+              button.textContent = '✨ Show Hidden Element';
+            }
+          }
+
+          function enableInput() {
+            const input = document.getElementById('auto-wait-input');
+            input.disabled = false;
+            input.style.borderColor = '#013024';
+            input.focus();
+            input.placeholder = 'Now I\'m ready for input!';
+          }
+
+          function triggerAnimation() {
+            const button = document.getElementById('animation-btn');
+            const spinner = document.getElementById('loading-spinner');
+            const result = document.getElementById('animation-result');
+            
+            // Hide previous result
+            result.style.display = 'none';
+            
+            // Start animation
+            button.style.transform = 'scale(0.95)';
+            spinner.style.display = 'block';
+            
+            // Complete after delay
+            setTimeout(() => {
+              button.style.transform = 'scale(1)';
+              spinner.style.display = 'none';
+              result.style.display = 'block';
+            }, 2500);
+          }
+
+          function submitPracticeForm() {
+            const success = document.getElementById('form-success');
+            success.style.display = 'block';
+            
+            // Hide after 4 seconds
+            setTimeout(() => {
+              success.style.display = 'none';
+            }, 4000);
+          }
+        </script>
       </div>
     </div>
 
