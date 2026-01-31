@@ -1,8 +1,14 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID } from '@angular/core';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import localeFr from '@angular/common/locales/fr';
+import localeDe from '@angular/common/locales/de';
+
+// Register locale data for French and German
+registerLocaleData(localeFr);
+registerLocaleData(localeDe);
 
 // Custom Validators
 export class CustomValidators {
@@ -817,7 +823,13 @@ export class PracticeAppComponent implements OnInit, OnDestroy, AfterViewInit {
       'shadow-dom': '👤',
       'authentication': '🔐',
       'auto-waiting': '⏱️',
-      'playwright-quiz': '🧠'
+      'playwright-quiz': '🧠',
+      'dynamic-ui': '🎭',
+      'role-based-access': '👥',
+      'localization': '🌍',
+      'accessibility': '♿',
+      'visual-regression': '📸',
+      'error-handling': '⚠️'
     };
     return icons[tab] || '📄';
   }
@@ -836,7 +848,13 @@ export class PracticeAppComponent implements OnInit, OnDestroy, AfterViewInit {
       'shadow-dom': 'Shadow DOM',
       'authentication': 'Authentication',
       'auto-waiting': 'Auto Waiting',
-      'playwright-quiz': 'Quiz'
+      'playwright-quiz': 'Quiz',
+      'dynamic-ui': 'Dynamic UI',
+      'role-based-access': 'Role Access',
+      'localization': 'Localization',
+      'accessibility': 'Accessibility',
+      'visual-regression': 'Visual Tests',
+      'error-handling': 'Error Handling'
     };
     return names[tab] || tab;
   }
@@ -4567,5 +4585,152 @@ export class PracticeAppComponent implements OnInit, OnDestroy, AfterViewInit {
       this.frameLoading = false;
       this.frameLoaded = true;
     }, 1000);
+  }
+
+  // Module 1: Dynamic UI
+  dynamicButton = { loading: false, text: '🚀 Trigger Random Delay' };
+  apiLoadingElement = { visible: false, text: '✅ Element appeared after random delay!' };
+  conditionalButton = { enabled: true, condition: '✅ Click Me Now!' };
+  dynamicIdCounter = 0;
+  rerenderCounter = 0;
+
+  triggerRandomDelayElement() {
+    this.dynamicButton.loading = true;
+    this.dynamicButton.text = '⏳ Loading...';
+    this.apiLoadingElement.visible = false;
+    const randomDelay = Math.floor(Math.random() * 7000) + 1000;
+    setTimeout(() => {
+      this.dynamicButton.loading = false;
+      this.dynamicButton.text = '🚀 Trigger Random Delay';
+      this.apiLoadingElement.visible = true;
+    }, randomDelay);
+  }
+
+  toggleConditionalButton() {
+    if (this.conditionalButton.enabled) {
+      this.conditionalButton.enabled = false;
+      this.conditionalButton.condition = '⏳ Button will enable in 3 seconds...';
+      setTimeout(() => {
+        this.conditionalButton.enabled = true;
+        this.conditionalButton.condition = '✅ Click Me Now!';
+      }, 3000);
+    }
+  }
+
+  changeDynamicId() { this.dynamicIdCounter++; }
+  triggerRerender() { this.rerenderCounter++; }
+
+  // Module 2: Role-Based Access
+  currentRole: 'admin' | 'user' | 'guest' | null = null;
+  roleAuthMessage = '';
+  roleUsers = [
+    { name: 'Alice Admin', role: 'admin' as 'admin' | 'user' | 'guest', username: 'admin@test.com', password: 'admin123' },
+    { name: 'Bob User', role: 'user' as 'admin' | 'user' | 'guest', username: 'user@test.com', password: 'user123' },
+    { name: 'Charlie Guest', role: 'guest' as 'admin' | 'user' | 'guest', username: 'guest@test.com', password: 'guest123' }
+  ];
+
+  loginWithRole(role: 'admin' | 'user' | 'guest') {
+    this.currentRole = role;
+    if (role === 'admin') this.roleAuthMessage = '👑 Full access granted! You can view and modify all data.';
+    else if (role === 'user') this.roleAuthMessage = '👤 Standard access. You can view data and edit your own content.';
+    else this.roleAuthMessage = '👁️ Read-only access. You can only view public information.';
+  }
+
+  logoutRole() { this.currentRole = null; this.roleAuthMessage = ''; }
+
+  // Module 3: Localization
+  currentLocale: 'en' | 'fr' | 'de' = 'en';
+  sampleDate = new Date('2024-01-15');
+  samplePrice = 99.99;
+  translations = {
+    en: { welcome: 'Welcome to Playwright Testing', description: 'Master automation testing with real-world scenarios', button: 'Get Started' },
+    fr: { welcome: 'Bienvenue aux tests Playwright', description: 'Maîtrisez les tests d\'automation avec des scénarios réels', button: 'Commencer' },
+    de: { welcome: 'Willkommen beim Playwright-Testing', description: 'Meistern Sie Automatisierungstests mit realen Szenarien', button: 'Loslegen' }
+  };
+
+  switchLocale(locale: 'en' | 'fr' | 'de') { this.currentLocale = locale; }
+
+  get formattedDateEN(): string {
+    return new Intl.DateTimeFormat('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).format(this.sampleDate);
+  }
+
+  get formattedDateFR(): string {
+    return new Intl.DateTimeFormat('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).format(this.sampleDate);
+  }
+
+  get formattedDateDE(): string {
+    return new Intl.DateTimeFormat('de-DE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).format(this.sampleDate);
+  }
+
+  get formattedCurrencyUSD(): string {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.samplePrice);
+  }
+
+  get formattedCurrencyEUR(): string {
+    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(this.samplePrice);
+  }
+
+  // Module 4: Accessibility
+  currentTheme: 'light' | 'dark' = 'light';
+  keyboardNavigationItems = ['1. Press Tab to move to next element', '2. Press Shift+Tab to move to previous element', '3. Press Enter to activate buttons', '4. Press Escape to close modals'];
+  switchTheme() { this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light'; }
+
+  // Module 5: Visual Regression
+  currentViewport = 'desktop';
+  visualChangeTrigger = false;
+  viewportSizes = [
+    { name: 'mobile', icon: '📱', width: 375, height: 667 },
+    { name: 'tablet', icon: '�', width: 768, height: 1024 },
+    { name: 'desktop', icon: '💻', width: 1920, height: 1080 }
+  ];
+
+  switchViewport(viewport: string) { 
+    this.currentViewport = viewport;
+    // Note: In real testing, Playwright would use page.setViewportSize()
+    // This is for demonstration - showing the viewport state changes
+  }
+  triggerVisualChange() { this.visualChangeTrigger = !this.visualChangeTrigger; }
+
+  // Module 6: Error Handling
+  errorResponse = '';
+  errorFormData = { email: '', phone: '', age: null as number | null };
+  errorFormErrors: string[] = [];
+  retryInProgress = false;
+  retryAttempts = 0;
+  retrySuccess = false;
+
+  simulateApiError(statusCode: '401' | '403' | '500' | 'network' | 'timeout') {
+    this.errorResponse = '';
+    setTimeout(() => {
+      if (statusCode === '401') this.errorResponse = 'Error 401: Unauthorized\nYou need to log in to access this resource.';
+      else if (statusCode === '403') this.errorResponse = 'Error 403: Forbidden\nYou don\'t have permission to access this resource.';
+      else if (statusCode === '500') this.errorResponse = 'Error 500: Internal Server Error\nSomething went wrong on our end. Please try again later.';
+    }, 300);
+  }
+
+  simulateTimeout() { this.errorResponse = 'Request Timeout\nThe server took too long to respond. Please try again.'; }
+
+  validateErrorForm() {
+    this.errorFormErrors = [];
+    if (!this.errorFormData.email || !this.errorFormData.email.includes('@')) this.errorFormErrors.push('Invalid email format');
+    if (this.errorFormData.phone && !/^\d+$/.test(this.errorFormData.phone)) this.errorFormErrors.push('Phone number must contain only digits');
+    if (this.errorFormData.age !== null && this.errorFormData.age < 0) this.errorFormErrors.push('Age cannot be negative');
+  }
+
+  testRetryLogic() {
+    this.retryInProgress = true;
+    this.retrySuccess = false;
+    this.retryAttempts = 0;
+    const attemptRetry = () => {
+      this.retryAttempts++;
+      const randomSuccess = Math.random() > 0.5;
+      if (randomSuccess || this.retryAttempts >= 3) {
+        this.retrySuccess = true;
+        this.retryInProgress = false;
+      } else {
+        setTimeout(attemptRetry, 1000);
+      }
+    };
+    attemptRetry();
   }
 }

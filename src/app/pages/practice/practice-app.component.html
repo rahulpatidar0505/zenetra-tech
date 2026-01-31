@@ -41,7 +41,7 @@
       </div>
       <div class="progress-modules">
         <div class="module-progress" 
-             *ngFor="let tab of ['using-the-grid', 'combined-forms', 'modal-overlays', 'frames', 'smart-table', 'file-operations', 'api-practice', 'network-internals', 'ui-elements', 'shadow-dom', 'authentication', 'auto-waiting', 'playwright-quiz']"
+             *ngFor="let tab of ['using-the-grid', 'combined-forms', 'modal-overlays', 'frames', 'smart-table', 'file-operations', 'api-practice', 'network-internals', 'ui-elements', 'shadow-dom', 'authentication', 'auto-waiting', 'playwright-quiz', 'dynamic-ui', 'role-based-access', 'localization', 'accessibility', 'visual-regression', 'error-handling']"
              [class.completed]="completedModules.has(tab)"
              [class.active]="selectedTab === tab"
              (click)="setActiveTab(tab)">
@@ -52,9 +52,9 @@
       </div>
       <div class="progress-summary" *ngIf="completedModules.size > 0">
         <div class="summary-stats">
-          <span class="completed-count"><span [innerHTML]="completedModules.size"></span>/12 Modules Completed</span>
+          <span class="completed-count"><span [innerHTML]="completedModules.size"></span>/18 Modules Completed</span>
           <div class="progress-bar">
-            <div class="progress-fill" [style.width.%]="(completedModules.size / 12) * 100"></div>
+            <div class="progress-fill" [style.width.%]="(completedModules.size / 18) * 100"></div>
           </div>
         </div>
       </div>
@@ -5259,6 +5259,671 @@ await page.click('[data-testid="practice-submit"]');</code></pre>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <!-- Module 1: Dynamic UI / Flaky Scenarios Tab -->
+    <div class="tab-content" *ngIf="selectedTab === 'dynamic-ui'">
+      <div class="form-section">
+        <h2>🎭 Dynamic UI / Flaky Scenarios</h2>
+        <p class="form-description">Practice handling unstable, async, and dynamic UI behavior using Playwright best practices.</p>
+        
+        <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3>🎯 What You'll Learn</h3>
+          <ul>
+            <li>✅ Handle elements with random delays (1-8 seconds)</li>
+            <li>✅ Wait for API responses before interaction</li>
+            <li>✅ Work with loader overlays and blocking elements</li>
+            <li>✅ Handle disabled/enabled state changes</li>
+            <li>✅ Deal with dynamic IDs and changing class names</li>
+            <li>✅ Test elements that re-render frequently</li>
+          </ul>
+        </div>
+
+        <!-- Random Delay Element -->
+        <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h4>⏰ Random Delay Element (1-8 seconds)</h4>
+          <p style="color: #666;">Element appears after random delay - Playwright waits automatically!</p>
+          
+          <button (click)="triggerRandomDelayElement()"
+                  [disabled]="dynamicButton.loading"
+                  style="background: #3b82f6; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 600; margin: 10px 0;"
+                  data-testid="trigger-random-delay">
+            <span [textContent]="dynamicButton.text"></span>
+          </button>
+          
+          <div *ngIf="apiLoadingElement.visible"
+               style="background: #d5f4e6; color: #2d8a54; padding: 15px; border-radius: 6px; margin-top: 15px; font-weight: 600;"
+               data-testid="delayed-element">
+            <span [textContent]="apiLoadingElement.text"></span>
+          </div>
+        </div>
+
+        <!-- Conditional Button -->
+        <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h4>🚦 Conditional Enabled/Disabled Button</h4>
+          <p style="color: #666;">Button enables after 3 seconds automatically</p>
+          
+          <button (click)="toggleConditionalButton()"
+                  [disabled]="!conditionalButton.enabled"
+                  [style.background]="conditionalButton.enabled ? '#10b981' : '#d1d5db'"
+                  [style.cursor]="conditionalButton.enabled ? 'pointer' : 'not-allowed'"
+                  style="color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 600;"
+                  data-testid="conditional-button">
+            <span [textContent]="conditionalButton.condition"></span>
+          </button>
+        </div>
+
+        <!-- Dynamic ID Demo -->
+        <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h4>🔀 Dynamic IDs</h4>
+          <p style="color: #666;">ID changes each time - use data-testid instead!</p>
+          
+          <button (click)="changeDynamicId()"
+                  style="background: #f59e0b; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 600;"
+                  data-testid="change-id-button">
+            🔄 Change Element ID
+          </button>
+          
+          <div [id]="'dynamic-id-' + dynamicIdCounter"
+               style="background: #e0e7ff; padding: 15px; border-radius: 6px; margin-top: 15px; font-weight: 600; color: #3730a3;"
+               data-testid="dynamic-id-element">
+            My ID is: dynamic-id-<span [textContent]="dynamicIdCounter"></span> (changes each time!)
+            <br><small>✅ But my data-testid stays constant!</small>
+          </div>
+        </div>
+
+        <!-- Re-render Demo -->
+        <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h4>🔄 DOM Re-render</h4>
+          <p style="color: #666;">Section re-renders with new DOM structure each time</p>
+          
+          <button (click)="triggerRerender()"
+                  style="background: #6366f1; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 600;"
+                  data-testid="rerender-button">
+            🔄 Re-render Section (<span [textContent]="rerenderCounter"></span> times)
+          </button>
+          
+          <div style="background: #fef3c7; padding: 15px; border-radius: 6px; margin-top: 15px; font-weight: 600; color: #92400e;"
+               data-testid="rerender-container">
+            <div *ngFor="let item of [1, 2, 3, 4, 5].slice(0, rerenderCounter % 5 + 1)">
+              <p style="margin: 5px 0;">Dynamic Item <span [textContent]="item"></span> - Render #<span [textContent]="rerenderCounter"></span></p>
+            </div>
+            <p *ngIf="rerenderCounter === 0" style="margin: 5px 0; color: #666;">Click button to render items dynamically...</p>
+          </div>
+        </div>
+
+        <!-- Best Practices -->
+        <div style="background: #ecfdf5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h4>💡 Best Practices for Dynamic UI</h4>
+          <ul style="line-height: 1.8;">
+            <li><strong>Use data-testid:</strong> Never rely on dynamic IDs or classes</li>
+            <li><strong>Trust auto-waiting:</strong> Playwright waits automatically for elements</li>
+            <li><strong>Use explicit waits:</strong> For complex scenarios with custom timing</li>
+            <li><strong>Avoid sleep():</strong> Let Playwright handle timing</li>
+            <li><strong>Use retry logic:</strong> Playwright retries assertions automatically</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 2: Role-Based Access & Authorization Tab -->
+    <div class="tab-content" *ngIf="selectedTab === 'role-based-access'">
+      <div class="form-section">
+        <h2>👥 Role-Based Access & Authorization</h2>
+        <p class="form-description">Practice enterprise-grade authorization, session management, and role-based UI rendering.</p>
+        
+        <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3>🎯 What You'll Learn</h3>
+          <ul>
+            <li>✅ Test different user roles (Admin, User, Guest)</li>
+            <li>✅ Verify role-specific UI elements and permissions</li>
+            <li>✅ Handle authentication state and session storage</li>
+            <li>✅ Test access control and authorization flows</li>
+            <li>✅ Validate 401/403 error handling</li>
+          </ul>
+        </div>
+
+        <!-- Role Selection -->
+        <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h4>🔐 Login with Different Roles</h4>
+          <p style="color: #666;">Test how UI changes based on user permissions</p>
+          
+          <div *ngIf="!currentRole" style="display: grid; gap: 15px;">
+            <div *ngFor="let user of roleUsers" style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 6px;">
+              <h5 style="margin: 0 0 10px 0; color: #1f2937;">
+                <span *ngIf="user.role === 'admin'">👑</span>
+                <span *ngIf="user.role === 'user'">👤</span>
+                <span *ngIf="user.role === 'guest'">👁️</span>
+                <span [textContent]="user.name"></span>
+              </h5>
+              <p style="font-size: 14px; color: #666; margin: 5px 0;">
+                <strong>Role:</strong> <span [textContent]="user.role.toUpperCase()"></span>
+              </p>
+              <p style="font-size: 12px; color: #999; margin: 5px 0;">
+                Username: <span [textContent]="user.username"></span> | Password: <span [textContent]="user.password"></span>
+              </p>
+              <button (click)="loginWithRole(user.role)"
+                      style="background: #3b82f6; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; margin-top: 10px;"
+                      [attr.data-testid]="'login-as-' + user.role">
+                Login as <span [textContent]="user.role.toUpperCase()"></span>
+              </button>
+            </div>
+          </div>
+          
+          <div *ngIf="currentRole" style="background: #d5f4e6; padding: 15px; border-radius: 6px;">
+            <h5 style="margin: 0 0 10px 0; color: #2d8a54;">
+              ✅ Logged in as: <span [textContent]="currentRole.toUpperCase()"></span>
+            </h5>
+            <p style="font-size: 14px; color: #2d8a54; margin: 5px 0;" data-testid="role-status-message">
+              <span [textContent]="roleAuthMessage"></span>
+            </p>
+            <button (click)="logoutRole()"
+                    style="background: #dc2626; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; margin-top: 10px;"
+                    data-testid="logout-button">
+              🚪 Logout
+            </button>
+          </div>
+        </div>
+
+        <!-- Best Practices -->
+        <div style="background: #ecfdf5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h4>💡 Best Practices for Role-Based Testing</h4>
+          <ul style="line-height: 1.8;">
+            <li><strong>Use storage state:</strong> Save authentication state to avoid repeated logins</li>
+            <li><strong>Test all roles:</strong> Verify each role sees appropriate UI/data</li>
+            <li><strong>Validate permissions:</strong> Ensure proper access control</li>
+            <li><strong>Test error states:</strong> Verify 401/403 responses are handled correctly</li>
+            <li><strong>Parallel execution:</strong> Run tests for different roles in parallel</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 3: Localization / i18n Testing Tab -->
+    <div class="tab-content" *ngIf="selectedTab === 'localization'">
+      <div class="form-section">
+        <h2>🌍 Localization / i18n Testing</h2>
+        <p class="form-description">Practice testing global applications with multiple languages, date formats, and currency displays.</p>
+        
+        <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3>🎯 What You'll Learn</h3>
+          <ul>
+            <li>✅ Test multi-language content and translations</li>
+            <li>✅ Verify locale-specific date and number formatting</li>
+            <li>✅ Handle currency symbols and decimal separators</li>
+            <li>✅ Test RTL (Right-to-Left) languages</li>
+            <li>✅ Validate language switcher functionality</li>
+          </ul>
+        </div>
+
+        <!-- Language Switcher -->
+        <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h4>🗣️ Language Switcher</h4>
+          <p style="color: #666;">Switch between English, French, and German</p>
+          
+          <div style="display: flex; gap: 10px; margin: 15px 0;">
+            <button (click)="switchLocale('en')"
+                    [style.background]="currentLocale === 'en' ? '#3b82f6' : '#e2e8f0'"
+                    [style.color]="currentLocale === 'en' ? 'white' : '#1f2937'"
+                    style="border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600;"
+                    data-testid="locale-en">
+              🇺🇸 English
+            </button>
+            <button (click)="switchLocale('fr')"
+                    [style.background]="currentLocale === 'fr' ? '#3b82f6' : '#e2e8f0'"
+                    [style.color]="currentLocale === 'fr' ? 'white' : '#1f2937'"
+                    style="border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600;"
+                    data-testid="locale-fr">
+              🇫🇷 Français
+            </button>
+            <button (click)="switchLocale('de')"
+                    [style.background]="currentLocale === 'de' ? '#3b82f6' : '#e2e8f0'"
+                    [style.color]="currentLocale === 'de' ? 'white' : '#1f2937'"
+                    style="border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600;"
+                    data-testid="locale-de">
+              🇩🇪 Deutsch
+            </button>
+          </div>
+          </div>
+          
+          <div style="background: #f9fafb; padding: 15px; border-radius: 6px; margin-top: 15px;">
+            <p style="font-weight: 600; color: #3730a3; font-size: 12px; margin: 0 0 5px 0;">Current Locale:</p>
+            <p style="font-size: 14px; color: #3730a3; margin: 0;" data-testid="current-locale">
+              <span [textContent]="currentLocale.toUpperCase()"></span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Translated Content -->
+        <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h4>📝 Translated Content</h4>
+          <p style="color: #666;">All text below changes based on selected language</p>
+          
+          <div style="background: #f9fafb; padding: 20px; border-radius: 6px; margin-top: 15px;">
+            <h3 style="margin: 0 0 15px 0; color: #1f2937;" data-testid="translated-welcome">
+              <span [textContent]="translations[currentLocale].welcome"></span>
+            </h3>
+            <p style="color: #6b7280; margin: 0 0 15px 0;" data-testid="translated-description">
+              <span [textContent]="translations[currentLocale].description"></span>
+            </p>
+            <button style="background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600;"
+                    data-testid="translated-button">
+              <span [textContent]="translations[currentLocale].button"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Date Formatting -->
+        <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h4>📅 Locale-Specific Date Formatting</h4>
+          <p style="color: #666;">Same date, different formats based on locale</p>
+          
+          <div style="display: grid; gap: 15px; margin-top: 15px;">
+            <div style="background: #fef3c7; padding: 15px; border-radius: 6px;">
+              <p style="font-weight: 600; color: #92400e; margin: 0 0 5px 0;">English (EN):</p>
+              <p style="font-size: 18px; color: #92400e; margin: 0;" data-testid="date-format-en">
+                <span [textContent]="formattedDateEN"></span>
+              </p>
+            </div>
+            
+            <div style="background: #dbeafe; padding: 15px; border-radius: 6px;">
+              <p style="font-weight: 600; color: #1e3a8a; margin: 0 0 5px 0;">French (FR):</p>
+              <p style="font-size: 18px; color: #1e3a8a; margin: 0;" data-testid="date-format-fr">
+                <span [textContent]="formattedDateFR"></span>
+              </p>
+            </div>
+            
+            <div style="background: #f3e8ff; padding: 15px; border-radius: 6px;">
+              <p style="font-weight: 600; color: #581c87; margin: 0 0 5px 0;">German (DE):</p>
+              <p style="font-size: 18px; color: #581c87; margin: 0;" data-testid="date-format-de">
+                <span [textContent]="formattedDateDE"></span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Currency Formatting -->
+        <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h4>💰 Locale-Specific Currency</h4>
+          <p style="color: #666;">Same price, different currency symbols and formats</p>
+          
+          <div style="display: grid; gap: 15px; margin-top: 15px;">
+            <div style="background: #d5f4e6; padding: 15px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <p style="font-weight: 600; color: #2d8a54; margin: 0 0 5px 0;">United States (USD):</p>
+              </div>
+              <p style="font-size: 24px; font-weight: 700; color: #2d8a54; margin: 0;" data-testid="currency-usd">
+                <span [textContent]="formattedCurrencyUSD"></span>
+              </p>
+            </div>
+            
+            <div style="background: #fce7f3; padding: 15px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <p style="font-weight: 600; color: #831843; margin: 0 0 5px 0;">France (EUR):</p>
+              </div>
+              <p style="font-size: 24px; font-weight: 700; color: #831843; margin: 0;" data-testid="currency-eur">
+                <span [textContent]="formattedCurrencyEUR"></span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Best Practices -->
+        <div style="background: #ecfdf5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h4>💡 Best Practices for Localization Testing</h4>
+          <ul style="line-height: 1.8;">
+            <li><strong>Test all locales:</strong> Verify each language displays correctly</li>
+            <li><strong>Check formatting:</strong> Dates, numbers, and currency must match locale</li>
+            <li><strong>Validate translations:</strong> Ensure all text is properly translated</li>
+            <li><strong>Test RTL languages:</strong> Arabic, Hebrew require special handling</li>
+            <li><strong>Use locale selectors:</strong> Test language switcher functionality</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 4: Accessibility (a11y) Testing Tab -->
+    <div class="tab-content" *ngIf="selectedTab === 'accessibility'">
+      <div class="form-section">
+        <h2>♿ Accessibility (a11y) Testing</h2>
+        <p class="form-description">Practice testing web accessibility for screen readers, keyboard navigation, and WCAG compliance.</p>
+        
+        <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3>🎯 What You'll Learn</h3>
+          <ul>
+            <li>✅ Test keyboard navigation (Tab, Enter, Escape)</li>
+            <li>✅ Verify ARIA labels and roles</li>
+            <li>✅ Check color contrast ratios (WCAG AAA)</li>
+            <li>✅ Test screen reader compatibility</li>
+            <li>✅ Validate focus management</li>
+          </ul>
+        </div>
+
+        <!-- Keyboard Navigation -->
+        <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h4>⌨️ Keyboard Navigation Test</h4>
+          <p style="color: #666;">Test Tab, Shift+Tab, Enter, and Arrow keys</p>
+          
+          <div style="background: #f9fafb; padding: 20px; border-radius: 6px; margin-top: 15px;">
+            <p style="font-weight: 600; margin: 0 0 10px 0;">Navigation Instructions:</p>
+            <div *ngFor="let item of keyboardNavigationItems; let i = index"
+                 [tabindex]="0"
+                 [attr.data-testid]="'keyboard-item-' + i"
+                 style="padding: 10px; margin: 5px 0; border: 2px solid #e2e8f0; border-radius: 4px; cursor: pointer;"
+                 [style.background]="i % 2 === 0 ? '#ffffff' : '#f9fafb'">
+              <span [textContent]="item"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Theme Switcher for Contrast -->
+        <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h4>🎨 High Contrast Theme</h4>
+          <p style="color: #666;">Test color contrast for accessibility</p>
+          
+          <button (click)="switchTheme()"
+                  style="background: #6366f1; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 600;"
+                  data-testid="theme-switcher">
+            🌓 Switch to <span *ngIf="currentTheme === 'light'">High Contrast</span><span *ngIf="currentTheme === 'dark'">Light</span> Theme
+          </button>
+          
+          <div [style.background]="currentTheme === 'light' ? '#ffffff' : '#1f2937'"
+               [style.color]="currentTheme === 'light' ? '#1f2937' : '#ffffff'"
+               style="padding: 20px; border-radius: 6px; margin-top: 15px; border: 2px solid #e2e8f0;"
+               data-testid="theme-content">
+            <p style="margin: 0 0 10px 0; font-weight: 600;">Current Theme: <span [textContent]="currentTheme"></span></p>
+            <p style="margin: 0;">This text should be readable in both light and high contrast themes.</p>
+          </div>
+        </div>
+
+        <!-- ARIA Labels Demo -->
+        <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h4>🏷️ ARIA Labels & Roles</h4>
+          <p style="color: #666;">Proper semantic HTML and ARIA attributes</p>
+          
+          <div style="background: #f9fafb; padding: 20px; border-radius: 6px; margin-top: 15px;">
+            <button role="button"
+                    aria-label="Submit form with accessibility support"
+                    data-testid="accessible-submit"
+                    style="background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 600; margin: 5px;">
+              ✅ Accessible Button
+            </button>
+            
+            <nav role="navigation" aria-label="Main navigation" style="margin-top: 15px;">
+              <a href="#" aria-label="Home page" style="display: inline-block; padding: 8px 16px; color: #3b82f6; text-decoration: none;">Home</a>
+              <a href="#" aria-label="About us page" style="display: inline-block; padding: 8px 16px; color: #3b82f6; text-decoration: none;">About</a>
+              <a href="#" aria-label="Contact us page" style="display: inline-block; padding: 8px 16px; color: #3b82f6; text-decoration: none;">Contact</a>
+            </nav>
+          </div>
+        </div>
+
+        <!-- Best Practices -->
+        <div style="background: #ecfdf5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h4>💡 Best Practices for Accessibility Testing</h4>
+          <ul style="line-height: 1.8;">
+            <li><strong>Use semantic HTML:</strong> Proper heading hierarchy, nav, main, footer</li>
+            <li><strong>Add ARIA labels:</strong> For screen readers and assistive technology</li>
+            <li><strong>Test keyboard navigation:</strong> All interactive elements must be reachable</li>
+            <li><strong>Check contrast ratios:</strong> WCAG AAA requires 7:1 for normal text</li>
+            <li><strong>Use automated tools:</strong> Axe, Lighthouse, WAVE for initial scans</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 5: Visual Regression Testing Tab -->
+    <div class="tab-content" *ngIf="selectedTab === 'visual-regression'">
+      <div class="form-section">
+        <h2>📸 Visual Regression Testing</h2>
+        <p class="form-description">Practice UI stability and layout validation through screenshot comparison and responsive design testing.</p>
+        
+        <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3>🎯 What You'll Learn</h3>
+          <ul>
+            <li>✅ Capture full-page and element screenshots</li>
+            <li>✅ Compare visual changes across deployments</li>
+            <li>✅ Test responsive layouts (mobile, tablet, desktop)</li>
+            <li>✅ Detect unintended UI changes</li>
+            <li>✅ Validate CSS and layout consistency</li>
+          </ul>
+        </div>
+
+        <!-- Viewport Switcher -->
+        <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h4>📱 Responsive Design Test</h4>
+          <p style="color: #666;">Switch between different viewport sizes</p>
+          
+          <div style="display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap;">
+            <button *ngFor="let viewport of viewportSizes"
+                    (click)="switchViewport(viewport.name)"
+                    [style.background]="currentViewport === viewport.name ? '#3b82f6' : '#e2e8f0'"
+                    [style.color]="currentViewport === viewport.name ? 'white' : '#1f2937'"
+                    style="border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.3s;"
+                    [attr.data-testid]="'viewport-' + viewport.name">
+              <span [textContent]="viewport.icon + ' ' + viewport.name"></span>
+            </button>
+          </div>
+          
+          <div style="background: #f9fafb; padding: 20px; border-radius: 6px; margin-top: 15px;" data-testid="viewport-info">
+            <p style="font-weight: 600; margin: 0 0 10px 0;">
+              Current Viewport: <span style="color: #3b82f6;" [textContent]="currentViewport.toUpperCase()"></span>
+            </p>
+            <ng-container *ngFor="let viewport of viewportSizes">
+              <p *ngIf="currentViewport === viewport.name" style="margin: 5px 0; color: #6b7280;">
+                📐 Dimensions: <span [textContent]="viewport.width + ' × ' + viewport.height + ' px'"></span>
+              </p>
+            </ng-container>
+          </div>
+
+          <!-- Visual Viewport Demo -->
+          <div style="margin-top: 20px; padding: 20px; background: #f9fafb; border-radius: 8px;">
+            <p style="font-weight: 600; margin: 0 0 15px 0; color: #6b7280;">📱 Viewport Preview:</p>
+            <div style="display: flex; justify-content: center; padding: 20px; background: #e5e7eb; border-radius: 8px;">
+              <ng-container *ngFor="let viewport of viewportSizes">
+                <div *ngIf="currentViewport === viewport.name"
+                     [style.width.px]="viewport.width > 1024 ? 1024 : viewport.width"
+                     [style.max-width]="'100%'"
+                     style="background: white; border: 3px solid #3b82f6; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: all 0.5s ease;"
+                     [attr.data-testid]="'viewport-preview-' + viewport.name">
+                  <div style="text-align: center;">
+                    <p style="font-size: 24px; margin: 0 0 10px 0;" [textContent]="viewport.icon"></p>
+                    <p style="font-weight: 600; color: #1f2937; margin: 0;" [textContent]="viewport.name.toUpperCase()"></p>
+                    <p style="color: #6b7280; font-size: 14px; margin: 5px 0 0 0;" [textContent]="viewport.width + ' × ' + viewport.height"></p>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual Change Trigger -->
+        <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h4>🎨 Visual Change Detector</h4>
+          <p style="color: #666;">Trigger layout changes and detect differences</p>
+          
+          <button (click)="triggerVisualChange()"
+                  style="background: #f59e0b; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 600;"
+                  data-testid="trigger-visual-change">
+            🔄 Toggle Layout
+          </button>
+          
+          <div [style.display]="visualChangeTrigger ? 'grid' : 'flex'"
+               [style.grid-template-columns]="visualChangeTrigger ? 'repeat(2, 1fr)' : 'none'"
+               [style.flex-direction]="!visualChangeTrigger ? 'column' : 'row'"
+               style="gap: 15px; transition: all 0.3s; margin-top: 15px;"
+               data-testid="layout-container">
+            <div style="background: #fef3c7; padding: 15px; border-radius: 6px;">
+              <h5 style="margin: 0 0 5px 0; color: #92400e;">Card 1</h5>
+              <p style="margin: 0; color: #92400e; font-size: 14px;">
+                Layout: <span *ngIf="visualChangeTrigger">Grid</span><span *ngIf="!visualChangeTrigger">Flex Column</span>
+              </p>
+            </div>
+            <div style="background: #d5f4e6; padding: 15px; border-radius: 6px;">
+              <h5 style="margin: 0 0 5px 0; color: #2d8a54;">Card 2</h5>
+              <p style="margin: 0; color: #2d8a54; font-size: 14px;">
+                Layout: <span *ngIf="visualChangeTrigger">Grid</span><span *ngIf="!visualChangeTrigger">Flex Column</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Best Practices -->
+        <div style="background: #ecfdf5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h4>💡 Best Practices for Visual Regression</h4>
+          <ul style="line-height: 1.8;">
+            <li><strong>Use baseline screenshots:</strong> Capture approved UI state as reference</li>
+            <li><strong>Test multiple viewports:</strong> Mobile, tablet, desktop breakpoints</li>
+            <li><strong>Mask dynamic content:</strong> Timestamps, random data, animations</li>
+            <li><strong>Set threshold tolerance:</strong> Allow small anti-aliasing differences</li>
+            <li><strong>Review failures manually:</strong> Not all diffs are bugs</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 6: Error Handling & Negative Scenarios Tab -->
+    <div class="tab-content" *ngIf="selectedTab === 'error-handling'">
+      <div class="form-section">
+        <h2>⚠️ Error Handling & Negative Scenarios</h2>
+        <p class="form-description">Master failure path validation, API error simulation, and resilient test design.</p>
+        
+        <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3>🎯 What You'll Learn</h3>
+          <ul>
+            <li>✅ Test API error responses (401, 403, 404, 500)</li>
+            <li>✅ Handle network failures and timeouts</li>
+            <li>✅ Validate form validation errors</li>
+            <li>✅ Test retry mechanisms</li>
+            <li>✅ Verify error message display</li>
+          </ul>
+        </div>
+
+        <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; border-radius: 6px; margin: 20px 0;">
+          <h4 style="margin: 0 0 10px 0; color: #92400e;">💡 Testing Purpose</h4>
+          <p style="margin: 0; color: #92400e;">
+            <strong>Error handling tests ensure your application gracefully handles failures.</strong><br>
+            In Playwright, you'll use <code>page.route()</code> to intercept API calls and return mock error responses,
+            validate that error messages appear correctly, and ensure the UI remains usable even when things go wrong.
+            Click each button below and verify the error displays, then write assertions to check the error text and styling.
+          </p>
+        </div>
+
+        <!-- API Error Simulation -->
+        <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h4>🔴 Simulate API Errors</h4>
+          <p style="color: #666;">
+            <strong>Action:</strong> Click each button to simulate different HTTP error responses.<br>
+            <strong>Expected:</strong> Error message should appear in red box below with appropriate error details.
+          </p>
+          
+          <div style="display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap;">
+            <button (click)="simulateApiError('401')"
+                    style="background: #dc2626; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600;"
+                    data-testid="trigger-401">
+              ❌ 401 Unauthorized
+            </button>
+            <button (click)="simulateApiError('403')"
+                    style="background: #ea580c; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600;"
+                    data-testid="trigger-403">
+              🚫 403 Forbidden
+            </button>
+            <button (click)="simulateApiError('500')"
+                    style="background: #7c2d12; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600;"
+                    data-testid="trigger-500">
+              💥 500 Server Error
+            </button>
+            <button (click)="simulateTimeout()"
+                    style="background: #ca8a04; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 600;"
+                    data-testid="trigger-timeout">
+              ⏱️ Simulate Timeout
+            </button>
+          </div>
+          
+          <div *ngIf="errorResponse" 
+               style="background: #fee2e2; border: 2px solid #dc2626; padding: 15px; border-radius: 6px; margin-top: 15px;"
+               data-testid="error-response">
+            <h5 style="margin: 0 0 10px 0; color: #991b1b;">❌ Error Response:</h5>
+            <pre style="margin: 0; color: #991b1b; font-family: monospace; font-size: 14px; white-space: pre-wrap;" [textContent]="errorResponse"></pre>
+          </div>
+        </div>
+
+        <!-- Invalid Form Submission -->
+        <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h4>📝 Invalid Form Submissions</h4>
+          <p style="color: #666;">
+            <strong>Action:</strong> Enter invalid data (e.g., "test" for email, "abc" for phone, "-5" for age) and click Validate.<br>
+            <strong>Expected:</strong> Validation errors should appear below the form listing all issues.
+          </p>
+          
+          <div style="background: #f9fafb; padding: 20px; border-radius: 6px; margin-top: 15px;">
+            <input type="email" 
+                   [(ngModel)]="errorFormData.email"
+                   placeholder="Enter email (e.g., invalid-email)"
+                   data-testid="error-email-input"
+                   style="width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 4px; margin-bottom: 10px;">
+            
+            <input type="tel"
+                   [(ngModel)]="errorFormData.phone"
+                   placeholder="Enter phone (e.g., abc123)"
+                   data-testid="error-phone-input"
+                   style="width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 4px; margin-bottom: 10px;">
+            
+            <input type="number"
+                   [(ngModel)]="errorFormData.age"
+                   placeholder="Enter age (e.g., -5)"
+                   data-testid="error-age-input"
+                   style="width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 4px; margin-bottom: 15px;">
+            
+            <button (click)="validateErrorForm()"
+                    style="background: #3b82f6; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 600;"
+                    data-testid="validate-form-button">
+              🔍 Validate Form
+            </button>
+          </div>
+          
+          <div *ngIf="errorFormErrors.length > 0" 
+               style="background: #fee2e2; border-left: 4px solid #dc2626; padding: 15px; border-radius: 6px; margin-top: 15px;"
+               data-testid="form-errors">
+            <h5 style="margin: 0 0 10px 0; color: #991b1b;">❌ Validation Errors:</h5>
+            <ul style="margin: 0; padding-left: 20px; color: #991b1b;">
+              <li *ngFor="let error of errorFormErrors" data-testid="error-message" [textContent]="error"></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Retry Mechanism -->
+        <div style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <h4>🔄 Retry Mechanism Test</h4>
+          <p style="color: #666;">
+            <strong>Action:</strong> Click "Test Retry Logic" to simulate a flaky API call.<br>
+            <strong>Expected:</strong> Button shows attempt count and automatically retries up to 3 times until success.
+          </p>
+          
+          <button (click)="testRetryLogic()"
+                  [disabled]="retryInProgress"
+                  style="background: #6366f1; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 600;"
+                  data-testid="retry-button">
+            🔄 Test Retry Logic <span *ngIf="retryAttempts > 0">(Attempt <span [textContent]="retryAttempts"></span>)</span>
+          </button>
+          
+          <div *ngIf="retrySuccess" 
+               style="background: #d5f4e6; border: 2px solid #10b981; padding: 15px; border-radius: 6px; margin-top: 15px;"
+               data-testid="success-message">
+            <h5 style="margin: 0; color: #2d8a54;">✅ Success after <span [textContent]="retryAttempts"></span> attempts!</h5>
+          </div>
+        </div>
+
+        <!-- Best Practices -->
+        <div style="background: #ecfdf5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h4>💡 Error Handling Best Practices</h4>
+          <ul style="line-height: 1.8;">
+            <li><strong>Test all error codes:</strong> 400, 401, 403, 404, 500, 503</li>
+            <li><strong>Mock network conditions:</strong> Use route interception to simulate failures</li>
+            <li><strong>Validate error messages:</strong> Check both inline and global errors</li>
+            <li><strong>Test recovery:</strong> Verify retry mechanisms and error dismissal</li>
+            <li><strong>Negative validation:</strong> Submit forms with invalid data intentionally</li>
+          </ul>
         </div>
       </div>
     </div>
